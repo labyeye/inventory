@@ -441,7 +441,7 @@
                       <option value="">Choose Sub Category</option>
                       <!-- Subcategories will be loaded dynamically based on category selection -->
                     </select>
-                  </div>  
+                  </div>
                 </div>
                 <div class="col-lg-3 col-sm-6 col-12">
                   <div class="form-group">
@@ -469,7 +469,10 @@
                   <div class="form-group">
                     <label> Product Image</label>
                     <div class="image-upload">
-                      <input type="file" accept=".png,.jpg,.jpeg,.JPG,.PNG,.JPEG" />
+                      <input
+                        type="file"
+                        accept=".png,.jpg,.jpeg,.JPG,.PNG,.JPEG"
+                      />
                       <div class="image-uploads">
                         <img src="assets/img/icons/upload.svg" alt="img" />
                         <h4>Drag and drop a file to upload</h4>
@@ -532,8 +535,8 @@
           ".row .col-lg-3:nth-child(5) input"
         );
         const placeInput = document.querySelector(
-          ".row .col-lg-3:nth-child(5) input"
-        )
+          ".row .col-lg-3:nth-child(6) input" // Fixed index for place input
+        );
         const imageUpload = document.querySelector(
           '.image-upload input[type="file"]'
         );
@@ -708,15 +711,15 @@
         function convertToBase64(productImage) {
           return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            
+
             reader.onload = () => {
               resolve(reader.result); // base64 string
             };
-            
+
             reader.onerror = (error) => {
               reject(error);
             };
-            
+
             reader.readAsDataURL(productImage);
           });
         }
@@ -725,7 +728,7 @@
         if (imageUpload) {
           imageUpload.addEventListener("change", async (e) => {
             productImage = e.target.files[0];
-            let prodURL= await convertToBase64(productImage);
+            let prodURL = await convertToBase64(productImage);
             // Show preview of selected image
             if (productImage) {
               const imageUploads = document.querySelector(".image-uploads");
@@ -748,6 +751,21 @@
             }
             productImage = prodURL;
           });
+        }
+
+        // Get all users once for reference
+        const usersMap = new Map();
+        try {
+          const usersCollection = collection(db, "users");
+          const usersSnapshot = await getDocs(usersCollection);
+
+          usersSnapshot.forEach((userDoc) => {
+            const userData = userDoc.data();
+            usersMap.set(userDoc.id, userData);
+          });
+          console.log("Users loaded:", usersMap.size);
+        } catch (error) {
+          console.error("Error loading users:", error);
         }
 
         // Handle form submission
@@ -795,6 +813,24 @@
             submitBtn.disabled = true;
 
             try {
+              // Get current user's display name if available
+              let creatorName = "Unknown";
+              let creatorId = "";
+
+              if (auth.currentUser) {
+                creatorId = auth.currentUser.uid;
+                creatorName = auth.currentUser.displayName || "Unknown";
+
+                // If the user info is in our map, use that as backup
+                if (usersMap.has(creatorId)) {
+                  const userData = usersMap.get(creatorId);
+                  if (!creatorName || creatorName === "Unknown") {
+                    creatorName =
+                      userData.displayName || userData.email || "Unknown";
+                  }
+                }
+              }
+
               // Prepare product data with category and subcategory details
               const productData = {
                 name: productNameInput.value,
@@ -810,11 +846,15 @@
                     : "",
                 quantity: parseInt(quantityInput.value) || 0,
                 createdAt: serverTimestamp(),
-                createdBy: auth.currentUser ? auth.currentUser.uid : "unknown",
+                createdBy: creatorId,
+                creatorName: creatorName,
                 hasImage: !!productImage,
-                ImageUrl : productImage,
-                location: placeInput
+                imageUrl: productImage,
+                location: placeInput ? placeInput.value : "",
               };
+
+              console.log("Adding product with creator:", creatorName);
+
               // Add product document to Firestore
               const docRef = await addDoc(
                 collection(db, "products"),

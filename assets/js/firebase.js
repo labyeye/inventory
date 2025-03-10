@@ -7,13 +7,19 @@ import { getStorage } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-s
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 const firebaseConfig = {
-  apiKey: "AIzaSyALj001Lb_zUCrGbJtmhFCZ1zxtrsjdTq8",
-  authDomain: "inventory-d6bcb.firebaseapp.com",
-  projectId: "inventory-d6bcb",
-  storageBucket: "inventory-d6bcb.firebasestorage.app",
-  messagingSenderId: "235234111776",
-  appId: "1:235234111776:web:bca6350453f8f0bdeae745",
-  measurementId: "G-1RH80PW5HK",
+  apiKey: "",
+
+  authDomain: "",
+
+  projectId: "",
+
+  storageBucket: "",
+
+  messagingSenderId: "",
+
+  appId: "",
+
+  measurementId: "",
 };
 
 const app = initializeApp(firebaseConfig);

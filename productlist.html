@@ -552,6 +552,7 @@
     </div>
 
     <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script src="assets/js/feather.min.js"></script>
 
@@ -622,7 +623,7 @@
             // Process each product
             querySnapshot.forEach((productDoc) => {
               const productData = productDoc.data();
-              console.log(productData)
+              console.log(productData);
               // Add to filters
               const productOption = document.createElement("option");
               productOption.value = productDoc.id;
@@ -682,7 +683,8 @@
           <td>${productData.brand || ""}</td>
           <td>${productData.quantity || ""}</td>
           <td>${productData.location || ""}</td>
-          <td>${productData.createdBy || "Admin"}</td>
+          <td>${productData.creatorName || "Admin"}</td>
+          <td>${formatTimestamp(productData.createdAt)}</td>
           <td>
             <a class="me-3" href="product-details.html?id=${productDoc.id}">
               <img src="assets/img/icons/eye.svg" alt="img" />
@@ -830,7 +832,8 @@
           <td>${productData.categoryName || ""}</td>
           <td>${productData.brand || ""}</td>
           <td>${productData.quantity || ""}</td>
-          <td>${productData.createdBy || "Admin"}</td>
+          <td>${productData.creatorName || "Admin"}</td>
+          <td>${formatTimestamp(productData.createdAt)}</td>
           <td>
             <a class="me-3" href="product-details.html?id=${productDoc.id}">
               <img src="assets/img/icons/eye.svg" alt="img" />
@@ -934,16 +937,67 @@
                 checkbox.checked = isChecked;
               });
           });
-          onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      // Redirect to login if not authenticated
-      window.location.href = 'login.html';
-    }
-  });
+        onAuthStateChanged(auth, (user) => {
+          if (!user) {
+            // Redirect to login if not authenticated
+            window.location.href = "login.html";
+          }
+        });
       });
 
-    </script>
+      // Function to format Firestore timestamp to readable date string
+      function formatTimestamp(timestamp) {
+        if (!timestamp) return "N/A";
 
+        // Handle both Firestore Timestamp objects and serialized timestamp objects
+        let date;
+        if (timestamp.toDate && typeof timestamp.toDate === "function") {
+          // This is a Firestore Timestamp object
+          date = timestamp.toDate();
+        } else if (timestamp.seconds) {
+          // This is a serialized timestamp (with seconds and nanoseconds)
+          date = new Date(timestamp.seconds * 1000);
+        } else {
+          // Try to parse as regular date
+          date = new Date(timestamp);
+        }
+
+        // Check if date is valid before formatting
+        if (isNaN(date.getTime())) return "Invalid Date";
+
+        // Format the date - adjust format as needed
+        return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+      }
+
+      document
+        .querySelector('[data-bs-toggle="tooltip"][title="print"]')
+        .addEventListener("click", function () {
+          window.print();
+        });
+
+      // Add event listener for the Excel export button
+      document
+        .querySelector('[data-bs-toggle="tooltip"][title="excel"]')
+        .addEventListener("click", function () {
+          exportToExcel();
+        });
+
+      // Function to export the table data to Excel
+      function exportToExcel() {
+        // Get the table element
+        const table = document.querySelector(".datanew");
+
+        // Convert the table to a worksheet
+        const worksheet = XLSX.utils.table_to_sheet(table);
+
+        // Create a new workbook
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Product List");
+
+        // Generate the Excel file and trigger download
+        XLSX.writeFile(workbook, "ProductList.xlsx");
+      }
+    </script>
     <script src="assets/js/script.js"></script>
   </body>
 </html>

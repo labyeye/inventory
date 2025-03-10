@@ -459,6 +459,7 @@
       import {
         collection,
         addDoc,
+        getDocs,
         serverTimestamp,
       } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
       import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
@@ -490,6 +491,50 @@
           }
         });
 
+        // Pre-load users for reference
+        let usersMap = new Map();
+        async function loadUsers() {
+          try {
+            const usersCollection = collection(db, "users");
+            const usersSnapshot = await getDocs(usersCollection);
+
+            usersSnapshot.forEach((userDoc) => {
+              const userData = userDoc.data();
+              usersMap.set(userDoc.id, userData);
+            });
+            console.log("Users loaded:", usersMap.size);
+          } catch (error) {
+            console.error("Error loading users:", error);
+          }
+        }
+
+        // Load users when the page loads
+        loadUsers();
+
+        // Function to format timestamp for display
+        function formatTimestamp(timestamp) {
+          if (!timestamp) return "N/A";
+
+          // Handle both Firestore Timestamp objects and serialized timestamp objects
+          let date;
+          if (timestamp.toDate && typeof timestamp.toDate === "function") {
+            // This is a Firestore Timestamp object
+            date = timestamp.toDate();
+          } else if (timestamp.seconds) {
+            // This is a serialized timestamp (with seconds and nanoseconds)
+            date = new Date(timestamp.seconds * 1000);
+          } else {
+            // Try to parse as regular date
+            date = new Date(timestamp);
+          }
+
+          // Check if date is valid before formatting
+          if (isNaN(date.getTime())) return "Invalid Date";
+
+          // Format the date
+          return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+        }
+
         // Handle form submission
         if (submitButton) {
           submitButton.addEventListener("click", async function (e) {
@@ -516,6 +561,31 @@
               submitButton.textContent = "Processing...";
               submitButton.disabled = true;
 
+              // Get current user's display name properly
+              let creatorName = "Unknown";
+              let creatorId = user.uid;
+
+              // First try to get from auth object directly
+              if (user.displayName) {
+                creatorName = user.displayName;
+                console.log("Using displayName from auth:", creatorName);
+              }
+              // Then try to get from users collection as backup
+              else if (usersMap.has(creatorId)) {
+                const userData = usersMap.get(creatorId);
+                creatorName =
+                  userData.displayName || userData.email || "Unknown";
+                console.log(
+                  "Using displayName from users collection:",
+                  creatorName
+                );
+              }
+              // Last resort, use email
+              else if (user.email) {
+                creatorName = user.email;
+                console.log("Using email as fallback:", creatorName);
+              }
+
               // Create category data object
               const categoryData = {
                 name: categoryNameInput.value.trim(),
@@ -524,7 +594,8 @@
                   ? descriptionTextarea.value.trim()
                   : "",
                 // Skip image upload for now to simplify troubleshooting
-                createdBy: user.uid,
+                createdBy: creatorId,
+                creatorName: creatorName,
                 createdAt: serverTimestamp(),
                 updatedAt: serverTimestamp(),
               };
@@ -534,6 +605,7 @@
                 categoryData
               );
               console.log("User ID:", user.uid);
+              console.log("Creator Name:", creatorName);
 
               // Add document to Firestore
               const categoriesCollectionRef = collection(db, "categories");
@@ -563,12 +635,16 @@
 
         // Helper function to show alerts using SweetAlert
         function showAlert(message, type) {
-          Swal.fire({
-            text: message,
-            icon: type,
-            confirmButtonText: "OK",
-            confirmButtonClass: "btn btn-primary",
-          });
+          if (typeof Swal !== "undefined") {
+            Swal.fire({
+              text: message,
+              icon: type,
+              confirmButtonText: "OK",
+              confirmButtonClass: "btn btn-primary",
+            });
+          } else {
+            alert(message);
+          }
         }
       });
     </script>

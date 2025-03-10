@@ -179,6 +179,8 @@
             );
             const user = userCredential.user;
 
+            console.log(fullName);
+
             // Store user data in Firestore
             await setDoc(doc(db, "users", user.uid), {
               displayName: fullName,

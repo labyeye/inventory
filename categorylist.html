@@ -601,364 +601,388 @@
         getDoc,
         collection,
         getDocs,
-        deleteDoc
+        deleteDoc,
       } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
       let dataTable;
 
       // Check if user is logged in
       onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    try {
-      // Get user data from Firestore
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-      
-      let userName = "User";
-      let userRole = "User";
+        if (user) {
+          try {
+            // Get user data from Firestore
+            const userDoc = await getDoc(doc(db, "users", user.uid));
 
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        userName = userData.displayName || user.email;
-        userRole = userData.role || "User";
+            let userName = "User";
+            let userRole = "User";
 
-        // Update all instances of user name in the header dropdown
-        const userNameElements = document.querySelectorAll(".profilesets h6");
-        userNameElements.forEach((element) => {
-          element.textContent = userName;
-        });
+            if (userDoc.exists()) {
+              const userData = userDoc.data();
+              userName = userData.displayName || user.email;
+              userRole = userData.role || "User";
 
-        // Update user role if needed
-        const userRoleElements = document.querySelectorAll(".profilesets h5");
-        userRoleElements.forEach((element) => {
-          element.textContent = userRole;
-        });
-      } else {
-        console.warn("No user document found for this user!");
-      }
+              // Update all instances of user name in the header dropdown
+              const userNameElements =
+                document.querySelectorAll(".profilesets h6");
+              userNameElements.forEach((element) => {
+                element.textContent = userName;
+              });
 
-      // Handle admin actions visibility based on role
-      const adminActions = document.querySelectorAll(".admin-action");
-      if (userRole === "Admin") {
-        adminActions.forEach((element) => {
-          element.style.display = "table-cell"; // For th elements
-        });
-      } else {
-        adminActions.forEach((element) => {
-          element.style.display = "none";
-        });
-      }
+              // Update user role if needed
+              const userRoleElements =
+                document.querySelectorAll(".profilesets h5");
+              userRoleElements.forEach((element) => {
+                element.textContent = userRole;
+              });
+            } else {
+              console.warn("No user document found for this user!");
+            }
 
-      // Initialize DataTable first (empty)
-      if ($.fn.DataTable.isDataTable('.datanew')) {
-        $('.datanew').DataTable().destroy();
-      }
-      
-      dataTable = $('.datanew').DataTable({
-        language: {
-          search: '<img src="assets/img/icons/search.svg" alt="search">',
-          searchPlaceholder: "Search...",
-          paginate: {
-            next: '<img src="assets/img/icons/pagination-next.svg" alt="next">',
-            previous: '<img src="assets/img/icons/pagination-previous.svg" alt="previous">'
-          }
-        },
-        "bFilter": true,
-        "sDom": 'fBtlpi', 
-        ordering: true,
-        "pagingType": "numbers",
-        "lengthChange": false,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "processing": true,
-        // Clear existing data to prevent "No data available" message
-        "destroy": true
-      });
-      
-      // Clear existing table data to start fresh
-      dataTable.clear().draw();
+            // Handle admin actions visibility based on role
+            const adminActions = document.querySelectorAll(".admin-action");
+            if (userRole === "Admin") {
+              adminActions.forEach((element) => {
+                element.style.display = "table-cell"; // For th elements
+              });
+            } else {
+              adminActions.forEach((element) => {
+                element.style.display = "none";
+              });
+            }
 
-      try {
-        // Fetch categories collection
-        const categoriesCollection = collection(db, "categories");
-        const categoriesSnapshot = await getDocs(categoriesCollection);
-        
-        // Debug: Check if categories exist and how many
-        console.log("Categories found:", categoriesSnapshot.size);
-        
-        // Populate table with categories data using DataTables API
-        if (!categoriesSnapshot.empty) {
-          let rowsAdded = 0;
-          
-          categoriesSnapshot.forEach((categoryDoc) => {
-            const categoryData = categoryDoc.data();
-            const categoryId = categoryDoc.id;
-            
-            // Debug: Check individual category data
-            console.log("Category data:", categoryId, categoryData);
-            
-            // Prepare the row data for DataTables
-            const rowData = [
-              // Checkbox column
-              `<label class="checkboxs">
+            // Initialize DataTable first (empty)
+            if ($.fn.DataTable.isDataTable(".datanew")) {
+              $(".datanew").DataTable().destroy();
+            }
+
+            dataTable = $(".datanew").DataTable({
+              language: {
+                search: '<img src="assets/img/icons/search.svg" alt="search">',
+                searchPlaceholder: "Search...",
+                paginate: {
+                  next: '<img src="assets/img/icons/pagination-next.svg" alt="next">',
+                  previous:
+                    '<img src="assets/img/icons/pagination-previous.svg" alt="previous">',
+                },
+              },
+              bFilter: true,
+              sDom: "fBtlpi",
+              ordering: true,
+              pagingType: "numbers",
+              lengthChange: false,
+              searching: true,
+              ordering: true,
+              info: true,
+              autoWidth: false,
+              processing: true,
+              // Clear existing data to prevent "No data available" message
+              destroy: true,
+            });
+
+            // Clear existing table data to start fresh
+            dataTable.clear().draw();
+
+            try {
+              // Fetch categories collection
+              const categoriesCollection = collection(db, "categories");
+              const categoriesSnapshot = await getDocs(categoriesCollection);
+
+              // Debug: Check if categories exist and how many
+              console.log("Categories found:", categoriesSnapshot.size);
+
+              // Populate table with categories data using DataTables API
+              if (!categoriesSnapshot.empty) {
+                let rowsAdded = 0;
+
+                categoriesSnapshot.forEach((categoryDoc) => {
+                  const categoryData = categoryDoc.data();
+                  const categoryId = categoryDoc.id;
+
+                  // Debug: Check individual category data
+                  console.log("Category data:", categoryId, categoryData);
+
+                  // Prepare the row data for DataTables
+                  const rowData = [
+                    // Checkbox column
+                    `<label class="checkboxs">
                 <input type="checkbox" />
                 <span class="checkmarks"></span>
               </label>`,
-              // Name column with image
-              `<div class="productimgname">
+                    // Name column with image
+                    `<div class="productimgname">
                 <a href="javascript:void(0);" class="product-img">
-                  <img src="${categoryData.image || 'assets/img/product/noimage.png'}" alt="product" />
+                  <img src="${
+                    categoryData.image || "assets/img/product/noimage.png"
+                  }" alt="product" />
                 </a>
-                <a href="javascript:void(0);">${categoryData.name || 'Unnamed Category'}</a>
+                <a href="javascript:void(0);">${
+                  categoryData.name || "Unnamed Category"
+                }</a>
               </div>`,
-              // Created by column
-              categoryData.createdBy || 'Admin',
-              // Actions column
-              userRole === "Admin" 
-                ? `<a class="me-3" href="editcategory.html?id=${categoryId}">
+                    // Created by column
+                    categoryData.creatorName || "Admin",
+                    // Actions column
+                    userRole === "Admin"
+                      ? `<a class="me-3" href="editcategory.html?id=${categoryId}">
                      <img src="assets/img/icons/edit.svg" alt="img" />
                    </a>
                    <a class="me-3 confirm-text" href="javascript:void(0);" data-id="${categoryId}">
                      <img src="assets/img/icons/delete.svg" alt="img" />
                    </a>`
-                : ''
-            ];
-            
-            // Add the row to DataTables
-            dataTable.row.add(rowData);
-            rowsAdded++;
-          });
-          
-          // Draw the table after adding all rows
-          dataTable.draw();
-          console.log(`Added ${rowsAdded} rows to the table`);
-        } else {
-          console.log("No categories found, adding furniture example");
-          
-          // Add the furniture example
-          const furnitureRowData = [
-            `<label class="checkboxs">
+                      : "",
+                  ];
+
+                  // Add the row to DataTables
+                  dataTable.row.add(rowData);
+                  rowsAdded++;
+                });
+
+                // Draw the table after adding all rows
+                dataTable.draw();
+                console.log(`Added ${rowsAdded} rows to the table`);
+              } else {
+                console.log("No categories found, adding furniture example");
+
+                // Add the furniture example
+                const furnitureRowData = [
+                  `<label class="checkboxs">
               <input type="checkbox" />
               <span class="checkmarks"></span>
             </label>`,
-            `<div class="productimgname">
+                  `<div class="productimgname">
               <a href="javascript:void(0);" class="product-img">
                 <img src="assets/img/product/noimage.png" alt="product" />
               </a>
               <a href="javascript:void(0);">Furniture</a>
             </div>`,
-            'Admin',
-            userRole === "Admin" 
-              ? `<a class="me-3" href="editcategory.html?id=furniture-manual">
+                  "Admin",
+                  userRole === "Admin"
+                    ? `<a class="me-3" href="editcategory.html?id=furniture-manual">
                    <img src="assets/img/icons/edit.svg" alt="img" />
                  </a>
                  <a class="me-3 confirm-text" href="javascript:void(0);" data-id="furniture-manual">
                    <img src="assets/img/icons/delete.svg" alt="img" />
                  </a>`
-              : ''
-          ];
-          
-          dataTable.row.add(furnitureRowData).draw();
-        }
-        
-        // Always add furniture category if needed as a fallback
-        if (categoriesSnapshot.size === 0) {
-          // Furniture already added above
-        } else {
-          // Check if Furniture category exists
-          let furnitureExists = false;
-          categoriesSnapshot.forEach((doc) => {
-            if (doc.data().name === "Furniture") {
-              furnitureExists = true;
-            }
-          });
-          
-          // Add Furniture category if it doesn't exist
-          if (!furnitureExists) {
-            const furnitureRowData = [
-              `<label class="checkboxs">
+                    : "",
+                ];
+
+                dataTable.row.add(furnitureRowData).draw();
+              }
+
+              // Always add furniture category if needed as a fallback
+              if (categoriesSnapshot.size === 0) {
+                // Furniture already added above
+              } else {
+                // Check if Furniture category exists
+                let furnitureExists = false;
+                categoriesSnapshot.forEach((doc) => {
+                  if (doc.data().name === "Furniture") {
+                    furnitureExists = true;
+                  }
+                });
+
+                // Add Furniture category if it doesn't exist
+                if (!furnitureExists) {
+                  const furnitureRowData = [
+                    `<label class="checkboxs">
                 <input type="checkbox" />
                 <span class="checkmarks"></span>
               </label>`,
-              `<div class="productimgname">
+                    `<div class="productimgname">
                 <a href="javascript:void(0);" class="product-img">
                   <img src="assets/img/product/noimage.png" alt="product" />
                 </a>
                 <a href="javascript:void(0);">Furniture</a>
               </div>`,
-              'Admin',
-              userRole === "Admin" 
-                ? `<a class="me-3" href="editcategory.html?id=furniture-manual">
+                    "Admin",
+                    userRole === "Admin"
+                      ? `<a class="me-3" href="editcategory.html?id=furniture-manual">
                      <img src="assets/img/icons/edit.svg" alt="img" />
                    </a>
                    <a class="me-3 confirm-text" href="javascript:void(0);" data-id="furniture-manual">
                      <img src="assets/img/icons/delete.svg" alt="img" />
                    </a>`
-                : ''
-            ];
-            
-            dataTable.row.add(furnitureRowData).draw();
-          }
-        }
-        
-        // Set up event handlers after the table is populated
-        setupDeleteHandlers();
-        
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-        
-        // Fallback: Add furniture category on error
-        const furnitureRowData = [
-          `<label class="checkboxs">
+                      : "",
+                  ];
+
+                  dataTable.row.add(furnitureRowData).draw();
+                }
+              }
+
+              // Set up event handlers after the table is populated
+              setupDeleteHandlers();
+            } catch (error) {
+              console.error("Error fetching categories:", error);
+
+              // Fallback: Add furniture category on error
+              const furnitureRowData = [
+                `<label class="checkboxs">
             <input type="checkbox" />
             <span class="checkmarks"></span>
           </label>`,
-          `<div class="productimgname">
+                `<div class="productimgname">
             <a href="javascript:void(0);" class="product-img">
               <img src="assets/img/product/noimage.png" alt="product" />
             </a>
             <a href="javascript:void(0);">Furniture</a>
           </div>`,
-          'Admin',
-          userRole === "Admin" 
-            ? `<a class="me-3" href="editcategory.html?id=furniture-manual">
+                "Admin",
+                userRole === "Admin"
+                  ? `<a class="me-3" href="editcategory.html?id=furniture-manual">
                  <img src="assets/img/icons/edit.svg" alt="img" />
                </a>
                <a class="me-3 confirm-text" href="javascript:void(0);" data-id="furniture-manual">
                  <img src="assets/img/icons/delete.svg" alt="img" />
                </a>`
-            : ''
-        ];
-        
-        dataTable.row.add(furnitureRowData).draw();
-        
-        // Still set up event handlers
-        setupDeleteHandlers();
-      }
-    } catch (error) {
-      console.error("Error getting user data:", error);
-      
-      // Initialize DataTable with default data on error
-      if ($.fn.DataTable.isDataTable('.datanew')) {
-        $('.datanew').DataTable().destroy();
-      }
-      
-      dataTable = $('.datanew').DataTable({
-        language: {
-          search: '<img src="assets/img/icons/search.svg" alt="search">',
-          searchPlaceholder: "Search...",
-          paginate: {
-            next: '<img src="assets/img/icons/pagination-next.svg" alt="next">',
-            previous: '<img src="assets/img/icons/pagination-previous.svg" alt="previous">'
-          }
-        },
-        "bFilter": true,
-        "sDom": 'fBtlpi', 
-        ordering: true,
-        "pagingType": "numbers",
-        "lengthChange": false,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "processing": true,
-        "destroy": true
-      });
-      
-      dataTable.clear().draw();
-      
-      // Add a fallback furniture row
-      const furnitureRowData = [
-        `<label class="checkboxs">
+                  : "",
+              ];
+
+              dataTable.row.add(furnitureRowData).draw();
+
+              // Still set up event handlers
+              setupDeleteHandlers();
+            }
+          } catch (error) {
+            console.error("Error getting user data:", error);
+
+            // Initialize DataTable with default data on error
+            if ($.fn.DataTable.isDataTable(".datanew")) {
+              $(".datanew").DataTable().destroy();
+            }
+
+            dataTable = $(".datanew").DataTable({
+              language: {
+                search: '<img src="assets/img/icons/search.svg" alt="search">',
+                searchPlaceholder: "Search...",
+                paginate: {
+                  next: '<img src="assets/img/icons/pagination-next.svg" alt="next">',
+                  previous:
+                    '<img src="assets/img/icons/pagination-previous.svg" alt="previous">',
+                },
+              },
+              bFilter: true,
+              sDom: "fBtlpi",
+              ordering: true,
+              pagingType: "numbers",
+              lengthChange: false,
+              searching: true,
+              ordering: true,
+              info: true,
+              autoWidth: false,
+              processing: true,
+              destroy: true,
+            });
+
+            dataTable.clear().draw();
+
+            // Add a fallback furniture row
+            const furnitureRowData = [
+              `<label class="checkboxs">
           <input type="checkbox" />
           <span class="checkmarks"></span>
         </label>`,
-        `<div class="productimgname">
+              `<div class="productimgname">
           <a href="javascript:void(0);" class="product-img">
             <img src="assets/img/product/noimage.png" alt="product" />
           </a>
           <a href="javascript:void(0);">Furniture</a>
         </div>`,
-        'Admin',
-        `<a class="me-3" href="editcategory.html?id=furniture-manual">
+              "Admin",
+              `<a class="me-3" href="editcategory.html?id=furniture-manual">
            <img src="assets/img/icons/edit.svg" alt="img" />
          </a>
          <a class="me-3 confirm-text" href="javascript:void(0);" data-id="furniture-manual">
            <img src="assets/img/icons/delete.svg" alt="img" />
-         </a>`
-      ];
-      
-      dataTable.row.add(furnitureRowData).draw();
-      
-      // Set up delete handlers
-      setupDeleteHandlers();
-    }
-  } else {
-    // User is not logged in, redirect to login page
-    window.location.href = "login.html";
-  }
-});
+         </a>`,
+            ];
 
-// Function to set up delete handlers
-function setupDeleteHandlers() {
-  // We need to use event delegation since the elements are created dynamically
-  $(document).off('click', '.confirm-text').on('click', '.confirm-text', function() {
-    const categoryId = $(this).data('id');
-    
-    swal({
-      title: "Are you sure?",
-      text: "You will not be able to recover this category!",
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!",
-      closeOnConfirm: false,
-      closeOnCancel: false
-    }, function(isConfirm) {
-      if (isConfirm) {
-        // Check if it's our manual furniture entry
-        if (categoryId === "furniture-manual") {
-          swal("Deleted!", "Your category has been deleted.", "success");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-          return;
+            dataTable.row.add(furnitureRowData).draw();
+
+            // Set up delete handlers
+            setupDeleteHandlers();
+          }
+        } else {
+          // User is not logged in, redirect to login page
+          window.location.href = "login.html";
         }
-        
-        // Delete the category from Firestore
-        deleteDoc(doc(db, "categories", categoryId))
-          .then(() => {
-            swal("Deleted!", "Your category has been deleted.", "success");
-            // Refresh the page after deletion
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
-          })
-          .catch((error) => {
-            swal("Error", "Failed to delete category: " + error.message, "error");
-          });
-      } else {
-        swal("Cancelled", "Your category is safe", "error");
-      }
-    });
-  });
-}
+      });
 
-// Setup filter toggle functionality
-$(document).ready(function() {
-  // Toggle filter inputs
-  $("#filter_search").on("click", function() {
-    $("#filter_inputs").toggle();
-  });
-  
-  // Select2 initialization if applicable
-  if($.fn.select2) {
-    $('.select').select2({
-      minimumResultsForSearch: -1,
-      width: '100%'
-    });
-  }
-});
+      // Function to set up delete handlers
+      function setupDeleteHandlers() {
+        // We need to use event delegation since the elements are created dynamically
+        $(document)
+          .off("click", ".confirm-text")
+          .on("click", ".confirm-text", function () {
+            const categoryId = $(this).data("id");
+
+            swal(
+              {
+                title: "Are you sure?",
+                text: "You will not be able to recover this category!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+              },
+              function (isConfirm) {
+                if (isConfirm) {
+                  // Check if it's our manual furniture entry
+                  if (categoryId === "furniture-manual") {
+                    swal(
+                      "Deleted!",
+                      "Your category has been deleted.",
+                      "success"
+                    );
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 1000);
+                    return;
+                  }
+
+                  // Delete the category from Firestore
+                  deleteDoc(doc(db, "categories", categoryId))
+                    .then(() => {
+                      swal(
+                        "Deleted!",
+                        "Your category has been deleted.",
+                        "success"
+                      );
+                      // Refresh the page after deletion
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 1000);
+                    })
+                    .catch((error) => {
+                      swal(
+                        "Error",
+                        "Failed to delete category: " + error.message,
+                        "error"
+                      );
+                    });
+                } else {
+                  swal("Cancelled", "Your category is safe", "error");
+                }
+              }
+            );
+          });
+      }
+
+      // Setup filter toggle functionality
+      $(document).ready(function () {
+        // Toggle filter inputs
+        $("#filter_search").on("click", function () {
+          $("#filter_inputs").toggle();
+        });
+
+        // Select2 initialization if applicable
+        if ($.fn.select2) {
+          $(".select").select2({
+            minimumResultsForSearch: -1,
+            width: "100%",
+          });
+        }
+      });
     </script>
   </body>
 </html>
