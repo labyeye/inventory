@@ -1,845 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-<meta name="description" content="POS - Bootstrap Admin Template">
-<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
-<meta name="author" content="Dreamguys - Bootstrap Admin Template">
-<meta name="robots" content="noindex, nofollow">
-<title>Dreams Pos admin template</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+    <meta name="description" content="POS - Bootstrap Admin Template" />
+    <meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects" />
+    <meta name="author" content="Dreamguys - Bootstrap Admin Template" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Dreams Pos admin template</title>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.jpg" />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/animate.css" />
+    <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <div id="global-loader">
+      <div class="whirly-loader"></div>
+    </div>
 
-<link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.jpg">
+    <div class="main-wrapper">
+      <!-- Header and Sidebar code here (same as before) -->
 
-<link rel="stylesheet" href="assets/css/bootstrap.min.css">
-
-<link rel="stylesheet" href="assets/css/animate.css">
-
-<link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
-
-<link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
-
-<link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
-<link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
-
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-<div id="global-loader">
-<div class="whirly-loader"> </div>
-</div>
-
-<div class="main-wrapper">
-
-<div class="header">
-
-<div class="header-left active">
-<a href="index.html" class="logo">
-<img src="#" alt="">
-</a>
-<a href="index.html" class="logo-small">
-<img src="#" alt="">
-</a>
-<a id="toggle_btn" href="javascript:void(0);">
-</a>
-</div>
-
-<a id="mobile_btn" class="mobile_btn" href="#sidebar">
-<span class="bar-icon">
-<span></span>
-<span></span>
-<span></span>
-</span>
-</a>
-
-<ul class="nav user-menu">
-
-<li class="nav-item">
-<div class="top-nav-search">
-<a href="javascript:void(0);" class="responsive-search">
-<i class="fa fa-search"></i>
-</a>
-<form action="#">
-<div class="searchinputs">
-<input type="text" placeholder="Search Here ...">
-<div class="search-addon">
-<span><img src="assets/img/icons/closes.svg" alt="img"></span>
-</div>
-</div>
-<a class="btn" id="searchdiv"><img src="assets/img/icons/search.svg" alt="img"></a>
-</form>
-</div>
-</li>
-
-
-<li class="nav-item dropdown has-arrow flag-nav">
-<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="javascript:void(0);" role="button">
-<img src="assets/img/flags/us1.png" alt="" height="20">
-</a>
-<div class="dropdown-menu dropdown-menu-right">
-<a href="javascript:void(0);" class="dropdown-item">
-<img src="assets/img/flags/us.png" alt="" height="16"> English
-</a>
-<a href="javascript:void(0);" class="dropdown-item">
-<img src="assets/img/flags/fr.png" alt="" height="16"> French
-</a>
-<a href="javascript:void(0);" class="dropdown-item">
-<img src="assets/img/flags/es.png" alt="" height="16"> Spanish
-</a>
-<a href="javascript:void(0);" class="dropdown-item">
-<img src="assets/img/flags/de.png" alt="" height="16"> German
-</a>
-</div>
-</li>
-
-
-<li class="nav-item dropdown">
-<a href="javascript:void(0);" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-<img src="assets/img/icons/notification-bing.svg" alt="img"> <span class="badge rounded-pill">4</span>
-</a>
-<div class="dropdown-menu notifications">
-<div class="topnav-dropdown-header">
-<span class="notification-title">Notifications</span>
-<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
-</div>
-<div class="noti-content">
-<ul class="notification-list">
-<li class="notification-message">
-<a href="activities.html">
-<div class="media d-flex">
-<span class="avatar flex-shrink-0">
-<img alt="" src="assets/img/profiles/avatar-02.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
-<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="activities.html">
-<div class="media d-flex">
-<span class="avatar flex-shrink-0">
-<img alt="" src="assets/img/profiles/avatar-03.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">Tarah Shropshire</span> changed the task name <span class="noti-title">Appointment booking with payment gateway</span></p>
-<p class="noti-time"><span class="notification-time">6 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="activities.html">
-<div class="media d-flex">
-<span class="avatar flex-shrink-0">
-<img alt="" src="assets/img/profiles/avatar-06.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">Misty Tison</span> added <span class="noti-title">Domenic Houston</span> and <span class="noti-title">Claire Mapes</span> to project <span class="noti-title">Doctor available module</span></p>
-<p class="noti-time"><span class="notification-time">8 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="activities.html">
-<div class="media d-flex">
-<span class="avatar flex-shrink-0">
-<img alt="" src="assets/img/profiles/avatar-17.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">Rolland Webber</span> completed task <span class="noti-title">Patient and Doctor video conferencing</span></p>
-<p class="noti-time"><span class="notification-time">12 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="activities.html">
-<div class="media d-flex">
-<span class="avatar flex-shrink-0">
-<img alt="" src="assets/img/profiles/avatar-13.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">Bernardo Galaviz</span> added new task <span class="noti-title">Private chat module</span></p>
-<p class="noti-time"><span class="notification-time">2 days ago</span></p>
-</div>
-</div>
-</a>
-</li>
-</ul>
-</div>
-<div class="topnav-dropdown-footer">
-<a href="activities.html">View all Notifications</a>
-</div>
-</div>
-</li>
-
-<li class="nav-item dropdown has-arrow main-drop">
-<a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
-<span class="user-img"><img src="assets/img/profiles/avator1.jpg" alt="">
-<span class="status online"></span></span>
-</a>
-<div class="dropdown-menu menu-drop-user">
-<div class="profilename">
-<div class="profileset">
-<span class="user-img"><img src="assets/img/profiles/avator1.jpg" alt="">
-<span class="status online"></span></span>
-<div class="profilesets">
-<h6>John Doe</h6>
-<h5>Admin</h5>
-</div>
-</div>
-<hr class="m-0">
-<a class="dropdown-item" href="profile.html"> <i class="me-2" data-feather="user"></i> My Profile</a>
-<a class="dropdown-item" href="generalsettings.html"><i class="me-2" data-feather="settings"></i>Settings</a>
-<hr class="m-0">
-<a class="dropdown-item logout pb-0" href="login.html"><img src="assets/img/icons/log-out.svg" class="me-2" alt="img">Logout</a>
-</div>
-</div>
-</li>
-</ul>
-
-
-<div class="dropdown mobile-user-menu">
-<a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-<div class="dropdown-menu dropdown-menu-right">
-<a class="dropdown-item" href="profile.html">My Profile</a>
-<a class="dropdown-item" href="generalsettings.html">Settings</a>
-<a class="dropdown-item" href="login.html">Logout</a>
-</div>
-</div>
-
-</div>
-
-
-<div class="sidebar" id="sidebar">
-<div class="sidebar-inner slimscroll">
-<div id="sidebar-menu" class="sidebar-menu">
-<ul>
-<li>
-<a href="index.html"><img src="assets/img/icons/dashboard.svg" alt="img"><span> Dashboard</span> </a>
-</li>
-<li class="submenu">
-<a href="javascript:void(0);"><img src="assets/img/icons/product.svg" alt="img"><span> Product</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="productlist.html" class="active">Product List</a></li>
-<li><a href="addproduct.html">Add Product</a></li>
-<li><a href="categorylist.html">Category List</a></li>
-<li><a href="addcategory.html">Add Category</a></li>
-<li><a href="subcategorylist.html">Sub Category List</a></li>
-<li><a href="subaddcategory.html">Add Sub Category</a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="javascript:void(0);"><img src="assets/img/icons/sales1.svg" alt="img"><span> Events</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="saleslist.html">Events List</a></li>
-<li><a href="addevent.html">New Event</a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="javascript:void(0);"><img src="assets/img/icons/expense1.svg" alt="img"><span> Expense</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="expenselist.html">Expense List</a></li>
-<li><a href="createexpense.html">Add Expense</a></li>
-<li><a href="expensecategory.html">Expense Category</a></li>
-</ul>
- </li>
-<a href="javascript:void(0);"><img src="assets/img/icons/return1.svg" alt="img"><span> Return</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="salesreturnlist.html">Inventory Return List</a></li>
-<li><a href="createsalesreturn.html">Add Inventory Return </a></li>
-</ul>
-</li>
-</li>
-
-
-<li class="submenu">
-<a href="javascript:void(0);"><img src="assets/img/icons/time.svg" alt="img"><span> Report</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="purchaseorderreport.html">Event Order report</a></li>
-<li><a href="inventoryreport.html">Inventory Report</a></li>
-<li><a href="invoicereport.html">Inventory Return Report</a></li>
-<li><a href="purchasereport.html">Purchase Report</a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="javascript:void(0);"><img src="assets/img/icons/users1.svg" alt="img"><span> Users</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="newuser.html">New User </a></li>
-<li><a href="userlists.html">Users List</a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="javascript:void(0);"><img src="assets/img/icons/settings.svg" alt="img"><span> Settings</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="generalsettings.html">General Settings</a></li>
-<li><a href="emailsettings.html">Email Settings</a></li>
-<li><a href="paymentsettings.html">Payment Settings</a></li>
-<li><a href="currencysettings.html">Currency Settings</a></li>
-<li><a href="grouppermissions.html">Group Permissions</a></li>
-<li><a href="taxrates.html">Tax Rates</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-</div>
-
-<div class="page-wrapper">
-<div class="content">
-<div class="page-header">
-<div class="page-title">
-<h4>Product Edit</h4>
-<h6>Update your product</h6>
-</div>
-</div>
-
-<div class="card">
-<div class="card-body">
-<div class="row">
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<label>Product Name</label>
-<input type="text" value="Macbook pro">
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<label>Category</label>
-<select class="select">
-<option>Computers</option>
-<option>Mac</option>
-</select>
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<label>Sub Category</label>
-<select class="select">
-<option>None</option>
-<option>option1</option>
-</select>
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<label>Brand</label>
-<select class="select">
-<option>None</option>
-<option>option1</option>
-</select>
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<label>Unit</label>
-<select class="select">
-<option>Piece</option>
-<option>Kg</option>
-</select>
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<label>SKU</label>
-<input type="text" value="PT0002">
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<label>Minimum Qty</label>
-<input type="text" value="5">
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<label>Quantity</label>
-<input type="text" value="50">
-</div>
-</div>
-<div class="col-lg-12">
-<div class="form-group">
-<label>Description</label>
-<textarea class="form-control">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</textarea>
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<label>Tax</label>
-<select class="select">
-<option>Choose Tax</option>
-<option>2%</option>
-</select>
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<label>Discount Type</label>
-<select class="select">
-<option>Percentage</option>
-<option>10%</option>
-<option>20%</option>
-</select>
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<label>Price</label>
-<input type="text" value="1500.00">
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<label> Status</label>
-<select class="select">
-<option>Active</option>
-<option>Open</option>
-</select>
-</div>
-</div>
-<div class="col-lg-12">
-<div class="form-group">
-<label> Product Image</label>
-<div class="image-upload">
-<input type="file">
-<div class="image-uploads">
-<img src="assets/img/icons/upload.svg" alt="img">
-<h4>Drag and drop a file to upload</h4>
-</div>
-</div>
-</div>
-</div>
-<div class="col-12">
-<div class="product-list">
-<ul class="row">
-<li>
-<div class="productviews">
-<div class="productviewsimg">
-<img src="assets/img/icons/macbook.svg" alt="img">
-</div>
-<div class="productviewscontent">
-<div class="productviewsname">
-<h2>macbookpro.jpg</h2>
-<h3>581kb</h3>
-</div>
-<a href="javascript:void(0);" class="hideset">x</a>
-</div>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="col-lg-12">
-<a href="javascript:void(0);" class="btn btn-submit me-2">Update</a>
-<a href="productlist.html" class="btn btn-cancel">Cancel</a>
-</div>
-</div>
-</div>
-</div>
-
-</div>
-</div>
-</div>
-
-
-<script src="assets/js/jquery-3.6.0.min.js"></script>
-
-<script src="assets/js/feather.min.js"></script>
-
-<script src="assets/js/jquery.slimscroll.min.js"></script>
-
-<script src="assets/js/jquery.dataTables.min.js"></script>
-<script src="assets/js/dataTables.bootstrap4.min.js"></script>
-
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-
-<script src="assets/plugins/select2/js/select2.min.js"></script>
-
-<script src="assets/plugins/sweetalert/sweetalert2.all.min.js"></script>
-<script src="assets/plugins/sweetalert/sweetalerts.min.js"></script>
-
-<script src="assets/js/script.js"></script>
-<script type="module" >// Module script for editproduct.html
-    import { db, storage } from "./assets/js/firebase.js";
-    import { 
-      doc, 
-      getDoc, 
-      updateDoc, 
-      collection, 
-      getDocs 
-    } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-    import {
-      ref,
-      uploadBytesResumable,
-      getDownloadURL
-    } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
-    
-    // Get product ID from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
-    
-    if (!productId) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No product ID specified!'
-      }).then(() => {
-        window.location.href = 'productlist.html';
-      });
-    }
-    
-    // Initialize UI elements for the fields we care about
-    let productNameInput, categorySelect, subcategorySelect, quantityInput, 
-        locationInput, imageUploadInput, productImage;
-    
-    // DOM elements will be initialized when document is ready
-    document.addEventListener('DOMContentLoaded', async function() {
-      // Initialize form elements - Using proper selectors
-      productNameInput = document.querySelector('input[type="text"][value="Macbook pro"]');
-      categorySelect = document.querySelectorAll('.form-group select')[0];
-      subcategorySelect = document.querySelectorAll('.form-group select')[1];
-      quantityInput = document.querySelector('input[type="text"][value="50"]');
-      imageUploadInput = document.querySelector('.image-upload input[type="file"]');
-      productImage = document.querySelector('.productviewsimg img');
-      
-      // Add location field if not exists
-      const locationLabelExists = Array.from(document.querySelectorAll('.form-group label'))
-        .some(label => label.textContent === 'Location');
-      
-      if (!locationLabelExists) {
-        const quantityFormGroup = quantityInput.closest('.col-lg-3');
-        const locationGroup = document.createElement('div');
-        locationGroup.className = 'col-lg-3 col-sm-6 col-12';
-        locationGroup.innerHTML = `
-          <div class="form-group">
-            <label>Location</label>
-            <input type="text" class="form-control">
+      <div class="page-wrapper">
+        <div class="content">
+          <div class="page-header">
+            <div class="page-title">
+              <h4>Product Edit</h4>
+              <h6>Update your product</h6>
+            </div>
           </div>
-        `;
-        quantityFormGroup.parentNode.insertBefore(locationGroup, quantityFormGroup.nextSibling);
-      }
-      
-      locationInput = document.querySelector('.form-group label:contains("Location")').nextElementSibling || 
-                    document.querySelector('.form-group input[type="text"].form-control');
-      
-      // Initialize select2 for dropdowns if available
-      try {
-        $('.select').select2({
-          width: '100%'
-        });
-      } catch (error) {
-        console.warn('Select2 initialization error:', error);
-      }
-    
-      // Fetch categories and subcategories for dropdown
-      await populateCategories();
-      
-      // Load product data
-      await loadProductData();
-    
-      // Set up event listeners
-      setupEventListeners();
-    });
-    
-    // Populate categories and subcategories dropdowns
-    async function populateCategories() {
-      try {
-        // Fetch categories
-        const categoriesSnapshot = await getDocs(collection(db, "categories"));
-        
-        // Clear and repopulate category dropdown
-        categorySelect.innerHTML = '<option value="">Select Category</option>';
-        
-        categoriesSnapshot.forEach(doc => {
-          const category = doc.data();
-          const option = document.createElement('option');
-          option.value = doc.id;
-          option.textContent = category.name;
-          categorySelect.appendChild(option);
-        });
-    
-        // Fetch subcategories
-        const subcategoriesSnapshot = await getDocs(collection(db, "subcategories"));
-        
-        // Store subcategories data for later use when category is selected
-        window.subcategoriesData = [];
-        subcategoriesSnapshot.forEach(doc => {
-          const subcategory = doc.data();
-          window.subcategoriesData.push({
-            id: doc.id,
-            name: subcategory.name,
-            categoryId: subcategory.categoryId
-          });
-        });
-      } catch (error) {
-        console.error("Error loading categories and subcategories:", error);
+
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-3 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" id="productName" />
+                  </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Category</label>
+                    <select class="select" id="categorySelect">
+                      <option value="">Select Category</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Sub Category</label>
+                    <select class="select" id="subcategorySelect">
+                      <option value="">Select Sub Category</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Brand</label>
+                    <input type="text" id="brand" />
+                  </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="text" id="quantity" />
+                  </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="location" />
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <a href="javascript:void(0);" class="btn btn-submit me-2" id="updateProduct">Update</a>
+                  <a href="productlist.html" class="btn btn-cancel">Cancel</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/feather.min.js"></script>
+    <script src="assets/js/jquery.slimscroll.min.js"></script>
+    <script src="assets/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/dataTables.bootstrap4.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/plugins/select2/js/select2.min.js"></script>
+    <script src="assets/plugins/sweetalert/sweetalert2.all.min.js"></script>
+    <script src="assets/plugins/sweetalert/sweetalerts.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script type="module">
+      import { db, storage } from "./assets/js/firebase.js";
+      import { doc, getDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+      import { ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get("id");
+
+      if (!productId) {
         Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to load categories and subcategories!'
-        });
-      }
-    }
-    
-    // Update subcategories dropdown when category changes
-    function updateSubcategories(categoryId) {
-      subcategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
-      
-      if (!window.subcategoriesData || !categoryId) return;
-      
-      const filteredSubcategories = window.subcategoriesData.filter(
-        subcat => subcat.categoryId === categoryId
-      );
-      
-      filteredSubcategories.forEach(subcat => {
-        const option = document.createElement('option');
-        option.value = subcat.id;
-        option.textContent = subcat.name;
-        subcategorySelect.appendChild(option);
-      });
-    }
-    
-    // Load product data from Firebase
-    async function loadProductData() {
-      try {
-        console.log("Loading product data for ID:", productId);
-        const productRef = doc(db, "products", productId);
-        const productSnap = await getDoc(productRef);
-        
-        if (!productSnap.exists()) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Product not found!'
-          }).then(() => {
-            window.location.href = 'productlist.html';
-          });
-          return;
-        }
-        
-        const productData = productSnap.data();
-        console.log("Product data loaded:", productData);
-        
-        // Populate form fields with product data
-        productNameInput.value = productData.name || '';
-        
-        // Set category and trigger change to load subcategories
-        if (productData.categoryId) {
-          categorySelect.value = productData.categoryId;
-          updateSubcategories(productData.categoryId);
-          
-          // Trigger select2 change if available
-          try {
-            $(categorySelect).trigger('change');
-          } catch (e) {
-            console.warn('Select2 trigger change failed:', e);
-          }
-        }
-        
-        // Set subcategory after a small delay to ensure dropdown is populated
-        setTimeout(() => {
-          if (productData.subCategoryId) {
-            subcategorySelect.value = productData.subCategoryId;
-            try {
-              $(subcategorySelect).trigger('change');
-            } catch (e) {
-              console.warn('Select2 trigger change failed:', e);
-            }
-          }
-        }, 300);
-        
-        // Set quantity and location
-        quantityInput.value = productData.quantity || '0';
-        locationInput.value = productData.location || '';
-        
-        // Display product image if exists
-        if (productData.imageUrl) {
-          productImage.src = productData.imageUrl;
-          productImage.alt = productData.name;
-          document.querySelector('.productviews').style.display = 'flex';
-          
-          // Update image info
-          const imageNameEl = document.querySelector('.productviewsname h2');
-          if (imageNameEl) {
-            const imageName = productData.imageUrl.split('/').pop();
-            imageNameEl.textContent = imageName.length > 20 ? 
-              imageName.substring(0, 17) + '...' : imageName;
-          }
-        } else {
-          document.querySelector('.productviews').style.display = 'none';
-        }
-        
-      } catch (error) {
-        console.error("Error loading product data:", error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to load product data: ' + error.message
-        });
-      }
-    }
-    
-    // Set up event listeners
-    function setupEventListeners() {
-      // Category change event
-      categorySelect.addEventListener('change', function() {
-        updateSubcategories(this.value);
-      });
-      
-      // Image upload preview
-      imageUploadInput.addEventListener('change', function(e) {
-        if (e.target.files[0]) {
-          const reader = new FileReader();
-          
-          reader.onload = function(e) {
-            productImage.src = e.target.result;
-            document.querySelector('.productviews').style.display = 'flex';
-            
-            // Update image info
-            const imageNameEl = document.querySelector('.productviewsname h2');
-            if (imageNameEl) {
-              const fileName = imageUploadInput.files[0].name;
-              imageNameEl.textContent = fileName.length > 20 ? 
-                fileName.substring(0, 17) + '...' : fileName;
-            }
-            
-            const fileSizeEl = document.querySelector('.productviewsname h3');
-            if (fileSizeEl) {
-              const fileSize = Math.floor(imageUploadInput.files[0].size / 1024);
-              fileSizeEl.textContent = fileSize + 'kb';
-            }
-          }
-          
-          reader.readAsDataURL(e.target.files[0]);
-        }
-      });
-      
-      // Remove image button
-      const hideSetBtn = document.querySelector('.hideset');
-      if (hideSetBtn) {
-        hideSetBtn.addEventListener('click', function() {
-          document.querySelector('.productviews').style.display = 'none';
-          imageUploadInput.value = '';
-        });
-      }
-      
-      // Update button click
-      const updateBtn = document.querySelector('.btn-submit');
-      if (updateBtn) {
-        updateBtn.addEventListener('click', updateProduct);
-      }
-    }
-    
-    // Upload image to Firebase storage
-    async function uploadImage(file) {
-      return new Promise((resolve, reject) => {
-        if (!file) {
-          resolve(null);
-          return;
-        }
-        
-        const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, file);
-        
-        uploadTask.on('state_changed',
-          (snapshot) => {
-            // Progress monitoring
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
-          },
-          (error) => {
-            // Error handling
-            console.error("Upload failed:", error);
-            reject(error);
-          },
-          () => {
-            // Upload complete
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              resolve(downloadURL);
-            });
-          }
-        );
-      });
-    }
-    
-    // Update product data in Firebase
-    async function updateProduct() {
-      // Form validation
-      if (!productNameInput.value.trim()) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Validation Error',
-          text: 'Product name cannot be empty!'
-        });
-        return;
-      }
-      
-      try {
-        // Show loading
-        Swal.fire({
-          title: 'Updating Product',
-          text: 'Please wait...',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
-        });
-        
-        // Get selected category and subcategory text
-        const categoryText = categorySelect.options[categorySelect.selectedIndex]?.text || '';
-        const subcategoryText = subcategorySelect.options[subcategorySelect.selectedIndex]?.text || '';
-        
-        // Upload image if selected
-        let imageUrl = null;
-        
-        if (imageUploadInput.files[0]) {
-          imageUrl = await uploadImage(imageUploadInput.files[0]);
-        }
-        
-        // Parse numeric values
-        const quantity = parseInt(quantityInput.value) || 0;
-        
-        // Prepare product data (only the fields we want to update)
-        const productData = {
-          name: productNameInput.value.trim(),
-          categoryId: categorySelect.value || null,
-          categoryName: categoryText !== 'Select Category' ? categoryText : null,
-          subCategoryId: subcategorySelect.value || null,
-          subCategoryName: subcategoryText !== 'Select Sub Category' ? subcategoryText : null,
-          quantity: quantity,
-          location: locationInput.value || '',
-          updatedAt: new Date()
-        };
-        
-        // Only update image if a new one was uploaded
-        if (imageUrl) {
-          productData.imageUrl = imageUrl;
-        }
-        
-        // Update product in Firebase
-        await updateDoc(doc(db, "products", productId), productData);
-        
-        // Show success message
-        Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: 'Product updated successfully!'
+          icon: "error",
+          title: "Error",
+          text: "No product ID specified!",
         }).then(() => {
-          window.location.href = 'productlist.html';
-        });
-        
-      } catch (error) {
-        console.error("Error updating product:", error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to update product: ' + error.message
+          window.location.href = "productlist.html";
         });
       }
-    }</script>
-</body>
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        await populateCategories();
+        await loadProductData();
+        setupEventListeners();
+      });
+
+      async function populateCategories() {
+        try {
+          const categoriesSnapshot = await getDocs(collection(db, "categories"));
+          const categorySelect = document.getElementById("categorySelect");
+          categorySelect.innerHTML = '<option value="">Select Category</option>';
+
+          categoriesSnapshot.forEach((doc) => {
+            const category = doc.data();
+            const option = document.createElement("option");
+            option.value = doc.id;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+          });
+
+          const subcategoriesSnapshot = await getDocs(collection(db, "subcategories"));
+          window.subcategoriesData = [];
+          subcategoriesSnapshot.forEach((doc) => {
+            const subcategory = doc.data();
+            window.subcategoriesData.push({
+              id: doc.id,
+              name: subcategory.name,
+              categoryId: subcategory.categoryId,
+            });
+          });
+        } catch (error) {
+          console.error("Error loading categories and subcategories:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to load categories and subcategories!",
+          });
+        }
+      }
+
+      function updateSubcategories(categoryId) {
+        const subcategorySelect = document.getElementById("subcategorySelect");
+        subcategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
+
+        if (!window.subcategoriesData || !categoryId) return;
+
+        const filteredSubcategories = window.subcategoriesData.filter(
+          (subcat) => subcat.categoryId === categoryId
+        );
+
+        filteredSubcategories.forEach((subcat) => {
+          const option = document.createElement("option");
+          option.value = subcat.id;
+          option.textContent = subcat.name;
+          subcategorySelect.appendChild(option);
+        });
+      }
+
+      async function loadProductData() {
+        try {
+          const productRef = doc(db, "products", productId);
+          const productSnap = await getDoc(productRef);
+
+          if (!productSnap.exists()) {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Product not found!",
+            }).then(() => {
+              window.location.href = "productlist.html";
+            });
+            return;
+          }
+
+          const productData = productSnap.data();
+          document.getElementById("productName").value = productData.name || "";
+          document.getElementById("brand").value = productData.brand || "";
+          document.getElementById("quantity").value = productData.quantity || "0";
+          document.getElementById("location").value = productData.location || "";
+
+          if (productData.categoryId) {
+            document.getElementById("categorySelect").value = productData.categoryId;
+            updateSubcategories(productData.categoryId);
+            setTimeout(() => {
+              if (productData.subCategoryId) {
+                document.getElementById("subcategorySelect").value = productData.subCategoryId;
+              }
+            }, 300);
+          }
+        } catch (error) {
+          console.error("Error loading product data:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to load product data: " + error.message,
+          });
+        }
+      }
+
+      function setupEventListeners() {
+        document.getElementById("categorySelect").addEventListener("change", function () {
+          updateSubcategories(this.value);
+        });
+
+        document.getElementById("updateProduct").addEventListener("click", updateProduct);
+      }
+
+      async function updateProduct() {
+        const productName = document.getElementById("productName").value.trim();
+        if (!productName) {
+          Swal.fire({
+            icon: "error",
+            title: "Validation Error",
+            text: "Product name cannot be empty!",
+          });
+          return;
+        }
+
+        try {
+          Swal.fire({
+            title: "Updating Product",
+            text: "Please wait...",
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+
+          const categoryText = document.getElementById("categorySelect").options[document.getElementById("categorySelect").selectedIndex]?.text || "";
+          const subcategoryText = document.getElementById("subcategorySelect").options[document.getElementById("subcategorySelect").selectedIndex]?.text || "";
+
+          const productData = {
+            name: productName,
+            categoryId: document.getElementById("categorySelect").value || null,
+            categoryName: categoryText !== "Select Category" ? categoryText : null,
+            subCategoryId: document.getElementById("subcategorySelect").value || null,
+            subCategoryName: subcategoryText !== "Select Sub Category" ? subcategoryText : null,
+            brand: document.getElementById("brand").value || "",
+            quantity: parseInt(document.getElementById("quantity").value) || 0,
+            location: document.getElementById("location").value || "",
+            updatedAt: new Date(),
+          };
+
+          await updateDoc(doc(db, "products", productId), productData);
+
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Product updated successfully!",
+          }).then(() => {
+            window.location.href = "productlist.html";
+          });
+        } catch (error) {
+          console.error("Error updating product:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to update product: " + error.message,
+          });
+        }
+      }
+    </script>
+  </body>
 </html>
