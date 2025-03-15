@@ -560,184 +560,132 @@
 
       // Function to load products from Firebase
       async function loadProducts() {
-        try {
-          const productsList = document.getElementById("product-list");
-          productsList.innerHTML = ""; // Clear existing content
+    try {
+        const productsList = document.getElementById("product-list");
+        productsList.innerHTML = ""; // Clear existing content
 
-          // Get all products from Firebase
-          const productsCollection = collection(db, "products");
-          const querySnapshot = await getDocs(productsCollection);
+        // Get current user ID (assuming you have a way to get the current user)
+        const currentUser = auth.currentUser; // Assuming you have Firebase auth initialized
+        const currentUserId = currentUser ? currentUser.uid : null;
 
-          // Get select filter elements
-          const productFilter = document.getElementById("filter-product");
-          const categoryFilter = document.getElementById("filter-category");
-          const subcategoryFilter =
-            document.getElementById("filter-subcategory");
-          const brandFilter = document.getElementById("filter-brand");
+        // Get all products from Firebase
+        const productsCollection = collection(db, "products");
+        const querySnapshot = await getDocs(productsCollection);
 
-          // Clear existing options except the first one
-          productFilter.innerHTML = "<option>Choose Product</option>";
-          categoryFilter.innerHTML = "<option>Choose Category</option>";
-          subcategoryFilter.innerHTML = "<option>Choose Sub Category</option>";
-          brandFilter.innerHTML = "<option>Brand</option>";
-
-          // Set to keep track of unique values for filters
-          const uniqueCategories = new Set();
-          const uniqueSubcategories = new Set();
-          const uniqueBrands = new Set();
-
-          // Check if we have products
-          if (querySnapshot.empty) {
+        // Check if we have products
+        if (querySnapshot.empty) {
             console.log("No products found in database");
             const row = document.createElement("tr");
             row.innerHTML = `
-        <td colspan="7" class="text-center">No products found</td>
-      `;
+                <td colspan="10" class="text-center">No products found</td>
+            `;
             productsList.appendChild(row);
-          } else {
+        } else {
             // Process each product
             querySnapshot.forEach((productDoc) => {
-              const productData = productDoc.data();
-              console.log(productData);
-              // Add to filters
-              const productOption = document.createElement("option");
-              productOption.value = productDoc.id;
-              productOption.textContent = productData.name;
-              productFilter.appendChild(productOption);
+                const productData = productDoc.data();
+                const isCreator = productData.creatorId === currentUserId;
 
-              if (
-                productData.categoryName &&
-                !uniqueCategories.has(productData.categoryName)
-              ) {
-                uniqueCategories.add(productData.categoryName);
-                const categoryOption = document.createElement("option");
-                categoryOption.value = productData.categoryId;
-                categoryOption.textContent = productData.categoryName;
-                categoryFilter.appendChild(categoryOption);
-              }
+                // Create table row for each product
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>
+                        <label class="checkboxs">
+                            <input type="checkbox" data-id="${productDoc.id}" ${isCreator ? '' : 'disabled'} />
+                            <span class="checkmarks"></span>
+                        </label>
+                    </td>
+                    <td class="productimgname">
+                        <a href="javascript:void(0);" class="product-img">
+                            <img src="${productData.imageUrl || "assets/img/product/product1.jpg"}" alt="product" />
+                        </a>
+                        <a href="javascript:void(0);">${productData.name}</a>
+                    </td>
+                    <td>${productData.categoryName || ""}</td>
+                    <td>${productData.subCategoryName || ""}</td>
+                    <td>${productData.brand || ""}</td>
+                    <td>${productData.quantity || ""}</td>
+                    <td>${productData.location || ""}</td>
+                    <td>${productData.creatorName || "Admin"}</td>
+                    <td>${formatTimestamp(productData.createdAt)}</td>
+                    <td>
+                        <a class="me-3" href="product-details.html?id=${productDoc.id}">
+                            <img src="assets/img/icons/eye.svg" alt="img" />
+                        </a>
+                        ${isCreator ? `
+                            <a class="me-3" href="editproduct.html?id=${productDoc.id}">
+                                <img src="assets/img/icons/edit.svg" alt="img" />
+                            </a>
+                            <a class="confirm-text" href="javascript:void(0);" data-id="${productDoc.id}">
+                                <img src="assets/img/icons/delete.svg" alt="img" />
+                            </a>
+                        ` : ''}
+                    </td>
+                `;
 
-              if (
-                productData.subCategoryName &&
-                !uniqueSubcategories.has(productData.subCategoryName)
-              ) {
-                uniqueSubcategories.add(productData.subCategoryName);
-                const subcategoryOption = document.createElement("option");
-                subcategoryOption.value = productData.subCategoryId;
-                subcategoryOption.textContent = productData.subCategoryName;
-                subcategoryFilter.appendChild(subcategoryOption);
-              }
-
-              if (productData.brand && !uniqueBrands.has(productData.brand)) {
-                uniqueBrands.add(productData.brand);
-                const brandOption = document.createElement("option");
-                brandOption.value = productData.brand;
-                brandOption.textContent = productData.brand;
-                brandFilter.appendChild(brandOption);
-              }
-
-              // Create table row for each product
-              const row = document.createElement("tr");
-              row.innerHTML = `
-          <td>
-            <label class="checkboxs">
-              <input type="checkbox" data-id="${productDoc.id}" />
-              <span class="checkmarks"></span>
-            </label>
-          </td>
-          <td class="productimgname">
-            <a href="javascript:void(0);" class="product-img">
-              <img src="${
-                productData.imageUrl || "assets/img/product/product1.jpg"
-              }" alt="product" />
-            </a>
-            <a href="javascript:void(0);">${productData.name}</a>
-          </td>
-          <td>${productData.categoryName || ""}</td>
-          <td>
-            ${productData.subCategoryName || ""}
-          <td>${productData.brand || ""}</td>
-          <td>${productData.quantity || ""}</td>
-          <td>${productData.location || ""}</td>
-          <td>${productData.creatorName || "Admin"}</td>
-          <td>${formatTimestamp(productData.createdAt)}</td>
-          <td>
-            <a class="me-3" href="product-details.html?id=${productDoc.id}">
-              <img src="assets/img/icons/eye.svg" alt="img" />
-            </a>
-            <a class="me-3" href="editproduct.html?id=${productDoc.id}">
-              <img src="assets/img/icons/edit.svg" alt="img" />
-            </a>
-            <a class="confirm-text" href="javascript:void(0);" data-id="${
-              productDoc.id
-            }">
-              <img src="assets/img/icons/delete.svg" alt="img" />
-            </a>
-          </td>
-        `;
-
-              productsList.appendChild(row);
+                productsList.appendChild(row);
             });
-          }
+        }
 
-          // Initialize or refresh the datatable
-          if (dataTable) {
+        // Initialize or refresh the datatable
+        if (dataTable) {
             dataTable.destroy();
-          }
+        }
 
-          dataTable = $(".datanew").DataTable({
+        dataTable = $(".datanew").DataTable({
             language: {
-              emptyTable: "No products found",
+                emptyTable: "No products found",
             },
             paging: true,
             ordering: true,
             info: true,
             searching: true,
-          });
+        });
 
-          // Add event listeners for delete buttons
-          document.querySelectorAll(".confirm-text").forEach((button) => {
+        // Add event listeners for delete buttons
+        document.querySelectorAll(".confirm-text").forEach((button) => {
             button.addEventListener("click", function () {
-              const productId = this.getAttribute("data-id");
+                const productId = this.getAttribute("data-id");
 
-              Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!",
-              }).then(async (result) => {
-                if (result.value) {
-                  try {
-                    // Delete the product from Firebase
-                    await deleteDoc(doc(db, "products", productId));
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!",
+                }).then(async (result) => {
+                    if (result.value) {
+                        try {
+                            // Delete the product from Firebase
+                            await deleteDoc(doc(db, "products", productId));
 
-                    Swal.fire(
-                      "Deleted!",
-                      "Your product has been deleted.",
-                      "success"
-                    ).then(() => {
-                      // Reload the product list
-                      loadProducts();
-                    });
-                  } catch (error) {
-                    console.error("Error deleting product:", error);
-                    Swal.fire("Error!", "Failed to delete product.", "error");
-                  }
-                }
-              });
+                            Swal.fire(
+                                "Deleted!",
+                                "Your product has been deleted.",
+                                "success"
+                            ).then(() => {
+                                // Reload the product list
+                                loadProducts();
+                            });
+                        } catch (error) {
+                            console.error("Error deleting product:", error);
+                            Swal.fire("Error!", "Failed to delete product.", "error");
+                        }
+                    }
+                });
             });
-          });
-        } catch (error) {
-          console.error("Error loading products:", error);
-          Swal.fire({
+        });
+    } catch (error) {
+        console.error("Error loading products:", error);
+        Swal.fire({
             icon: "error",
             title: "Error",
             text: "Failed to load products from database!",
-          });
-        }
-      }
+        });
+    }
+}
 
       // Apply filter function
       document

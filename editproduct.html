@@ -2,18 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=0"
+    />
     <meta name="description" content="POS - Bootstrap Admin Template" />
-    <meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects" />
+    <meta
+      name="keywords"
+      content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects"
+    />
     <meta name="author" content="Dreamguys - Bootstrap Admin Template" />
     <meta name="robots" content="noindex, nofollow" />
     <title>Dreams Pos admin template</title>
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.jpg" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="assets/img/favicon.jpg"
+    />
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/animate.css" />
     <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css" />
     <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css" />
-    <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css" />
+    <link
+      rel="stylesheet"
+      href="assets/plugins/fontawesome/css/fontawesome.min.css"
+    />
     <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
@@ -78,7 +91,12 @@
                   </div>
                 </div>
                 <div class="col-lg-12">
-                  <a href="javascript:void(0);" class="btn btn-submit me-2" id="updateProduct">Update</a>
+                  <a
+                    href="javascript:void(0);"
+                    class="btn btn-submit me-2"
+                    id="updateProduct"
+                    >Update</a
+                  >
                   <a href="productlist.html" class="btn btn-cancel">Cancel</a>
                 </div>
               </div>
@@ -100,8 +118,18 @@
     <script src="assets/js/script.js"></script>
     <script type="module">
       import { db, storage } from "./assets/js/firebase.js";
-      import { doc, getDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-      import { ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
+      import {
+        doc,
+        getDoc,
+        updateDoc,
+        collection,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+      import {
+        ref,
+        uploadBytesResumable,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
 
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get("id");
@@ -123,120 +151,126 @@
       });
 
       async function populateCategories() {
-  try {
-    // Fetch categories
-    const categoriesSnapshot = await getDocs(collection(db, "categories"));
-    const categorySelect = document.getElementById("categorySelect");
-    categorySelect.innerHTML = '<option value="">Select Category</option>';
+        try {
+          // Fetch categories
+          const categoriesSnapshot = await getDocs(
+            collection(db, "categories")
+          );
+          const categorySelect = document.getElementById("categorySelect");
+          categorySelect.innerHTML =
+            '<option value="">Select Category</option>';
 
-    categoriesSnapshot.forEach((doc) => {
-      const category = doc.data();
-      const option = document.createElement("option");
-      option.value = doc.id;
-      option.textContent = category.name;
-      categorySelect.appendChild(option);
-    });
+          categoriesSnapshot.forEach((doc) => {
+            const category = doc.data();
+            const option = document.createElement("option");
+            option.value = doc.id;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+          });
 
-    // Fetch subcategories
-    const subcategoriesSnapshot = await getDocs(collection(db, "subcategories"));
-    window.subcategoriesData = [];
-    subcategoriesSnapshot.forEach((doc) => {
-      const subcategory = doc.data();
-      window.subcategoriesData.push({
-        id: doc.id,
-        name: subcategory.name,
-        categoryId: subcategory.categoryId, // Ensure this matches your Firestore structure
-      });
-    });
+          // Fetch subcategories
+          const subcategoriesSnapshot = await getDocs(
+            collection(db, "subcategories")
+          );
+          window.subcategoriesData = [];
+          subcategoriesSnapshot.forEach((doc) => {
+            const subcategory = doc.data();
+            window.subcategoriesData.push({
+              id: doc.id,
+              name: subcategory.name,
+              categoryId: subcategory.categoryId, // Ensure this matches your Firestore structure
+            });
+          });
 
-    // Update subcategories when category changes
-    categorySelect.addEventListener("change", function () {
-      updateSubcategories(this.value);
-    });
-  } catch (error) {
-    console.error("Error loading categories and subcategories:", error);
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: "Failed to load categories and subcategories!",
-    });
-  }
-}
-
-// Function to update subcategories dropdown
-function updateSubcategories(categoryId) {
-  const subcategorySelect = document.getElementById("subcategorySelect");
-  subcategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
-
-  if (!window.subcategoriesData || !categoryId) return;
-
-  // Filter subcategories based on the selected category
-  const filteredSubcategories = window.subcategoriesData.filter(
-    (subcat) => subcat.categoryId === categoryId
-  );
-
-  // Populate subcategories dropdown
-  filteredSubcategories.forEach((subcat) => {
-    const option = document.createElement("option");
-    option.value = subcat.id;
-    option.textContent = subcat.name;
-    subcategorySelect.appendChild(option);
-  });
-}
-
-async function loadProductData() {
-  try {
-    const productRef = doc(db, "products", productId);
-    const productSnap = await getDoc(productRef);
-
-    if (!productSnap.exists()) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Product not found!",
-      }).then(() => {
-        window.location.href = "productlist.html";
-      });
-      return;
-    }
-
-    const productData = productSnap.data();
-    console.log("Product Data:", productData);
-
-    // Populate form fields
-    document.getElementById("productName").value = productData.name || "";
-    document.getElementById("brand").value = productData.brand || "";
-    document.getElementById("quantity").value = productData.quantity || "0";
-    document.getElementById("location").value = productData.location || "";
-
-    // Set category and subcategory
-    if (productData.categoryId) {
-      document.getElementById("categorySelect").value = productData.categoryId;
-      updateSubcategories(productData.categoryId);
-
-      // Wait for subcategories to load, then set the subcategory
-      setTimeout(() => {
-        if (productData.subCategoryId) {
-          document.getElementById("subcategorySelect").value = productData.subCategoryId;
+          // Update subcategories when category changes
+          categorySelect.addEventListener("change", function () {
+            updateSubcategories(this.value);
+          });
+        } catch (error) {
+          console.error("Error loading categories and subcategories:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to load categories and subcategories!",
+          });
         }
-      }, 300); // Small delay to ensure subcategories are populated
-    }
-  } catch (error) {
-    console.error("Error loading product data:", error);
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: "Failed to load product data: " + error.message,
+      }
+
+      // Function to update subcategories dropdown
+      function updateSubcategories(categoryId) {
+    const subcategorySelect = document.getElementById("subcategorySelect");
+    subcategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
+
+    if (!window.subcategoriesData || !categoryId) return;
+
+    // Filter subcategories based on the selected category
+    const filteredSubcategories = window.subcategoriesData.filter(
+        (subcat) => subcat.categoryId === categoryId
+    );
+
+    // Populate subcategories dropdown
+    filteredSubcategories.forEach((subcat) => {
+        const option = document.createElement("option");
+        option.value = subcat.id;
+        option.textContent = subcat.name;
+        subcategorySelect.appendChild(option);
     });
-  }
+}
+
+      async function loadProductData() {
+    try {
+        const productRef = doc(db, "products", productId);
+        const productSnap = await getDoc(productRef);
+
+        if (!productSnap.exists()) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Product not found!",
+            }).then(() => {
+                window.location.href = "productlist.html";
+            });
+            return;
+        }
+
+        const productData = productSnap.data();
+        console.log("Product Data:", productData);
+
+        // Populate form fields
+        document.getElementById("productName").value = productData.name || "";
+        document.getElementById("brand").value = productData.brand || "";
+        document.getElementById("quantity").value = productData.quantity || "0";
+        document.getElementById("location").value = productData.location || "";
+
+        // Set category and subcategory
+        if (productData.categoryId) {
+            document.getElementById("categorySelect").value = productData.categoryId;
+            // Wait for subcategories to load, then set the subcategory
+            await updateSubcategories(productData.categoryId);
+            if (productData.subCategoryId) {
+                document.getElementById("subcategorySelect").value = productData.subCategoryId;
+            }
+        }
+    } catch (error) {
+        console.error("Error loading product data:", error);
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to load product data: " + error.message,
+        });
+    }
 }
 
       function setupEventListeners() {
-        document.getElementById("categorySelect").addEventListener("change", function () {
-          updateSubcategories(this.value);
-        });
+        document
+          .getElementById("categorySelect")
+          .addEventListener("change", function () {
+            updateSubcategories(this.value);
+          });
 
-        document.getElementById("updateProduct").addEventListener("click", updateProduct);
+        document
+          .getElementById("updateProduct")
+          .addEventListener("click", updateProduct);
       }
 
       async function updateProduct() {
@@ -260,15 +294,26 @@ async function loadProductData() {
             },
           });
 
-          const categoryText = document.getElementById("categorySelect").options[document.getElementById("categorySelect").selectedIndex]?.text || "";
-          const subcategoryText = document.getElementById("subcategorySelect").options[document.getElementById("subcategorySelect").selectedIndex]?.text || "";
+          const categoryText =
+            document.getElementById("categorySelect").options[
+              document.getElementById("categorySelect").selectedIndex
+            ]?.text || "";
+          const subcategoryText =
+            document.getElementById("subcategorySelect").options[
+              document.getElementById("subcategorySelect").selectedIndex
+            ]?.text || "";
 
           const productData = {
             name: productName,
             categoryId: document.getElementById("categorySelect").value || null,
-            categoryName: categoryText !== "Select Category" ? categoryText : null,
-            subCategoryId: document.getElementById("subcategorySelect").value || null,
-            subCategoryName: subcategoryText !== "Select Sub Category" ? subcategoryText : null,
+            categoryName:
+              categoryText !== "Select Category" ? categoryText : null,
+            subCategoryId:
+              document.getElementById("subcategorySelect").value || null,
+            subCategoryName:
+              subcategoryText !== "Select Sub Category"
+                ? subcategoryText
+                : null,
             brand: document.getElementById("brand").value || "",
             quantity: parseInt(document.getElementById("quantity").value) || 0,
             location: document.getElementById("location").value || "",
