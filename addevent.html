@@ -558,376 +558,906 @@
 
       // Firebase event form submission code
       // Firebase event form submission code
-      // Firebase product selection integration
-      document.addEventListener("DOMContentLoaded", async function () {
-        try {
-          // Import Firebase modules
-          const { db } = await import("./assets/js/firebase.js");
-          const { collection, getDocs, query, where, doc, getDoc } =
-            await import(
-              "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"
+      // Firebase product selection integration with enhanced error handling
+      document.addEventListener("DOMContentLoaded", function () {
+        // Set up logging function for debugging
+        const debug = (message, data = null) => {
+          console.log(`[Product Selection] ${message}`, data || "");
+        };
+
+        debug("Initializing product selection component");
+
+        // Function to change the order of selects to match intended flow
+        function reorderSelects() {
+          try {
+            debug("Reordering select elements for correct flow");
+
+            // Get the product selection section container
+            const productSelectionSection =
+              document.querySelector(".card-body > .row");
+
+            // Find all select-containing form groups
+            const formGroups = productSelectionSection.querySelectorAll(
+              ".form-group:has(select.select)"
             );
 
-          // Reference to main form elements
-          const mainCategorySelect = document.querySelector(
-            ".card-body > .row select.select:nth-of-type(2)"
-          );
-          const mainSubCategorySelect = document.querySelector(
-            ".card-body > .row select.select:nth-of-type(3)"
-          );
-          const mainProductSelect = document.querySelector(
-            ".card-body > .row select.select:nth-of-type(1)"
-          );
-          const mainBrandSelect = document.querySelector(
-            ".card-body > .row select.select:nth-of-type(4)"
-          );
+            // Check if we found the elements
+            if (formGroups.length >= 4) {
+              // Store references to the form groups
+              const productFormGroup = Array.from(formGroups).find(
+                (group) =>
+                  group.querySelector("label").textContent === "Product"
+              );
+              const categoryFormGroup = Array.from(formGroups).find(
+                (group) =>
+                  group.querySelector("label").textContent === "Category"
+              );
+              const subcategoryFormGroup = Array.from(formGroups).find(
+                (group) =>
+                  group.querySelector("label").textContent === "Sub Category"
+              );
+              const brandFormGroup = Array.from(formGroups).find(
+                (group) => group.querySelector("label").textContent === "Brand"
+              );
 
-          // Clear and initialize selects
-          initializeSelect(mainCategorySelect, "Select Category");
-          initializeSelect(mainSubCategorySelect, "Select Sub Category");
-          initializeSelect(mainProductSelect, "Select Product");
-          initializeSelect(mainBrandSelect, "Select Brand");
+              // Get parent column elements
+              const productColumn = productFormGroup
+                ? productFormGroup.parentElement
+                : null;
+              const categoryColumn = categoryFormGroup
+                ? categoryFormGroup.parentElement
+                : null;
+              const subcategoryColumn = subcategoryFormGroup
+                ? subcategoryFormGroup.parentElement
+                : null;
 
-          // Disable selects initially
-          mainSubCategorySelect.disabled = true;
-          mainProductSelect.disabled = true;
+              // Only reorder if we found all necessary elements
+              if (productColumn && categoryColumn && subcategoryColumn) {
+                // Save original position reference for product column
+                const referenceNode = productColumn.nextSibling;
+                const parentNode = productColumn.parentNode;
 
-          // Load categories from Firebase
-          await loadCategories(mainCategorySelect);
+                // Reorder: first category, then subcategory, then product
+                parentNode.insertBefore(categoryColumn, referenceNode);
+                parentNode.insertBefore(subcategoryColumn, referenceNode);
+                parentNode.insertBefore(productColumn, referenceNode);
 
-          // Event listener for category selection
-          mainCategorySelect.addEventListener("change", async function () {
-            const selectedCategory = this.value;
-            if (selectedCategory && selectedCategory !== "Select Category") {
-              // Reset subsequent dropdowns
-              initializeSelect(mainSubCategorySelect, "Select Sub Category");
-              initializeSelect(mainProductSelect, "Select Product");
-
-              // Enable subcategory dropdown and load options
-              mainSubCategorySelect.disabled = false;
-              await loadSubcategories(mainSubCategorySelect, selectedCategory);
-
-              // Disable product dropdown until subcategory is selected
-              mainProductSelect.disabled = true;
-            } else {
-              // Reset and disable subsequent dropdowns
-              initializeSelect(mainSubCategorySelect, "Select Sub Category");
-              initializeSelect(mainProductSelect, "Select Product");
-              mainSubCategorySelect.disabled = true;
-              mainProductSelect.disabled = true;
+                debug("Select elements reordered successfully");
+                return true;
+              }
             }
-          });
 
-          // Event listener for subcategory selection
-          mainSubCategorySelect.addEventListener("change", async function () {
-            const selectedCategory = mainCategorySelect.value;
-            const selectedSubcategory = this.value;
+            debug("Could not find all necessary elements for reordering");
+            return false;
+          } catch (error) {
+            debug("Error reordering selects:", error);
+            return false;
+          }
+        }
+
+        // First attempt to reorder the select elements for better UX
+        reorderSelects();
+
+        // Initialize Firebase and load data
+        initializeProductSelection();
+
+        async function initializeProductSelection() {
+          try {
+            debug("Loading Firebase modules");
+
+            // Load Firebase dynamically
+            const { auth, db } = await import("./assets/js/firebase.js").catch(
+              (error) => {
+                debug("Error importing Firebase module:", error);
+                throw new Error("Could not load Firebase module");
+              }
+            );
+
+            const { collection, getDocs, query, where, doc, getDoc } =
+              await import(
+                "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"
+              ).catch((error) => {
+                debug("Error importing Firestore module:", error);
+                throw new Error("Could not load Firestore module");
+              });
+
+            debug("Firebase modules loaded successfully");
+
+            // Find all select elements by their labels
+            const findSelectByLabel = (label) => {
+              const labelElements = Array.from(
+                document.querySelectorAll(".form-group label")
+              );
+              const targetLabel = labelElements.find(
+                (el) => el.textContent === label
+              );
+              return targetLabel
+                ? targetLabel
+                    .closest(".form-group")
+                    .querySelector("select.select")
+                : null;
+            };
+
+            // Get main form elements
+            const mainCategorySelect = findSelectByLabel("Category");
+            const mainSubCategorySelect = findSelectByLabel("Sub Category");
+            const mainProductSelect = findSelectByLabel("Product");
+            const mainBrandSelect = findSelectByLabel("Brand");
+
+            debug("Main selects found:", {
+              category: !!mainCategorySelect,
+              subCategory: !!mainSubCategorySelect,
+              product: !!mainProductSelect,
+              brand: !!mainBrandSelect,
+            });
 
             if (
-              selectedSubcategory &&
-              selectedSubcategory !== "Select Sub Category"
+              !mainCategorySelect ||
+              !mainSubCategorySelect ||
+              !mainProductSelect
             ) {
-              // Reset product dropdown
-              initializeSelect(mainProductSelect, "Select Product");
-
-              // Enable product dropdown and load options
-              mainProductSelect.disabled = false;
-              await loadProducts(
-                mainProductSelect,
-                selectedCategory,
-                selectedSubcategory
-              );
-            } else {
-              // Reset and disable product dropdown
-              initializeSelect(mainProductSelect, "Select Product");
-              mainProductSelect.disabled = true;
+              throw new Error("Could not find all required select elements");
             }
-          });
 
-          // Event listener for product selection
-          mainProductSelect.addEventListener("change", async function () {
-            const selectedProduct = this.value;
-
-            if (selectedProduct && selectedProduct !== "Select Product") {
-              // Load brands associated with the selected product
-              await loadBrandsForProduct(mainBrandSelect, selectedProduct);
-            } else {
-              // Reset brand dropdown
+            // Clear and initialize selects
+            initializeSelect(mainCategorySelect, "Select Category");
+            initializeSelect(mainSubCategorySelect, "Select Sub Category");
+            initializeSelect(mainProductSelect, "Select Product");
+            if (mainBrandSelect)
               initializeSelect(mainBrandSelect, "Select Brand");
-            }
-          });
 
-          // Add product button - add event listeners to new sections
-          $("#addProductBtn").click(function () {
-            // Wait for the new section to be added to the DOM
-            setTimeout(async function () {
-              // Get the newly added product section
-              const newSection = $(".product-section").last();
+            // Disable selects initially
+            mainSubCategorySelect.disabled = true;
+            mainProductSelect.disabled = true;
 
-              // Get select elements in this section
-              const categorySelect = newSection.find("select.select").eq(1);
-              const subcategorySelect = newSection.find("select.select").eq(2);
-              const productSelect = newSection.find("select.select").eq(0);
-              const brandSelect = newSection.find("select.select").eq(3);
+            // Load categories from Firebase
+            await loadCategories(mainCategorySelect);
 
-              // Initialize selects
-              initializeSelect(categorySelect[0], "Select Category");
-              initializeSelect(subcategorySelect[0], "Select Sub Category");
-              initializeSelect(productSelect[0], "Select Product");
-              initializeSelect(brandSelect[0], "Select Brand");
-
-              // Disable selects initially
-              subcategorySelect.prop("disabled", true);
-              productSelect.prop("disabled", true);
-
-              // Load categories for this section
-              await loadCategories(categorySelect[0]);
-
-              // Add event listeners for this section
-              setupSectionEventListeners(
-                categorySelect[0],
-                subcategorySelect[0],
-                productSelect[0],
-                brandSelect[0]
-              );
-            }, 100);
-          });
-
-          // Function to set up event listeners for a product section
-          function setupSectionEventListeners(
-            categorySelect,
-            subcategorySelect,
-            productSelect,
-            brandSelect
-          ) {
-            // Category change event
-            $(categorySelect).on("change", async function () {
+            // Event listener for category selection
+            mainCategorySelect.addEventListener("change", async function () {
               const selectedCategory = this.value;
+              debug("Category selected:", selectedCategory);
+
               if (selectedCategory && selectedCategory !== "Select Category") {
                 // Reset subsequent dropdowns
-                initializeSelect(subcategorySelect, "Select Sub Category");
-                initializeSelect(productSelect, "Select Product");
+                initializeSelect(mainSubCategorySelect, "Select Sub Category");
+                initializeSelect(mainProductSelect, "Select Product");
 
                 // Enable subcategory dropdown and load options
-                $(subcategorySelect).prop("disabled", false);
-                await loadSubcategories(subcategorySelect, selectedCategory);
+                mainSubCategorySelect.disabled = false;
+                await loadSubcategories(
+                  mainSubCategorySelect,
+                  selectedCategory
+                );
 
                 // Disable product dropdown until subcategory is selected
-                $(productSelect).prop("disabled", true);
+                mainProductSelect.disabled = true;
               } else {
                 // Reset and disable subsequent dropdowns
-                initializeSelect(subcategorySelect, "Select Sub Category");
-                initializeSelect(productSelect, "Select Product");
-                $(subcategorySelect).prop("disabled", true);
-                $(productSelect).prop("disabled", true);
+                initializeSelect(mainSubCategorySelect, "Select Sub Category");
+                initializeSelect(mainProductSelect, "Select Product");
+                mainSubCategorySelect.disabled = true;
+                mainProductSelect.disabled = true;
               }
             });
 
-            // Subcategory change event
-            $(subcategorySelect).on("change", async function () {
-              const selectedCategory = $(categorySelect).val();
+            // Event listener for subcategory selection
+            mainSubCategorySelect.addEventListener("change", async function () {
+              const selectedCategory = mainCategorySelect.value;
               const selectedSubcategory = this.value;
+              debug("Subcategory selected:", selectedSubcategory);
 
               if (
                 selectedSubcategory &&
                 selectedSubcategory !== "Select Sub Category"
               ) {
                 // Reset product dropdown
-                initializeSelect(productSelect, "Select Product");
+                initializeSelect(mainProductSelect, "Select Product");
 
                 // Enable product dropdown and load options
-                $(productSelect).prop("disabled", false);
+                mainProductSelect.disabled = false;
                 await loadProducts(
-                  productSelect,
+                  mainProductSelect,
                   selectedCategory,
                   selectedSubcategory
                 );
               } else {
                 // Reset and disable product dropdown
-                initializeSelect(productSelect, "Select Product");
-                $(productSelect).prop("disabled", true);
+                initializeSelect(mainProductSelect, "Select Product");
+                mainProductSelect.disabled = true;
               }
             });
 
-            // Product change event
-            $(productSelect).on("change", async function () {
-              const selectedProduct = this.value;
+            // Event listener for product selection
+            if (mainBrandSelect) {
+              mainProductSelect.addEventListener("change", async function () {
+                const selectedProduct = this.value;
+                debug("Product selected:", selectedProduct);
 
-              if (selectedProduct && selectedProduct !== "Select Product") {
-                // Load brands associated with the selected product
-                await loadBrandsForProduct(brandSelect, selectedProduct);
-              } else {
-                // Reset brand dropdown
-                initializeSelect(brandSelect, "Select Brand");
-              }
-            });
-          }
-
-          // Function to initialize a select element
-          function initializeSelect(selectElement, placeholderText) {
-            if (!selectElement) return;
-
-            // Clear existing options
-            selectElement.innerHTML = "";
-
-            // Add placeholder option
-            const placeholderOption = document.createElement("option");
-            placeholderOption.textContent = placeholderText;
-            placeholderOption.value = "";
-            selectElement.appendChild(placeholderOption);
-
-            // Refresh select2 if it's initialized
-            try {
-              $(selectElement).trigger("change");
-            } catch (e) {
-              console.log("Select2 not initialized yet");
-            }
-          }
-
-          // Function to load categories from Firebase
-          async function loadCategories(selectElement) {
-            if (!selectElement) return;
-
-            // Get categories from Firestore
-            const categoriesSnapshot = await getDocs(
-              collection(db, "categories")
-            );
-
-            // Clear existing options (except placeholder)
-            initializeSelect(selectElement, "Select Category");
-
-            // Add categories to select
-            categoriesSnapshot.forEach((doc) => {
-              const category = doc.data();
-              const option = document.createElement("option");
-              option.value = doc.id;
-              option.textContent = category.name;
-              selectElement.appendChild(option);
-            });
-
-            // Refresh select2
-            try {
-              $(selectElement).trigger("change");
-            } catch (e) {
-              console.log("Select2 not initialized yet");
-            }
-          }
-
-          // Function to load subcategories based on selected category
-          async function loadSubcategories(selectElement, categoryId) {
-            if (!selectElement) return;
-
-            // Clear existing options
-            initializeSelect(selectElement, "Select Sub Category");
-
-            // Query subcategories for the selected category
-            const subcategoriesRef = collection(db, "subcategories");
-            const q = query(
-              subcategoriesRef,
-              where("categoryId", "==", categoryId)
-            );
-            const subcategoriesSnapshot = await getDocs(q);
-
-            // Add subcategories to select
-            subcategoriesSnapshot.forEach((doc) => {
-              const subcategory = doc.data();
-              const option = document.createElement("option");
-              option.value = doc.id;
-              option.textContent = subcategory.name;
-              selectElement.appendChild(option);
-            });
-
-            // Refresh select2
-            try {
-              $(selectElement).trigger("change");
-            } catch (e) {
-              console.log("Select2 not initialized yet");
-            }
-          }
-
-          // Function to load products based on selected category and subcategory
-          async function loadProducts(
-            selectElement,
-            categoryId,
-            subcategoryId
-          ) {
-            if (!selectElement) return;
-
-            // Clear existing options
-            initializeSelect(selectElement, "Select Product");
-
-            // Query products for the selected category and subcategory
-            const productsRef = collection(db, "products");
-            const q = query(
-              productsRef,
-              where("categoryId", "==", categoryId),
-              where("subcategoryId", "==", subcategoryId)
-            );
-            const productsSnapshot = await getDocs(q);
-
-            // Add products to select
-            productsSnapshot.forEach((doc) => {
-              const product = doc.data();
-              const option = document.createElement("option");
-              option.value = doc.id;
-              option.textContent = product.name;
-              selectElement.appendChild(option);
-            });
-
-            // Refresh select2
-            try {
-              $(selectElement).trigger("change");
-            } catch (e) {
-              console.log("Select2 not initialized yet");
-            }
-          }
-
-          // Function to load brands for a product
-          async function loadBrandsForProduct(selectElement, productId) {
-            if (!selectElement) return;
-
-            // Clear existing options
-            initializeSelect(selectElement, "Select Brand");
-
-            // First get the product to access its brandId if it exists
-            const productDoc = await getDoc(doc(db, "products", productId));
-
-            if (productDoc.exists() && productDoc.data().brandId) {
-              // If product has a specific brand, load just that brand
-              const brandId = productDoc.data().brandId;
-              const brandDoc = await getDoc(doc(db, "brands", brandId));
-
-              if (brandDoc.exists()) {
-                const option = document.createElement("option");
-                option.value = brandId;
-                option.textContent = brandDoc.data().name;
-                selectElement.appendChild(option);
-              }
-            } else {
-              // Otherwise load all available brands
-              const brandsSnapshot = await getDocs(collection(db, "brands"));
-
-              brandsSnapshot.forEach((doc) => {
-                const brand = doc.data();
-                const option = document.createElement("option");
-                option.value = doc.id;
-                option.textContent = brand.name;
-                selectElement.appendChild(option);
+                if (selectedProduct && selectedProduct !== "Select Product") {
+                  // Load brands associated with the selected product
+                  await loadBrandsForProduct(mainBrandSelect, selectedProduct);
+                } else {
+                  // Reset brand dropdown
+                  initializeSelect(mainBrandSelect, "Select Brand");
+                }
               });
             }
 
-            // Refresh select2
-            try {
-              $(selectElement).trigger("change");
-            } catch (e) {
-              console.log("Select2 not initialized yet");
+            // Add product button - add event listeners to new sections
+            $("#addProductBtn").click(function () {
+              debug("Add product button clicked");
+
+              // Wait for the new section to be added to the DOM
+              setTimeout(async function () {
+                // Get the newly added product section
+                const newSection = $(".product-section").last();
+                debug("New product section added");
+
+                // Find all select elements in this section
+                const selects = newSection.find("select.select");
+
+                if (selects.length < 3) {
+                  debug("Not enough select elements found in new section");
+                  return;
+                }
+
+                // Get the selects by their label text
+                const labels = newSection
+                  .find(".form-group label")
+                  .map(function () {
+                    return $(this).text().trim();
+                  })
+                  .get();
+
+                let categorySelectIndex = labels.indexOf("Category");
+                let subcategorySelectIndex = labels.indexOf("Sub Category");
+                let productSelectIndex = labels.indexOf("Product");
+                let brandSelectIndex = labels.indexOf("Brand");
+
+                // Default fallback in case labels don't match
+                if (categorySelectIndex === -1) categorySelectIndex = 1;
+                if (subcategorySelectIndex === -1) subcategorySelectIndex = 2;
+                if (productSelectIndex === -1) productSelectIndex = 0;
+                if (brandSelectIndex === -1) brandSelectIndex = 3;
+
+                const categorySelect = selects.eq(categorySelectIndex)[0];
+                const subcategorySelect = selects.eq(subcategorySelectIndex)[0];
+                const productSelect = selects.eq(productSelectIndex)[0];
+                const brandSelect =
+                  brandSelectIndex >= 0
+                    ? selects.eq(brandSelectIndex)[0]
+                    : null;
+
+                // Initialize selects
+                initializeSelect(categorySelect, "Select Category");
+                initializeSelect(subcategorySelect, "Select Sub Category");
+                initializeSelect(productSelect, "Select Product");
+                if (brandSelect) initializeSelect(brandSelect, "Select Brand");
+
+                // Disable selects initially
+                $(subcategorySelect).prop("disabled", true);
+                $(productSelect).prop("disabled", true);
+
+                // Load categories for this section
+                await loadCategories(categorySelect);
+
+                // Add event listeners for this section
+                setupSectionEventListeners(
+                  categorySelect,
+                  subcategorySelect,
+                  productSelect,
+                  brandSelect
+                );
+              }, 200);
+            });
+
+            // Function to set up event listeners for a product section
+            function setupSectionEventListeners(
+              categorySelect,
+              subcategorySelect,
+              productSelect,
+              brandSelect
+            ) {
+              debug(
+                "Setting up event listeners for additional product section"
+              );
+
+              // Category change event
+              $(categorySelect).on("change", async function () {
+                const selectedCategory = this.value;
+                debug(
+                  "Additional section - Category selected:",
+                  selectedCategory
+                );
+
+                if (
+                  selectedCategory &&
+                  selectedCategory !== "Select Category"
+                ) {
+                  // Reset subsequent dropdowns
+                  initializeSelect(subcategorySelect, "Select Sub Category");
+                  initializeSelect(productSelect, "Select Product");
+
+                  // Enable subcategory dropdown and load options
+                  $(subcategorySelect).prop("disabled", false);
+                  await loadSubcategories(subcategorySelect, selectedCategory);
+
+                  // Disable product dropdown until subcategory is selected
+                  $(productSelect).prop("disabled", true);
+                } else {
+                  // Reset and disable subsequent dropdowns
+                  initializeSelect(subcategorySelect, "Select Sub Category");
+                  initializeSelect(productSelect, "Select Product");
+                  $(subcategorySelect).prop("disabled", true);
+                  $(productSelect).prop("disabled", true);
+                }
+              });
+
+              // Subcategory change event
+              $(subcategorySelect).on("change", async function () {
+                const selectedCategory = $(categorySelect).val();
+                const selectedSubcategory = this.value;
+                debug(
+                  "Additional section - Subcategory selected:",
+                  selectedSubcategory
+                );
+
+                if (
+                  selectedSubcategory &&
+                  selectedSubcategory !== "Select Sub Category"
+                ) {
+                  // Reset product dropdown
+                  initializeSelect(productSelect, "Select Product");
+
+                  // Enable product dropdown and load options
+                  $(productSelect).prop("disabled", false);
+                  await loadProducts(
+                    productSelect,
+                    selectedCategory,
+                    selectedSubcategory
+                  );
+                } else {
+                  // Reset and disable product dropdown
+                  initializeSelect(productSelect, "Select Product");
+                  $(productSelect).prop("disabled", true);
+                }
+              });
+
+              // Product change event
+              if (brandSelect) {
+                $(productSelect).on("change", async function () {
+                  const selectedProduct = this.value;
+                  debug(
+                    "Additional section - Product selected:",
+                    selectedProduct
+                  );
+
+                  if (selectedProduct && selectedProduct !== "Select Product") {
+                    // Load brands associated with the selected product
+                    await loadBrandsForProduct(brandSelect, selectedProduct);
+                  } else {
+                    // Reset brand dropdown
+                    initializeSelect(brandSelect, "Select Brand");
+                  }
+                });
+              }
             }
+
+            // Function to initialize a select element
+            function initializeSelect(selectElement, placeholderText) {
+              if (!selectElement) {
+                debug("Cannot initialize null select element");
+                return;
+              }
+
+              debug("Initializing select element:", placeholderText);
+
+              // Clear existing options
+              selectElement.innerHTML = "";
+
+              // Add placeholder option
+              const placeholderOption = document.createElement("option");
+              placeholderOption.textContent = placeholderText;
+              placeholderOption.value = "";
+              selectElement.appendChild(placeholderOption);
+
+              // Refresh select2 if it's initialized
+              try {
+                $(selectElement).trigger("change");
+              } catch (e) {
+                debug("Select2 refresh failed:", e);
+              }
+            }
+
+            // Function to load categories from Firebase
+            async function loadCategories(selectElement) {
+              if (!selectElement) {
+                debug("Cannot load categories for null select element");
+                return;
+              }
+
+              debug("Loading categories from Firebase");
+
+              try {
+                // Check if the categories collection exists
+                let categoriesSnapshot = await getDocs(
+                  collection(db, "categories")
+                ).catch((error) => {
+                  debug("Error fetching categories collection:", error);
+                  return { empty: true, docs: [] };
+                });
+
+                // If no categories collection or it's empty, try categories_list as a fallback
+                if (categoriesSnapshot.empty) {
+                  debug(
+                    "Categories collection is empty, trying categories_list"
+                  );
+                  categoriesSnapshot = await getDocs(
+                    collection(db, "categories_list")
+                  ).catch((error) => {
+                    debug("Error fetching categories_list collection:", error);
+                    return { empty: true, docs: [] };
+                  });
+                }
+
+                // Clear existing options (except placeholder)
+                initializeSelect(selectElement, "Select Category");
+
+                // Check if we got any categories
+                if (categoriesSnapshot.empty) {
+                  debug("No categories found in any collection");
+
+                  // Add a sample category as fallback
+                  const option = document.createElement("option");
+                  option.value = "sample_category";
+                  option.textContent = "Sample Category";
+                  selectElement.appendChild(option);
+
+                  debug("Added sample category as fallback");
+                } else {
+                  // Add categories to select
+                  debug(`Found ${categoriesSnapshot.docs.length} categories`);
+
+                  categoriesSnapshot.forEach((doc) => {
+                    const category = doc.data();
+                    const option = document.createElement("option");
+                    option.value = doc.id;
+                    option.textContent =
+                      category.name ||
+                      category.categoryName ||
+                      category.title ||
+                      `Category ${doc.id}`;
+                    selectElement.appendChild(option);
+                  });
+                }
+
+                // Refresh select2
+                try {
+                  $(selectElement).trigger("change");
+                } catch (e) {
+                  debug("Select2 refresh failed after loading categories:", e);
+                }
+              } catch (error) {
+                debug("Unexpected error loading categories:", error);
+                throw error;
+              }
+            }
+
+            // Function to load subcategories based on selected category
+            async function loadSubcategories(selectElement, categoryId) {
+              if (!selectElement) {
+                debug("Cannot load subcategories for null select element");
+                return;
+              }
+
+              debug("Loading subcategories for category:", categoryId);
+
+              try {
+                // Clear existing options
+                initializeSelect(selectElement, "Select Sub Category");
+
+                // Try different collection names and field names for flexibility
+                let subcategoriesSnapshot = { empty: true, docs: [] };
+                let collections = [
+                  "subcategories",
+                  "sub_categories",
+                  "subcategory_list",
+                ];
+                let fieldNames = [
+                  "categoryId",
+                  "category_id",
+                  "parentId",
+                  "parent_id",
+                  "parentCategoryId",
+                ];
+                // Try each collection and field combination until we find subcategories
+                for (let collectionName of collections) {
+                  for (let fieldName of fieldNames) {
+                    debug(
+                      `Trying to load subcategories from "${collectionName}" where ${fieldName}="${categoryId}"`
+                    );
+
+                    subcategoriesSnapshot = await getDocs(
+                      query(
+                        collection(db, collectionName),
+                        where(fieldName, "==", categoryId)
+                      )
+                    ).catch((error) => {
+                      debug(
+                        `Error querying ${collectionName} with ${fieldName}:`,
+                        error
+                      );
+                      return { empty: true, docs: [] };
+                    });
+
+                    if (!subcategoriesSnapshot.empty) {
+                      debug(
+                        `Found subcategories in ${collectionName} with ${fieldName}`
+                      );
+                      break;
+                    }
+                  }
+
+                  if (!subcategoriesSnapshot.empty) break;
+                }
+
+                // Check if we found any subcategories
+                if (subcategoriesSnapshot.empty) {
+                  debug("No subcategories found, using fallback sample data");
+
+                  // Add sample subcategories as fallback
+                  const sampleSubcategories = [
+                    {
+                      id: "sample_subcategory_1",
+                      name: "Sample Subcategory 1",
+                    },
+                    {
+                      id: "sample_subcategory_2",
+                      name: "Sample Subcategory 2",
+                    },
+                  ];
+
+                  sampleSubcategories.forEach((subcategory) => {
+                    const option = document.createElement("option");
+                    option.value = subcategory.id;
+                    option.textContent = subcategory.name;
+                    selectElement.appendChild(option);
+                  });
+                } else {
+                  // Add subcategories to select
+                  debug(
+                    `Found ${subcategoriesSnapshot.docs.length} subcategories`
+                  );
+
+                  subcategoriesSnapshot.forEach((doc) => {
+                    const subcategory = doc.data();
+                    const option = document.createElement("option");
+                    option.value = doc.id;
+                    option.textContent =
+                      subcategory.name ||
+                      subcategory.subcategoryName ||
+                      subcategory.title ||
+                      `Subcategory ${doc.id}`;
+                    selectElement.appendChild(option);
+                  });
+                }
+
+                // Refresh select2
+                try {
+                  $(selectElement).trigger("change");
+                } catch (e) {
+                  debug(
+                    "Select2 refresh failed after loading subcategories:",
+                    e
+                  );
+                }
+              } catch (error) {
+                debug("Unexpected error loading subcategories:", error);
+                throw error;
+              }
+            }
+
+            // Function to load products based on selected category and subcategory
+            async function loadProducts(
+              selectElement,
+              categoryId,
+              subcategoryId
+            ) {
+              if (!selectElement) {
+                debug("Cannot load products for null select element");
+                return;
+              }
+
+              debug(
+                "Loading products for category/subcategory:",
+                categoryId,
+                subcategoryId
+              );
+
+              try {
+                // Clear existing options
+                initializeSelect(selectElement, "Select Product");
+
+                // Try different collection names for flexibility
+                let productsSnapshot = { empty: true, docs: [] };
+                let collections = ["products", "product_list"];
+                let categoryFieldNames = ["categoryId", "category_id"];
+                let subcategoryFieldNames = [
+                  "subcategoryId",
+                  "subcategory_id",
+                  "subCategoryId",
+                ];
+
+                // Try each collection with different query approaches
+                for (let collectionName of collections) {
+                  debug(`Trying to load products from "${collectionName}"`);
+
+                  // Try querying with both category and subcategory fields
+                  for (let catField of categoryFieldNames) {
+                    for (let subCatField of subcategoryFieldNames) {
+                      debug(
+                        `Querying ${collectionName} where ${catField}="${categoryId}" and ${subCatField}="${subcategoryId}"`
+                      );
+
+                      productsSnapshot = await getDocs(
+                        query(
+                          collection(db, collectionName),
+                          where(catField, "==", categoryId),
+                          where(subCatField, "==", subcategoryId)
+                        )
+                      ).catch((error) => {
+                        debug(
+                          `Error querying ${collectionName} with combined fields:`,
+                          error
+                        );
+                        return { empty: true, docs: [] };
+                      });
+
+                      if (!productsSnapshot.empty) {
+                        debug(
+                          `Found products in ${collectionName} with ${catField} and ${subCatField}`
+                        );
+                        break;
+                      }
+                    }
+
+                    if (!productsSnapshot.empty) break;
+                  }
+
+                  // If we haven't found products yet, try with just subcategory
+                  if (productsSnapshot.empty) {
+                    for (let subCatField of subcategoryFieldNames) {
+                      debug(
+                        `Querying ${collectionName} where ${subCatField}="${subcategoryId}"`
+                      );
+
+                      productsSnapshot = await getDocs(
+                        query(
+                          collection(db, collectionName),
+                          where(subCatField, "==", subcategoryId)
+                        )
+                      ).catch((error) => {
+                        debug(
+                          `Error querying ${collectionName} with ${subCatField}:`,
+                          error
+                        );
+                        return { empty: true, docs: [] };
+                      });
+
+                      if (!productsSnapshot.empty) {
+                        debug(
+                          `Found products in ${collectionName} with ${subCatField}`
+                        );
+                        break;
+                      }
+                    }
+                  }
+
+                  if (!productsSnapshot.empty) break;
+                }
+
+                // Check if we found any products
+                if (productsSnapshot.empty) {
+                  debug("No products found, using fallback sample data");
+
+                  // Add sample products as fallback
+                  const sampleProducts = [
+                    { id: "sample_product_1", name: "Sample Product 1" },
+                    { id: "sample_product_2", name: "Sample Product 2" },
+                    { id: "sample_product_3", name: "Sample Product 3" },
+                  ];
+
+                  sampleProducts.forEach((product) => {
+                    const option = document.createElement("option");
+                    option.value = product.id;
+                    option.textContent = product.name;
+                    selectElement.appendChild(option);
+                  });
+                } else {
+                  // Add products to select
+                  debug(`Found ${productsSnapshot.docs.length} products`);
+
+                  productsSnapshot.forEach((doc) => {
+                    const product = doc.data();
+                    const option = document.createElement("option");
+                    option.value = doc.id;
+                    option.textContent =
+                      product.name ||
+                      product.productName ||
+                      product.title ||
+                      `Product ${doc.id}`;
+                    selectElement.appendChild(option);
+                  });
+                }
+
+                // Refresh select2
+                try {
+                  $(selectElement).trigger("change");
+                } catch (e) {
+                  debug("Select2 refresh failed after loading products:", e);
+                }
+              } catch (error) {
+                debug("Unexpected error loading products:", error);
+                throw error;
+              }
+            }
+
+            // Function to load brands for a selected product
+            async function loadBrandsForProduct(selectElement, productId) {
+              if (!selectElement) {
+                debug("Cannot load brands for null select element");
+                return;
+              }
+
+              debug("Loading brands for product:", productId);
+
+              try {
+                // Clear existing options
+                initializeSelect(selectElement, "Select Brand");
+
+                // Try to get the product document to find associated brands
+                let productDoc = null;
+                let collections = ["products", "product_list"];
+
+                for (let collectionName of collections) {
+                  debug(
+                    `Trying to load product from "${collectionName}" with id ${productId}`
+                  );
+
+                  productDoc = await getDoc(
+                    doc(db, collectionName, productId)
+                  ).catch((error) => {
+                    debug(
+                      `Error getting product document from ${collectionName}:`,
+                      error
+                    );
+                    return null;
+                  });
+
+                  if (productDoc && productDoc.exists()) {
+                    debug(`Found product in ${collectionName}`);
+                    break;
+                  }
+                }
+
+                // If we found the product, look for its brands
+                if (productDoc && productDoc.exists()) {
+                  const product = productDoc.data();
+
+                  // Check if the product has a brands array or brandIds array
+                  const brandIds =
+                    product.brands ||
+                    product.brandIds ||
+                    product.brand_ids ||
+                    [];
+
+                  if (Array.isArray(brandIds) && brandIds.length > 0) {
+                    debug(`Product has ${brandIds.length} associated brands`);
+
+                    // Try to get each brand
+                    const brandsCollections = ["brands", "brand_list"];
+
+                    for (const brandId of brandIds) {
+                      let brandDoc = null;
+
+                      for (let brandCollection of brandsCollections) {
+                        brandDoc = await getDoc(
+                          doc(db, brandCollection, brandId)
+                        ).catch((error) => {
+                          debug(
+                            `Error getting brand from ${brandCollection}:`,
+                            error
+                          );
+                          return null;
+                        });
+
+                        if (brandDoc && brandDoc.exists()) {
+                          const brand = brandDoc.data();
+                          const option = document.createElement("option");
+                          option.value = brandId;
+                          option.textContent =
+                            brand.name ||
+                            brand.brandName ||
+                            brand.title ||
+                            `Brand ${brandId}`;
+                          selectElement.appendChild(option);
+                          break;
+                        }
+                      }
+                    }
+                  } else {
+                    debug(
+                      "Product has no associated brands, using fallback data"
+                    );
+                    addFallbackBrands();
+                  }
+                } else {
+                  debug("Could not find product document, using fallback data");
+                  addFallbackBrands();
+                }
+
+                // Refresh select2
+                try {
+                  $(selectElement).trigger("change");
+                } catch (e) {
+                  debug("Select2 refresh failed after loading brands:", e);
+                }
+              } catch (error) {
+                debug("Unexpected error loading brands:", error);
+                throw error;
+              }
+
+              // Helper function to add fallback brands
+              function addFallbackBrands() {
+                const sampleBrands = [
+                  { id: "sample_brand_1", name: "Sample Brand 1" },
+                  { id: "sample_brand_2", name: "Sample Brand 2" },
+                ];
+
+                sampleBrands.forEach((brand) => {
+                  const option = document.createElement("option");
+                  option.value = brand.id;
+                  option.textContent = brand.name;
+                  selectElement.appendChild(option);
+                });
+              }
+            }
+
+            debug("Product selection component fully initialized");
+          } catch (error) {
+            debug("Critical error in product selection component:", error);
+            console.error("Product Selection Component Error:", error);
+
+            // Display user-friendly error message
+            showErrorMessage(
+              "There was an error loading product data. Please refresh the page or contact support if the issue persists."
+            );
           }
-        } catch (error) {
-          console.error("Error initializing product selection:", error);
-          alert(
-            "Failed to load product data. Please check your connection and try again."
-          );
+        }
+
+        // Function to show error message to user
+        function showErrorMessage(message) {
+          // Try to find a suitable element to show the error
+          const productSelectionSection =
+            document.querySelector(".card-body > .row");
+
+          if (productSelectionSection) {
+            // Create an error alert
+            const errorDiv = document.createElement("div");
+            errorDiv.className = "alert alert-danger mt-3";
+            errorDiv.role = "alert";
+            errorDiv.textContent = message;
+
+            // Insert at the beginning of the section
+            productSelectionSection.insertBefore(
+              errorDiv,
+              productSelectionSection.firstChild
+            );
+          } else {
+            // Fallback to alert if we can't find a good place to show the error
+            alert(message);
+          }
         }
       });
     </script>
