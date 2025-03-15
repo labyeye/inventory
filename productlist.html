@@ -301,7 +301,7 @@
         <div class="sidebar-inner slimscroll">
           <div id="sidebar-menu" class="sidebar-menu">
             <ul>
-              <li>
+              <li class="active">
                 <a href="index.html"
                   ><img src="assets/img/icons/dashboard.svg" alt="img" /><span>
                     Dashboard</span
@@ -311,19 +311,19 @@
               <li class="submenu">
                 <a href="javascript:void(0);"
                   ><img src="assets/img/icons/product.svg" alt="img" /><span>
-                    Product</span
+                    Inventory</span
                   >
                   <span class="menu-arrow"></span
                 ></a>
                 <ul>
+                  <li><a href="./productlist.html">Inventory List</a></li>
+                  <li><a href="./addproduct.html">Add Inventory</a></li>
+                  <li><a href="./categorylist.html">Category List</a></li>
+                  <li><a href="./addcategory.html">Add Category</a></li>
                   <li>
-                    <a href="productlist.html" class="active">Product List</a>
+                    <a href="./subcategorylist.html">Sub Category List</a>
                   </li>
-                  <li><a href="addproduct.html">Add Product</a></li>
-                  <li><a href="categorylist.html">Category List</a></li>
-                  <li><a href="addcategory.html">Add Category</a></li>
-                  <li><a href="subcategorylist.html">Sub Category List</a></li>
-                  <li><a href="subaddcategory.html">Add Sub Category</a></li>
+                  <li><a href="./subaddcategory.html">Add Sub Category</a></li>
                 </ul>
               </li>
               <li class="submenu">
@@ -339,20 +339,22 @@
                 </ul>
               </li>
 
-              <a href="javascript:void(0);"
-                ><img src="assets/img/icons/return1.svg" alt="img" /><span>
-                  Return</span
-                >
-                <span class="menu-arrow"></span
-              ></a>
-              <ul>
-                <li>
-                  <a href="salesreturnlist.html">Inventory Return List</a>
-                </li>
-                <li>
-                  <a href="createsalesreturn.html">Add Inventory Return </a>
-                </li>
-              </ul>
+              <li class="submenu">
+                <a href="javascript:void(0);"
+                  ><img src="assets/img/icons/return1.svg" alt="img" /><span>
+                    Return</span
+                  >
+                  <span class="menu-arrow"></span
+                ></a>
+                <ul>
+                  <li>
+                    <a href="salesreturnlist.html">Inventory Return List</a>
+                  </li>
+                  <li>
+                    <a href="createsalesreturn.html">Add Inventory Return </a>
+                  </li>
+                </ul>
+              </li>
 
               <li class="submenu">
                 <a href="javascript:void(0);"
@@ -363,13 +365,13 @@
                 ></a>
                 <ul>
                   <li>
-                    <a href="purchaseorderreport.html">Event Order report</a>
+                    <a href="./purchaseorderreport.html">Event Order report</a>
                   </li>
-                  <li><a href="inventoryreport.html">Inventory Report</a></li>
+                  <li><a href="./inventoryreport.html">Inventory Report</a></li>
                   <li>
-                    <a href="invoicereport.html">Inventory Return Report</a>
+                    <a href="./invoicereport.html">Inventory Return Report</a>
                   </li>
-                  <li><a href="purchasereport.html">Purchase Report</a></li>
+                  <li><a href="./purchasereport.html">Purchase Report</a></li>
                 </ul>
               </li>
               <li class="submenu">
@@ -382,22 +384,6 @@
                 <ul>
                   <li><a href="newuser.html">New User </a></li>
                   <li><a href="userlists.html">Users List</a></li>
-                </ul>
-              </li>
-              <li class="submenu">
-                <a href="javascript:void(0);"
-                  ><img src="assets/img/icons/settings.svg" alt="img" /><span>
-                    Settings</span
-                  >
-                  <span class="menu-arrow"></span
-                ></a>
-                <ul>
-                  <li><a href="generalsettings.html">General Settings</a></li>
-                  <li><a href="emailsettings.html">Email Settings</a></li>
-                  <li><a href="paymentsettings.html">Payment Settings</a></li>
-                  <li><a href="currencysettings.html">Currency Settings</a></li>
-                  <li><a href="grouppermissions.html">Group Permissions</a></li>
-                  <li><a href="taxrates.html">Tax Rates</a></li>
                 </ul>
               </li>
             </ul>
@@ -529,6 +515,7 @@
                           <span class="checkmarks"></span>
                         </label>
                       </th>
+                      <th>Image</th>
                       <th>Product Name</th>
                       <th>Category</th>
                       <th>Subcategory</th>
@@ -616,8 +603,8 @@
             console.log("No products found in database");
             const row = document.createElement("tr");
             row.innerHTML = `
-              <td colspan="7" class="text-center">No products found</td>
-            `;
+        <td colspan="7" class="text-center">No products found</td>
+      `;
             productsList.appendChild(row);
           } else {
             // Process each product
@@ -672,7 +659,7 @@
           <td class="productimgname">
             <a href="javascript:void(0);" class="product-img">
               <img src="${
-                productData.ImageUrl || "assets/img/product/product1.jpg"
+                productData.imageUrl || "assets/img/product/product1.jpg"
               }" alt="product" />
             </a>
             <a href="javascript:void(0);">${productData.name}</a>
@@ -815,39 +802,41 @@
                 // Create table row for matched product
                 const row = document.createElement("tr");
                 row.innerHTML = `
-          <td>
-            <label class="checkboxs">
-              <input type="checkbox" data-id="${productDoc.id}" />
-              <span class="checkmarks"></span>
-            </label>
-          </td>
-          <td class="productimgname">
-            <a href="javascript:void(0);" class="product-img">
-              <img src="${
-                productData.image || "assets/img/product/product1.jpg"
-              }" alt="product" />
-            </a>
-            <a href="javascript:void(0);">${productData.name}</a>
-          </td>
-          <td>${productData.categoryName || ""}</td>
-          <td>${productData.brand || ""}</td>
-          <td>${productData.quantity || ""}</td>
-          <td>${productData.creatorName || "Admin"}</td>
-          <td>${formatTimestamp(productData.createdAt)}</td>
-          <td>
-            <a class="me-3" href="product-details.html?id=${productDoc.id}">
-              <img src="assets/img/icons/eye.svg" alt="img" />
-            </a>
-            <a class="me-3" href="editproduct.html?id=${productDoc.id}">
-              <img src="assets/img/icons/edit.svg" alt="img" />
-            </a>
-            <a class="confirm-text" href="javascript:void(0);" data-id="${
-              productDoc.id
-            }">
-              <img src="assets/img/icons/delete.svg" alt="img" />
-            </a>
-          </td>
-        `;
+            <td>
+              <label class="checkboxs">
+                <input type="checkbox" data-id="${productDoc.id}" />
+                <span class="checkmarks"></span>
+              </label>
+            </td>
+            <td class="productimgname">
+              <a href="javascript:void(0);" class="product-img">
+                <img src="${
+                  productData.imageUrl || "assets/img/product/product1.jpg"
+                }" alt="product" />
+              </a>
+              <a href="javascript:void(0);">${productData.name}</a>
+            </td>
+            <td>${productData.categoryName || ""}</td>
+            <td>${productData.subCategoryName || ""}</td>
+            <td>${productData.brand || ""}</td>
+            <td>${productData.quantity || ""}</td>
+            <td>${productData.location || ""}</td>
+            <td>${productData.creatorName || "Admin"}</td>
+            <td>${formatTimestamp(productData.createdAt)}</td>
+            <td>
+              <a class="me-3" href="product-details.html?id=${productDoc.id}">
+                <img src="assets/img/icons/eye.svg" alt="img" />
+              </a>
+              <a class="me-3" href="editproduct.html?id=${productDoc.id}">
+                <img src="assets/img/icons/edit.svg" alt="img" />
+              </a>
+              <a class="confirm-text" href="javascript:void(0);" data-id="${
+                productDoc.id
+              }">
+                <img src="assets/img/icons/delete.svg" alt="img" />
+              </a>
+            </td>
+          `;
 
                 productsList.appendChild(row);
               }
@@ -937,12 +926,17 @@
                 checkbox.checked = isChecked;
               });
           });
-        onAuthStateChanged(auth, (user) => {
-          if (!user) {
-            // Redirect to login if not authenticated
-            window.location.href = "login.html";
-          }
-        });
+
+        // Note: You need to import onAuthStateChanged and auth if you're using this
+        // Commented out as it wasn't imported in the original code
+        /*
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // Redirect to login if not authenticated
+      window.location.href = "login.html";
+    }
+  });
+  */
       });
 
       // Function to format Firestore timestamp to readable date string
@@ -982,22 +976,127 @@
           exportToExcel();
         });
 
-      // Function to export the table data to Excel
-      function exportToExcel() {
-        // Get the table element
-        const table = document.querySelector(".datanew");
+      // Function to export the table data to Excel with embedded images
+      async function exportToExcelWithImages() {
+        try {
+          // Create a new workbook and worksheet
+          const workbook = new ExcelJS.Workbook();
+          const worksheet = workbook.addWorksheet("Product List");
 
-        // Convert the table to a worksheet
-        const worksheet = XLSX.utils.table_to_sheet(table);
+          // Define headers
+          worksheet.columns = [
+            { header: "Product Name", key: "name", width: 25 },
+            { header: "Category", key: "category", width: 15 },
+            { header: "Subcategory", key: "subcategory", width: 15 },
+            { header: "Brand", key: "brand", width: 15 },
+            { header: "Quantity", key: "quantity", width: 10 },
+            { header: "Location", key: "location", width: 15 },
+            { header: "Created By", key: "creator", width: 15 },
+            { header: "Date of Creation", key: "createdAt", width: 20 },
+            { header: "Image", key: "image", width: 20 }, // Column for the image
+          ];
 
-        // Create a new workbook
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Product List");
+          // Get all rows from the table
+          const rows = document.querySelectorAll("#product-list tr");
 
-        // Generate the Excel file and trigger download
-        XLSX.writeFile(workbook, "ProductList.xlsx");
+          // Loop through each row and add data to the worksheet
+          for (const row of rows) {
+            const cells = row.querySelectorAll("td");
+
+            // Skip rows that don't have enough cells
+            if (cells.length < 9) continue;
+
+            // Extract data from the row
+            const productName =
+              cells[1].querySelector("a:last-child")?.textContent || "";
+            const category = cells[2].textContent.trim();
+            const subcategory = cells[3].textContent.trim();
+            const brand = cells[4].textContent.trim();
+            const quantity = cells[5].textContent.trim();
+            const location = cells[6].textContent.trim();
+            const creator = cells[7].textContent.trim();
+            const createdAt = cells[8].textContent.trim();
+
+            // Extract image URL
+            const imgElement = cells[1].querySelector("img");
+            const imageUrl = imgElement ? imgElement.getAttribute("src") : "";
+
+            // Add the row data to the worksheet
+            const rowData = {
+              name: productName,
+              category: category,
+              subcategory: subcategory,
+              brand: brand,
+              quantity: quantity,
+              location: location,
+              creator: creator,
+              createdAt: createdAt,
+            };
+
+            // Add the row to the worksheet
+            const excelRow = worksheet.addRow(rowData);
+
+            // Embed the image if the URL is valid
+            if (imageUrl) {
+              try {
+                // Fetch the image as a blob
+                const response = await fetch(imageUrl);
+                const imageBlob = await response.blob();
+
+                // Convert the blob to a base64 string
+                const reader = new FileReader();
+                reader.readAsDataURL(imageBlob);
+                reader.onload = () => {
+                  const base64Image = reader.result.split(",")[1]; // Remove the data URL prefix
+
+                  // Add the image to the worksheet
+                  const imageId = workbook.addImage({
+                    base64: base64Image,
+                    extension: "png", // Adjust based on the image type
+                  });
+
+                  // Embed the image in the cell
+                  worksheet.addImage(imageId, {
+                    tl: { col: excelRow.number - 1, row: excelRow.number - 1 },
+                    ext: { width: 100, height: 100 }, // Adjust size as needed
+                  });
+                };
+              } catch (error) {
+                console.error("Error embedding image:", error);
+              }
+            }
+          }
+
+          // Generate the Excel file and trigger download
+          const buffer = await workbook.xlsx.writeBuffer();
+          const blob = new Blob([buffer], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "ProductListWithImages.xlsx";
+          link.click();
+        } catch (error) {
+          console.error("Error exporting to Excel:", error);
+          alert("Error exporting to Excel: " + error.message);
+        }
       }
+
+      // Add event listener for the Excel export button
+      document.addEventListener("DOMContentLoaded", function () {
+        const excelButton = document.querySelector(
+          '[data-bs-toggle="tooltip"][title="excel"]'
+        );
+        if (excelButton) {
+          excelButton.addEventListener("click", function () {
+            exportToExcelWithImages();
+          });
+        } else {
+          console.warn("Excel export button not found");
+        }
+      });
     </script>
     <script src="assets/js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
   </body>
 </html>

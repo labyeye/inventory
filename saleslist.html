@@ -1,1502 +1,953 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-<meta name="description" content="POS - Bootstrap Admin Template">
-<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
-<meta name="author" content="Dreamguys - Bootstrap Admin Template">
-<meta name="robots" content="noindex, nofollow">
-<title>Dreams Pos admin template</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=0"
+    />
+    <meta name="description" content="POS - Bootstrap Admin Template" />
+    <meta
+      name="keywords"
+      content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects"
+    />
+    <meta name="author" content="Dreamguys - Bootstrap Admin Template" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Dreams Pos admin template</title>
 
-<link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.jpg">
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="assets/img/favicon.jpg"
+    />
 
-<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
 
-<link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="assets/css/animate.css" />
 
-<link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css" />
 
-<link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css" />
 
-<link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css" />
 
-<link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
-<link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="assets/plugins/fontawesome/css/fontawesome.min.css"
+    />
+    <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css" />
 
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-<div id="global-loader">
-<div class="whirly-loader"> </div>
-</div>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <div id="global-loader">
+      <div class="whirly-loader"></div>
+    </div>
 
-<div class="main-wrapper">
+    <div class="main-wrapper">
+      <div class="header">
+        <div class="header-left active">
+          <a href="index.html" class="logo">
+            <img src="assets/img/logo.png" alt="" />
+          </a>
+          <a href="index.html" class="logo-small">
+            <img src="assets/img/logo-small.png" alt="" />
+          </a>
+          <a id="toggle_btn" href="javascript:void(0);"> </a>
+        </div>
 
-<div class="header">
+        <a id="mobile_btn" class="mobile_btn" href="#sidebar">
+          <span class="bar-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </a>
 
-<div class="header-left active">
-<a href="index.html" class="logo">
-<img src="assets/img/logo.png" alt="">
-</a>
-<a href="index.html" class="logo-small">
-<img src="assets/img/logo-small.png" alt="">
-</a>
-<a id="toggle_btn" href="javascript:void(0);">
-</a>
-</div>
+        <ul class="nav user-menu">
+          <li class="nav-item">
+            <div class="top-nav-search">
+              <a href="javascript:void(0);" class="responsive-search">
+                <i class="fa fa-search"></i>
+              </a>
+              <form action="#">
+                <div class="searchinputs">
+                  <input type="text" placeholder="Search Here ..." />
+                  <div class="search-addon">
+                    <span
+                      ><img src="assets/img/icons/closes.svg" alt="img"
+                    /></span>
+                  </div>
+                </div>
+                <a class="btn" id="searchdiv"
+                  ><img src="assets/img/icons/search.svg" alt="img"
+                /></a>
+              </form>
+            </div>
+          </li>
 
-<a id="mobile_btn" class="mobile_btn" href="#sidebar">
-<span class="bar-icon">
-<span></span>
-<span></span>
-<span></span>
-</span>
-</a>
+          <li class="nav-item dropdown has-arrow flag-nav">
+            <a
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              href="javascript:void(0);"
+              role="button"
+            >
+              <img src="assets/img/flags/us1.png" alt="" height="20" />
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <a href="javascript:void(0);" class="dropdown-item">
+                <img src="assets/img/flags/us.png" alt="" height="16" /> English
+              </a>
+              <a href="javascript:void(0);" class="dropdown-item">
+                <img src="assets/img/flags/fr.png" alt="" height="16" /> French
+              </a>
+              <a href="javascript:void(0);" class="dropdown-item">
+                <img src="assets/img/flags/es.png" alt="" height="16" /> Spanish
+              </a>
+              <a href="javascript:void(0);" class="dropdown-item">
+                <img src="assets/img/flags/de.png" alt="" height="16" /> German
+              </a>
+            </div>
+          </li>
 
-<ul class="nav user-menu">
+          <li class="nav-item dropdown">
+            <a
+              href="javascript:void(0);"
+              class="dropdown-toggle nav-link"
+              data-bs-toggle="dropdown"
+            >
+              <img src="assets/img/icons/notification-bing.svg" alt="img" />
+              <span class="badge rounded-pill">4</span>
+            </a>
+            <div class="dropdown-menu notifications">
+              <div class="topnav-dropdown-header">
+                <span class="notification-title">Notifications</span>
+                <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+              </div>
+              <div class="noti-content">
+                <ul class="notification-list">
+                  <li class="notification-message">
+                    <a href="activities.html">
+                      <div class="media d-flex">
+                        <span class="avatar flex-shrink-0">
+                          <img alt="" src="assets/img/profiles/avatar-02.jpg" />
+                        </span>
+                        <div class="media-body flex-grow-1">
+                          <p class="noti-details">
+                            <span class="noti-title">John Doe</span> added new
+                            task
+                            <span class="noti-title"
+                              >Patient appointment booking</span
+                            >
+                          </p>
+                          <p class="noti-time">
+                            <span class="notification-time">4 mins ago</span>
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="notification-message">
+                    <a href="activities.html">
+                      <div class="media d-flex">
+                        <span class="avatar flex-shrink-0">
+                          <img alt="" src="assets/img/profiles/avatar-03.jpg" />
+                        </span>
+                        <div class="media-body flex-grow-1">
+                          <p class="noti-details">
+                            <span class="noti-title">Tarah Shropshire</span>
+                            changed the task name
+                            <span class="noti-title"
+                              >Appointment booking with payment gateway</span
+                            >
+                          </p>
+                          <p class="noti-time">
+                            <span class="notification-time">6 mins ago</span>
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="notification-message">
+                    <a href="activities.html">
+                      <div class="media d-flex">
+                        <span class="avatar flex-shrink-0">
+                          <img alt="" src="assets/img/profiles/avatar-06.jpg" />
+                        </span>
+                        <div class="media-body flex-grow-1">
+                          <p class="noti-details">
+                            <span class="noti-title">Misty Tison</span> added
+                            <span class="noti-title">Domenic Houston</span> and
+                            <span class="noti-title">Claire Mapes</span> to
+                            project
+                            <span class="noti-title"
+                              >Doctor available module</span
+                            >
+                          </p>
+                          <p class="noti-time">
+                            <span class="notification-time">8 mins ago</span>
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="notification-message">
+                    <a href="activities.html">
+                      <div class="media d-flex">
+                        <span class="avatar flex-shrink-0">
+                          <img alt="" src="assets/img/profiles/avatar-17.jpg" />
+                        </span>
+                        <div class="media-body flex-grow-1">
+                          <p class="noti-details">
+                            <span class="noti-title">Rolland Webber</span>
+                            completed task
+                            <span class="noti-title"
+                              >Patient and Doctor video conferencing</span
+                            >
+                          </p>
+                          <p class="noti-time">
+                            <span class="notification-time">12 mins ago</span>
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="notification-message">
+                    <a href="activities.html">
+                      <div class="media d-flex">
+                        <span class="avatar flex-shrink-0">
+                          <img alt="" src="assets/img/profiles/avatar-13.jpg" />
+                        </span>
+                        <div class="media-body flex-grow-1">
+                          <p class="noti-details">
+                            <span class="noti-title">Bernardo Galaviz</span>
+                            added new task
+                            <span class="noti-title">Private chat module</span>
+                          </p>
+                          <p class="noti-time">
+                            <span class="notification-time">2 days ago</span>
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="topnav-dropdown-footer">
+                <a href="activities.html">View all Notifications</a>
+              </div>
+            </div>
+          </li>
 
-<li class="nav-item">
-<div class="top-nav-search">
-<a href="javascript:void(0);" class="responsive-search">
-<i class="fa fa-search"></i>
-</a>
-<form action="#">
-<div class="searchinputs">
-<input type="text" placeholder="Search Here ...">
-<div class="search-addon">
-<span><img src="assets/img/icons/closes.svg" alt="img"></span>
-</div>
-</div>
-<a class="btn" id="searchdiv"><img src="assets/img/icons/search.svg" alt="img"></a>
-</form>
-</div>
-</li>
+          <li class="nav-item dropdown has-arrow main-drop">
+            <a
+              href="javascript:void(0);"
+              class="dropdown-toggle nav-link userset"
+              data-bs-toggle="dropdown"
+            >
+              <span class="user-img"
+                ><img src="assets/img/profiles/avator1.jpg" alt="" />
+                <span class="status online"></span
+              ></span>
+            </a>
+            <div class="dropdown-menu menu-drop-user">
+              <div class="profilename">
+                <div class="profileset">
+                  <span class="user-img"
+                    ><img src="assets/img/profiles/avator1.jpg" alt="" />
+                    <span class="status online"></span
+                  ></span>
+                  <div class="profilesets">
+                    <h6>John Doe</h6>
+                    <h5>Admin</h5>
+                  </div>
+                </div>
+                <hr class="m-0" />
+                <a class="dropdown-item" href="profile.html">
+                  <i class="me-2" data-feather="user"></i> My Profile</a
+                >
+                <a class="dropdown-item" href="generalsettings.html"
+                  ><i class="me-2" data-feather="settings"></i>Settings</a
+                >
+                <hr class="m-0" />
+                <a class="dropdown-item logout pb-0" href="login.html"
+                  ><img
+                    src="assets/img/icons/log-out.svg"
+                    class="me-2"
+                    alt="img"
+                  />Logout</a
+                >
+              </div>
+            </div>
+          </li>
+        </ul>
 
+        <div class="dropdown mobile-user-menu">
+          <a
+            href="javascript:void(0);"
+            class="nav-link dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            ><i class="fa fa-ellipsis-v"></i
+          ></a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="profile.html">My Profile</a>
+            <a class="dropdown-item" href="generalsettings.html">Settings</a>
+            <a class="dropdown-item" href="login.html">Logout</a>
+          </div>
+        </div>
+      </div>
 
-<li class="nav-item dropdown has-arrow flag-nav">
-<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="javascript:void(0);" role="button">
-<img src="assets/img/flags/us1.png" alt="" height="20">
-</a>
-<div class="dropdown-menu dropdown-menu-right">
-<a href="javascript:void(0);" class="dropdown-item">
-<img src="assets/img/flags/us.png" alt="" height="16"> English
-</a>
-<a href="javascript:void(0);" class="dropdown-item">
-<img src="assets/img/flags/fr.png" alt="" height="16"> French
-</a>
-<a href="javascript:void(0);" class="dropdown-item">
-<img src="assets/img/flags/es.png" alt="" height="16"> Spanish
-</a>
-<a href="javascript:void(0);" class="dropdown-item">
-<img src="assets/img/flags/de.png" alt="" height="16"> German
-</a>
-</div>
-</li>
+      <div class="sidebar" id="sidebar">
+        <div class="sidebar-inner slimscroll">
+          <div id="sidebar-menu" class="sidebar-menu">
+            <ul>
+              <li class="active">
+                <a href="index.html"
+                  ><img src="assets/img/icons/dashboard.svg" alt="img" /><span>
+                    Dashboard</span
+                  >
+                </a>
+              </li>
+              <li class="submenu">
+                <a href="javascript:void(0);"
+                  ><img src="assets/img/icons/product.svg" alt="img" /><span>
+                    Inventory</span
+                  >
+                  <span class="menu-arrow"></span
+                ></a>
+                <ul>
+                  <li><a href="productlist.html">Inventory List</a></li>
+                  <li><a href="addproduct.html">Add Inventory</a></li>
+                  <li><a href="categorylist.html">Category List</a></li>
+                  <li><a href="addcategory.html">Add Category</a></li>
+                  <li><a href="subcategorylist.html">Sub Category List</a></li>
+                  <li><a href="subaddcategory.html">Add Sub Category</a></li>
+                </ul>
+              </li>
+              <li class="submenu">
+                <a href="javascript:void(0);"
+                  ><img src="assets/img/icons/sales1.svg" alt="img" /><span>
+                    Events</span
+                  >
+                  <span class="menu-arrow"></span
+                ></a>
+                <ul>
+                  <li><a href="saleslist.html">Events List</a></li>
+                  <li><a href="addevent.html">New Event</a></li>
+                </ul>
+              </li>
 
+              <li class="submenu">
+                <a href="javascript:void(0);"
+                  ><img src="assets/img/icons/return1.svg" alt="img" /><span>
+                    Return</span
+                  >
+                  <span class="menu-arrow"></span
+                ></a>
+                <ul>
+                  <li>
+                    <a href="salesreturnlist.html">Inventory Return List</a>
+                  </li>
+                  <li>
+                    <a href="createsalesreturn.html">Add Inventory Return </a>
+                  </li>
+                </ul>
+              </li>
 
-<li class="nav-item dropdown">
-<a href="javascript:void(0);" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-<img src="assets/img/icons/notification-bing.svg" alt="img"> <span class="badge rounded-pill">4</span>
-</a>
-<div class="dropdown-menu notifications">
-<div class="topnav-dropdown-header">
-<span class="notification-title">Notifications</span>
-<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
-</div>
-<div class="noti-content">
-<ul class="notification-list">
-<li class="notification-message">
-<a href="activities.html">
-<div class="media d-flex">
-<span class="avatar flex-shrink-0">
-<img alt="" src="assets/img/profiles/avatar-02.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">John Doe</span> added new task <span class="noti-title">Patient appointment booking</span></p>
-<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="activities.html">
-<div class="media d-flex">
-<span class="avatar flex-shrink-0">
-<img alt="" src="assets/img/profiles/avatar-03.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">Tarah Shropshire</span> changed the task name <span class="noti-title">Appointment booking with payment gateway</span></p>
-<p class="noti-time"><span class="notification-time">6 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="activities.html">
-<div class="media d-flex">
-<span class="avatar flex-shrink-0">
-<img alt="" src="assets/img/profiles/avatar-06.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">Misty Tison</span> added <span class="noti-title">Domenic Houston</span> and <span class="noti-title">Claire Mapes</span> to project <span class="noti-title">Doctor available module</span></p>
-<p class="noti-time"><span class="notification-time">8 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="activities.html">
-<div class="media d-flex">
-<span class="avatar flex-shrink-0">
-<img alt="" src="assets/img/profiles/avatar-17.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">Rolland Webber</span> completed task <span class="noti-title">Patient and Doctor video conferencing</span></p>
-<p class="noti-time"><span class="notification-time">12 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="activities.html">
-<div class="media d-flex">
-<span class="avatar flex-shrink-0">
-<img alt="" src="assets/img/profiles/avatar-13.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">Bernardo Galaviz</span> added new task <span class="noti-title">Private chat module</span></p>
-<p class="noti-time"><span class="notification-time">2 days ago</span></p>
-</div>
-</div>
-</a>
-</li>
-</ul>
-</div>
-<div class="topnav-dropdown-footer">
-<a href="activities.html">View all Notifications</a>
-</div>
-</div>
-</li>
+              <li class="submenu">
+                <a href="javascript:void(0);"
+                  ><img src="assets/img/icons/time.svg" alt="img" /><span>
+                    Report</span
+                  >
+                  <span class="menu-arrow"></span
+                ></a>
+                <ul>
+                  <li>
+                    <a href="purchaseorderreport.html">Event Order report</a>
+                  </li>
+                  <li><a href="inventoryreport.html">Inventory Report</a></li>
+                  <li>
+                    <a href="invoicereport.html">Inventory Return Report</a>
+                  </li>
+                  <li><a href="purchasereport.html">Purchase Report</a></li>
+                </ul>
+              </li>
+              <li class="submenu">
+                <a href="javascript:void(0);"
+                  ><img src="assets/img/icons/users1.svg" alt="img" /><span>
+                    Users</span
+                  >
+                  <span class="menu-arrow"></span
+                ></a>
+                <ul>
+                  <li><a href="newuser.html">New User </a></li>
+                  <li><a href="userlists.html">Users List</a></li>
+                </ul>
+              </li>
+              <li class="submenu">
+                <a href="javascript:void(0);"
+                  ><img src="assets/img/icons/settings.svg" alt="img" /><span>
+                    Settings</span
+                  >
+                  <span class="menu-arrow"></span
+                ></a>
+                <ul>
+                  <li><a href="generalsettings.html">General Settings</a></li>
+                  <li><a href="emailsettings.html">Email Settings</a></li>
+                  <li><a href="paymentsettings.html">Payment Settings</a></li>
+                  <li><a href="currencysettings.html">Currency Settings</a></li>
+                  <li><a href="grouppermissions.html">Group Permissions</a></li>
+                  <li><a href="taxrates.html">Tax Rates</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-<li class="nav-item dropdown has-arrow main-drop">
-<a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
-<span class="user-img"><img src="assets/img/profiles/avator1.jpg" alt="">
-<span class="status online"></span></span>
-</a>
-<div class="dropdown-menu menu-drop-user">
-<div class="profilename">
-<div class="profileset">
-<span class="user-img"><img src="assets/img/profiles/avator1.jpg" alt="">
-<span class="status online"></span></span>
-<div class="profilesets">
-<h6>John Doe</h6>
-<h5>Admin</h5>
-</div>
-</div>
-<hr class="m-0">
-<a class="dropdown-item" href="profile.html"> <i class="me-2" data-feather="user"></i> My Profile</a>
-<a class="dropdown-item" href="generalsettings.html"><i class="me-2" data-feather="settings"></i>Settings</a>
-<hr class="m-0">
-<a class="dropdown-item logout pb-0" href="login.html"><img src="assets/img/icons/log-out.svg" class="me-2" alt="img">Logout</a>
-</div>
-</div>
-</li>
-</ul>
+      <div class="page-wrapper">
+        <div class="content">
+          <div class="page-header">
+            <div class="page-title">
+              <h4>Sales List</h4>
+              <h6>Manage your sales</h6>
+            </div>
+            <div class="page-btn">
+              <a href="add-sales.html" class="btn btn-added"
+                ><img
+                  src="assets/img/icons/plus.svg"
+                  alt="img"
+                  class="me-1"
+                />Add Sales</a
+              >
+            </div>
+          </div>
 
+          <div class="card">
+            <div class="card-body">
+              <div class="table-top">
+                <div class="search-set">
+                  <div class="search-path">
+                    <a class="btn btn-filter" id="filter_search">
+                      <img src="assets/img/icons/filter.svg" alt="img" />
+                      <span
+                        ><img src="assets/img/icons/closes.svg" alt="img"
+                      /></span>
+                    </a>
+                  </div>
+                  <div class="search-input">
+                    <a class="btn btn-searchset"
+                      ><img src="assets/img/icons/search-white.svg" alt="img"
+                    /></a>
+                  </div>
+                </div>
+                <div class="wordset">
+                  <ul>
+                    <li>
+                      <a
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="pdf"
+                        ><img src="assets/img/icons/pdf.svg" alt="img"
+                      /></a>
+                    </li>
+                    <li>
+                      <a
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="excel"
+                        ><img src="assets/img/icons/excel.svg" alt="img"
+                      /></a>
+                    </li>
+                    <li>
+                      <a
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="print"
+                        ><img src="assets/img/icons/printer.svg" alt="img"
+                      /></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
 
-<div class="dropdown mobile-user-menu">
-<a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-<div class="dropdown-menu dropdown-menu-right">
-<a class="dropdown-item" href="profile.html">My Profile</a>
-<a class="dropdown-item" href="generalsettings.html">Settings</a>
-<a class="dropdown-item" href="login.html">Logout</a>
-</div>
-</div>
+              <div class="card" id="filter_inputs">
+                <div class="card-body pb-0">
+                  <div class="row">
+                    <div class="col-lg-3 col-sm-6 col-12">
+                      <div class="form-group">
+                        <input type="text" placeholder="Enter Name" />
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                      <div class="form-group">
+                        <input type="text" placeholder="Enter Reference No" />
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                      <div class="form-group">
+                        <select class="select">
+                          <option>Completed</option>
+                          <option>Paid</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                      <div class="form-group">
+                        <a class="btn btn-filters ms-auto"
+                          ><img
+                            src="assets/img/icons/search-whites.svg"
+                            alt="img"
+                        /></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-</div>
+              <div class="table-responsive">
+                <table class="table datanew">
+                  <thead>
+                    <tr>
+                      <th>Event Name</th>
+                      <th>Event Start Date</th>
+                      <th>Event End Date</th>
+                      <th>Made by User</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Rows will be populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div
+      class="modal fade"
+      id="showpayment"
+      tabindex="-1"
+      aria-labelledby="showpayment"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Show Payments</h5>
+            <button
+              type="button"
+              class="close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Reference</th>
+                    <th>Amount</th>
+                    <th>Paid By</th>
+                    <th>Paid By</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="bor-b1">
+                    <td>2022-03-07</td>
+                    <td>INV/SL0101</td>
+                    <td>$ 0.00</td>
+                    <td>Cash</td>
+                    <td>
+                      <a class="me-2" href="javascript:void(0);">
+                        <img src="assets/img/icons/printer.svg" alt="img" />
+                      </a>
+                      <a
+                        class="me-2"
+                        href="javascript:void(0);"
+                        data-bs-target="#editpayment"
+                        data-bs-toggle="modal"
+                        data-bs-dismiss="modal"
+                      >
+                        <img src="assets/img/icons/edit.svg" alt="img" />
+                      </a>
+                      <a class="me-2 confirm-text" href="javascript:void(0);">
+                        <img src="assets/img/icons/delete.svg" alt="img" />
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<div class="sidebar" id="sidebar">
-<div class="sidebar-inner slimscroll">
-<div id="sidebar-menu" class="sidebar-menu">
-<ul>
-<li>
-<a href="index.html"><img src="assets/img/icons/dashboard.svg" alt="img"><span> Dashboard</span> </a>
-</li>
-<li class="submenu">
-<a href="javascript:void(0);"><img src="assets/img/icons/product.svg" alt="img"><span> Inventory</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="productlist.html">Inventory List</a></li>
-<li><a href="addproduct.html">Add Inventory</a></li>
-<li><a href="categorylist.html">Category List</a></li>
-<li><a href="addcategory.html">Add Category</a></li>
-<li><a href="subcategorylist.html">Sub Category List</a></li>
-<li><a href="subaddcategory.html">Add Sub Category</a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="javascript:void(0);"><img src="assets/img/icons/sales1.svg" alt="img"><span> Sales</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="saleslist.html" class="active">Sales List</a></li>
-<li><a href="addevent.html">POS</a></li>
-<li><a href="addevent.html">New Sales</a></li>
-<li><a href="salesreturnlists.html">Sales Return List</a></li>
-<li><a href="createsalesreturns.html">New Sales Return</a></li>
-</ul>
-</li>
+    <div
+      class="modal fade"
+      id="createpayment"
+      tabindex="-1"
+      aria-labelledby="createpayment"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create Payment</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <label>Customer</label>
+                  <div class="input-groupicon">
+                    <input
+                      type="text"
+                      value="2022-03-07"
+                      class="datetimepicker"
+                    />
+                    <div class="addonset">
+                      <img src="assets/img/icons/calendars.svg" alt="img" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <label>Reference</label>
+                  <input type="text" value="INV/SL0101" />
+                </div>
+              </div>
+              <div class="col-lg-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <label>Received Amount</label>
+                  <input type="text" value="0.00" />
+                </div>
+              </div>
+              <div class="col-lg-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <label>Paying Amount</label>
+                  <input type="text" value="0.00" />
+                </div>
+              </div>
+              <div class="col-lg-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <label>Payment type</label>
+                  <select class="select">
+                    <option>Cash</option>
+                    <option>Online</option>
+                    <option>Inprogress</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group mb-0">
+                  <label>Note</label>
+                  <textarea class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-submit">Submit</button>
+            <button
+              type="button"
+              class="btn btn-cancel"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div
+      class="modal fade"
+      id="editpayment"
+      tabindex="-1"
+      aria-labelledby="editpayment"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Payment</h5>
+            <button
+              type="button"
+              class="close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <label>Customer</label>
+                  <div class="input-groupicon">
+                    <input
+                      type="text"
+                      value="2022-03-07"
+                      class="datetimepicker"
+                    />
+                    <div class="addonset">
+                      <img src="assets/img/icons/datepicker.svg" alt="img" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <label>Reference</label>
+                  <input type="text" value="INV/SL0101" />
+                </div>
+              </div>
+              <div class="col-lg-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <label>Received Amount</label>
+                  <input type="text" value="0.00" />
+                </div>
+              </div>
+              <div class="col-lg-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <label>Paying Amount</label>
+                  <input type="text" value="0.00" />
+                </div>
+              </div>
+              <div class="col-lg-6 col-sm-12 col-12">
+                <div class="form-group">
+                  <label>Payment type</label>
+                  <select class="select">
+                    <option>Cash</option>
+                    <option>Online</option>
+                    <option>Inprogress</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group mb-0">
+                  <label>Note</label>
+                  <textarea class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-submit">Submit</button>
+            <button
+              type="button"
+              class="btn btn-cancel"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<a href="javascript:void(0);"><img src="assets/img/icons/return1.svg" alt="img"><span> Return</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="salesreturnlist.html">Inventory Return List</a></li>
-<li><a href="createsalesreturn.html">Add Inventory Return </a></li>
-</ul>
-</li>
-</li>
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
 
+    <script src="assets/js/feather.min.js"></script>
 
+    <script src="assets/js/jquery.slimscroll.min.js"></script>
 
+    <script src="assets/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/dataTables.bootstrap4.min.js"></script>
 
-<li class="submenu">
-<a href="javascript:void(0);"><img src="assets/img/icons/time.svg" alt="img"><span> Report</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="purchaseorderreport.html">Event Order report</a></li>
-<li><a href="inventoryreport.html">Inventory Report</a></li>
-<li><a href="invoicereport.html">Inventory Return Report</a></li>
-<li><a href="purchasereport.html">Purchase Report</a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="javascript:void(0);"><img src="assets/img/icons/users1.svg" alt="img"><span> Users</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="newuser.html">New User </a></li>
-<li><a href="userlist.html">Users List</a></li>
-</ul>
-</li>
- <li class="submenu">
-<a href="javascript:void(0);"><img src="assets/img/icons/settings.svg" alt="img"><span> Settings</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="generalsettings.html">General Settings</a></li>
-<li><a href="emailsettings.html">Email Settings</a></li>
-<li><a href="paymentsettings.html">Payment Settings</a></li>
-<li><a href="currencysettings.html">Currency Settings</a></li>
-<li><a href="grouppermissions.html">Group Permissions</a></li>
-<li><a href="taxrates.html">Tax Rates</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-</div>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
 
-<div class="page-wrapper">
-<div class="content">
-<div class="page-header">
-<div class="page-title">
-<h4>Sales List</h4>
-<h6>Manage your sales</h6>
-</div>
-<div class="page-btn">
-<a href="add-sales.html" class="btn btn-added"><img src="assets/img/icons/plus.svg" alt="img" class="me-1">Add Sales</a>
-</div>
-</div>
+    <script src="assets/plugins/select2/js/select2.min.js"></script>
 
-<div class="card">
-<div class="card-body">
-<div class="table-top">
-<div class="search-set">
-<div class="search-path">
-<a class="btn btn-filter" id="filter_search">
-<img src="assets/img/icons/filter.svg" alt="img">
-<span><img src="assets/img/icons/closes.svg" alt="img"></span>
-</a>
-</div>
-<div class="search-input">
-<a class="btn btn-searchset"><img src="assets/img/icons/search-white.svg" alt="img"></a>
-</div>
-</div>
-<div class="wordset">
-<ul>
-<li>
-<a data-bs-toggle="tooltip" data-bs-placement="top" title="pdf"><img src="assets/img/icons/pdf.svg" alt="img"></a>
-</li>
-<li>
-<a data-bs-toggle="tooltip" data-bs-placement="top" title="excel"><img src="assets/img/icons/excel.svg" alt="img"></a>
-</li>
-<li>
-<a data-bs-toggle="tooltip" data-bs-placement="top" title="print"><img src="assets/img/icons/printer.svg" alt="img"></a>
-</li>
-</ul>
-</div>
-</div>
+    <script src="assets/js/moment.min.js"></script>
+    <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
 
-<div class="card" id="filter_inputs">
-<div class="card-body pb-0">
-<div class="row">
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<input type="text" placeholder="Enter Name">
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<input type="text" placeholder="Enter Reference No">
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<select class="select">
-<option>Completed</option>
-<option>Paid</option>
-</select>
-</div>
-</div>
-<div class="col-lg-3 col-sm-6 col-12">
-<div class="form-group">
-<a class="btn btn-filters ms-auto"><img src="assets/img/icons/search-whites.svg" alt="img"></a>
-</div>
-</div>
-</div>
-</div>
-</div>
+    <script src="assets/plugins/sweetalert/sweetalert2.all.min.js"></script>
+    <script src="assets/plugins/sweetalert/sweetalerts.min.js"></script>
 
-<div class="table-responsive">
-<table class="table  datanew">
-<thead>
-<tr>
-<th>
-<label class="checkboxs">
-<input type="checkbox" id="select-all">
-<span class="checkmarks"></span>
-</label>
-</th>
-<th>Date</th>
-<th>Customer Name</th>
-<th>Reference</th>
-<th>Status</th>
-<th>Payment</th>
-<th>Total</th>
-<th>Paid</th>
-<th>Due</th>
-<th>Biller</th>
-<th class="text-center">Action</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<label class="checkboxs">
-<input type="checkbox">
-<span class="checkmarks"></span>
-</label>
-</td>
-<td>walk-in-customer</td>
-<td>19 Nov 2022</td>
-<td>SL0101</td>
-<td><span class="badges bg-lightgreen">Completed</span></td>
-<td><span class="badges bg-lightgreen">Paid</span></td>
-<td>0.00</td>
-<td>0.00</td>
-<td class="text-red">100.00</td>
-<td>Admin</td>
-<td class="text-center">
-<a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
-<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-</a>
-<ul class="dropdown-menu">
-<li>
-<a href="sales-details.html" class="dropdown-item"><img src="assets/img/icons/eye1.svg" class="me-2" alt="img">Sale Detail</a>
-</li>
-<li>
-<a href="edit-sales.html" class="dropdown-item"><img src="assets/img/icons/edit.svg" class="me-2" alt="img">Edit Sale</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#showpayment"><img src="assets/img/icons/dollar-square.svg" class="me-2" alt="img">Show Payments</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createpayment"><img src="assets/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item"><img src="assets/img/icons/download.svg" class="me-2" alt="img">Download pdf</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item confirm-text"><img src="assets/img/icons/delete1.svg" class="me-2" alt="img">Delete Sale</a>
-</li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<label class="checkboxs">
-<input type="checkbox">
-<span class="checkmarks"></span>
-</label>
-</td>
-<td>walk-in-customer</td>
-<td>19 Nov 2022</td>
-<td>SL0102</td>
-<td><span class="badges bg-lightgreen">Completed</span></td>
-<td><span class="badges bg-lightgreen">Paid</span></td>
-<td>0.00</td>
-<td>0.00</td>
-<td class="text-red">100.00</td>
-<td>Admin</td>
-<td class="text-center">
-<a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
-<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-</a>
-<ul class="dropdown-menu">
-<li>
-<a href="sales-details.html" class="dropdown-item"><img src="assets/img/icons/eye1.svg" class="me-2" alt="img">Sale Detail</a>
-</li>
-<li>
-<a href="edit-sales.html" class="dropdown-item"><img src="assets/img/icons/edit.svg" class="me-2" alt="img">Edit Sale</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#showpayment"><img src="assets/img/icons/dollar-square.svg" class="me-2" alt="img">Show Payments</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createpayment"><img src="assets/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item"><img src="assets/img/icons/download.svg" class="me-2" alt="img">Download pdf</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item confirm-text"><img src="assets/img/icons/delete1.svg" class="me-2" alt="img">Delete Sale</a>
- </li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<label class="checkboxs">
-<input type="checkbox">
-<span class="checkmarks"></span>
-</label>
-</td>
-<td>walk-in-customer</td>
-<td>19 Nov 2022</td>
-<td>SL0103</td>
-<td><span class="badges bg-lightgreen">Completed</span></td>
-<td><span class="badges bg-lightgreen">Paid</span></td>
-<td>0.00</td>
-<td class="text-green">100.00</td>
-<td>0.00</td>
-<td>Admin</td>
-<td class="text-center">
-<a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
-<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-</a>
-<ul class="dropdown-menu">
-<li>
-<a href="sales-details.html" class="dropdown-item"><img src="assets/img/icons/eye1.svg" class="me-2" alt="img">Sale Detail</a>
-</li>
-<li>
-<a href="edit-sales.html" class="dropdown-item"><img src="assets/img/icons/edit.svg" class="me-2" alt="img">Edit Sale</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#showpayment"><img src="assets/img/icons/dollar-square.svg" class="me-2" alt="img">Show Payments</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createpayment"><img src="assets/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item"><img src="assets/img/icons/download.svg" class="me-2" alt="img">Download pdf</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item confirm-text"><img src="assets/img/icons/delete1.svg" class="me-2" alt="img">Delete Sale</a>
-</li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<label class="checkboxs">
-<input type="checkbox">
-<span class="checkmarks"></span>
-</label>
-</td>
-<td>Fred C. Rasmussen</td>
-<td>19 Nov 2022</td>
-<td>SL0104</td>
-<td><span class="badges bg-lightred">Pending</span></td>
-<td><span class="badges bg-lightred">Due</span></td>
-<td>0.00</td>
-<td class="text-green">100.00</td>
-<td>0.00</td>
-<td>Admin</td>
-<td class="text-center">
-<a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
-<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-</a>
-<ul class="dropdown-menu">
-<li>
-<a href="sales-details.html" class="dropdown-item"><img src="assets/img/icons/eye1.svg" class="me-2" alt="img">Sale Detail</a>
-</li>
-<li>
-<a href="edit-sales.html" class="dropdown-item"><img src="assets/img/icons/edit.svg" class="me-2" alt="img">Edit Sale</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#showpayment"><img src="assets/img/icons/dollar-square.svg" class="me-2" alt="img">Show Payments</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createpayment"><img src="assets/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item"><img src="assets/img/icons/download.svg" class="me-2" alt="img">Download pdf</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item confirm-text"><img src="assets/img/icons/delete1.svg" class="me-2" alt="img">Delete Sale</a>
-</li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<label class="checkboxs">
-<input type="checkbox">
-<span class="checkmarks"></span>
-</label>
-</td>
-<td>Thomas M. Martin</td>
-<td>19 Nov 2022</td>
-<td>SL0105</td>
-<td><span class="badges bg-lightred">Pending</span></td>
-<td><span class="badges bg-lightred">Due</span></td><td>0.00</td>
-<td>0.00</td>
-<td class="text-green">100.00</td>
-<td>Admin</td>
-<td class="text-center">
-<a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
-<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-</a>
-<ul class="dropdown-menu">
-<li>
-<a href="sales-details.html" class="dropdown-item"><img src="assets/img/icons/eye1.svg" class="me-2" alt="img">Sale Detail</a>
-</li>
-<li>
-<a href="edit-sales.html" class="dropdown-item"><img src="assets/img/icons/edit.svg" class="me-2" alt="img">Edit Sale</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#showpayment"><img src="assets/img/icons/dollar-square.svg" class="me-2" alt="img">Show Payments</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createpayment"><img src="assets/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item"><img src="assets/img/icons/download.svg" class="me-2" alt="img">Download pdf</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item confirm-text"><img src="assets/img/icons/delete1.svg" class="me-2" alt="img">Delete Sale</a>
-</li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<label class="checkboxs">
-<input type="checkbox">
-<span class="checkmarks"></span>
-</label>
-</td>
-<td>Thomas M. Martin</td>
-<td>19 Nov 2022</td>
-<td>SL0106</td>
-<td><span class="badges bg-lightgreen">Completed</span></td>
-<td><span class="badges bg-lightgreen">Paid</span></td>
-<td>0.00</td>
-<td>0.00</td>
-<td class="text-red">100.00</td>
-<td>Admin</td>
-<td class="text-center">
-<a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
-<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-</a>
-<ul class="dropdown-menu">
-<li>
-<a href="sales-details.html" class="dropdown-item"><img src="assets/img/icons/eye1.svg" class="me-2" alt="img">Sale Detail</a>
-</li>
-<li>
-<a href="edit-sales.html" class="dropdown-item"><img src="assets/img/icons/edit.svg" class="me-2" alt="img">Edit Sale</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#showpayment"><img src="assets/img/icons/dollar-square.svg" class="me-2" alt="img">Show Payments</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createpayment"><img src="assets/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item"><img src="assets/img/icons/download.svg" class="me-2" alt="img">Download pdf</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item confirm-text"><img src="assets/img/icons/delete1.svg" class="me-2" alt="img">Delete Sale</a>
-</li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<label class="checkboxs">
-<input type="checkbox">
-<span class="checkmarks"></span>
-</label>
-</td>
-<td>walk-in-customer</td>
-<td>19 Nov 2022</td>
-<td>SL0107</td>
-<td><span class="badges bg-lightgreen">Completed</span></td>
-<td><span class="badges bg-lightgreen">Paid</span></td>
-<td>0.00</td>
-<td>0.00</td>
-<td class="text-red">100.00</td>
-<td>Admin</td>
-<td class="text-center">
-<a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
-<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-</a>
-<ul class="dropdown-menu">
-<li>
-<a href="sales-details.html" class="dropdown-item"><img src="assets/img/icons/eye1.svg" class="me-2" alt="img">Sale Detail</a>
-</li>
-<li>
-<a href="edit-sales.html" class="dropdown-item"><img src="assets/img/icons/edit.svg" class="me-2" alt="img">Edit Sale</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#showpayment"><img src="assets/img/icons/dollar-square.svg" class="me-2" alt="img">Show Payments</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createpayment"><img src="assets/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item"><img src="assets/img/icons/download.svg" class="me-2" alt="img">Download pdf</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item confirm-text"><img src="assets/img/icons/delete1.svg" class="me-2" alt="img">Delete Sale</a>
-</li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<label class="checkboxs">
-<input type="checkbox">
-<span class="checkmarks"></span>
-</label>
-</td>
-<td>walk-in-customer</td>
-<td>19 Nov 2022</td>
-<td>SL0108</td>
-<td><span class="badges bg-lightred">Pending</span></td>
-<td><span class="badges bg-lightred">Due</span></td>
-<td>0.00</td>
-<td class="text-green">100.00</td>
-<td>0.00</td>
-<td>Admin</td>
-<td class="text-center">
-<a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
-<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-</a>
-<ul class="dropdown-menu">
-<li>
-<a href="sales-details.html" class="dropdown-item"><img src="assets/img/icons/eye1.svg" class="me-2" alt="img">Sale Detail</a>
-</li>
-<li>
-<a href="edit-sales.html" class="dropdown-item"><img src="assets/img/icons/edit.svg" class="me-2" alt="img">Edit Sale</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#showpayment"><img src="assets/img/icons/dollar-square.svg" class="me-2" alt="img">Show Payments</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createpayment"><img src="assets/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item"><img src="assets/img/icons/download.svg" class="me-2" alt="img">Download pdf</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item confirm-text"><img src="assets/img/icons/delete1.svg" class="me-2" alt="img">Delete Sale</a>
-</li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<label class="checkboxs">
-<input type="checkbox">
-<span class="checkmarks"></span>
-</label>
-</td>
-<td>walk-in-customer</td>
-<td>19 Nov 2022</td>
-<td>SL0109</td>
-<td><span class="badges bg-lightred">Pending</span></td>
-<td><span class="badges bg-lightred">Due</span></td>
-<td>0.00</td>
-<td class="text-green">100.00</td>
-<td>0.00</td>
-<td>Admin</td>
-<td class="text-center">
-<a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
-<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-</a>
-<ul class="dropdown-menu">
-<li>
-<a href="sales-details.html" class="dropdown-item"><img src="assets/img/icons/eye1.svg" class="me-2" alt="img">Sale Detail</a>
-</li>
-<li>
-<a href="edit-sales.html" class="dropdown-item"><img src="assets/img/icons/edit.svg" class="me-2" alt="img">Edit Sale</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#showpayment"><img src="assets/img/icons/dollar-square.svg" class="me-2" alt="img">Show Payments</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createpayment"><img src="assets/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item"><img src="assets/img/icons/download.svg" class="me-2" alt="img">Download pdf</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item confirm-text"><img src="assets/img/icons/delete1.svg" class="me-2" alt="img">Delete Sale</a>
-</li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<label class="checkboxs">
-<input type="checkbox">
-<span class="checkmarks"></span>
-</label>
-</td>
-<td>walk-in-customer</td>
-<td>19 Nov 2022</td>
-<td>SL0110</td>
-<td><span class="badges bg-lightred">Pending</span></td>
-<td><span class="badges bg-lightred">Due</span></td>
-<td>0.00</td>
-<td class="text-green">100.00</td>
-<td>0.00</td>
-<td>Admin</td>
-<td class="text-center">
-<a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
-<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-</a>
-<ul class="dropdown-menu">
-<li>
-<a href="sales-details.html" class="dropdown-item"><img src="assets/img/icons/eye1.svg" class="me-2" alt="img">Sale Detail</a>
-</li>
-<li>
-<a href="edit-sales.html" class="dropdown-item"><img src="assets/img/icons/edit.svg" class="me-2" alt="img">Edit Sale</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#showpayment"><img src="assets/img/icons/dollar-square.svg" class="me-2" alt="img">Show Payments</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createpayment"><img src="assets/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item"><img src="assets/img/icons/download.svg" class="me-2" alt="img">Download pdf</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item confirm-text"><img src="assets/img/icons/delete1.svg" class="me-2" alt="img">Delete Sale</a>
-</li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<label class="checkboxs">
-<input type="checkbox">
-<span class="checkmarks"></span>
-</label>
-</td>
-<td>walk-in-customer</td>
-<td>19 Nov 2022</td>
-<td>SL0111</td>
-<td><span class="badges bg-lightred">Pending</span></td>
-<td><span class="badges bg-lightred">Due</span></td>
-<td>0.00</td>
-<td>0.00</td>
-<td>0.00</td>
-<td>Admin</td>
-<td class="text-center">
-<a class="action-set" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
-<i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-</a>
-<ul class="dropdown-menu">
-<li>
-<a href="sales-details.html" class="dropdown-item"><img src="assets/img/icons/eye1.svg" class="me-2" alt="img">Sale Detail</a>
-</li>
-<li>
-<a href="edit-sales.html" class="dropdown-item"><img src="assets/img/icons/edit.svg" class="me-2" alt="img">Edit Sale</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#showpayment"><img src="assets/img/icons/dollar-square.svg" class="me-2" alt="img">Show Payments</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#createpayment"><img src="assets/img/icons/plus-circle.svg" class="me-2" alt="img">Create Payment</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item"><img src="assets/img/icons/download.svg" class="me-2" alt="img">Download pdf</a>
-</li>
-<li>
-<a href="javascript:void(0);" class="dropdown-item confirm-text"><img src="assets/img/icons/delete1.svg" class="me-2" alt="img">Delete Sale</a>
-</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-
-</div>
-</div>
-</div>
-
-
-<div class="modal fade" id="showpayment" tabindex="-1" aria-labelledby="showpayment" aria-hidden="true">
-<div class="modal-dialog modal-lg modal-dialog-centered">
-<div class="modal-content">
-<div class="modal-header">
-<h5 class="modal-title">Show Payments</h5>
-<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-</div>
-<div class="modal-body">
-<div class="table-responsive">
-<table class="table">
-<thead>
-<tr>
-<th>Date</th>
-<th>Reference</th>
-<th>Amount	</th>
-<th>Paid By	</th>
-<th>Paid By	</th>
-</tr>
-</thead>
-<tbody>
-<tr class="bor-b1">
-<td>2022-03-07	</td>
-<td>INV/SL0101</td>
-<td>$ 0.00	</td>
-<td>Cash</td>
-<td>
-<a class="me-2" href="javascript:void(0);">
-<img src="assets/img/icons/printer.svg" alt="img">
-</a>
-<a class="me-2" href="javascript:void(0);" data-bs-target="#editpayment" data-bs-toggle="modal" data-bs-dismiss="modal">
-<img src="assets/img/icons/edit.svg" alt="img">
-</a>
-<a class="me-2 confirm-text" href="javascript:void(0);">
-<img src="assets/img/icons/delete.svg" alt="img">
-</a>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-
-<div class="modal fade" id="createpayment" tabindex="-1" aria-labelledby="createpayment" aria-hidden="true">
-<div class="modal-dialog modal-lg modal-dialog-centered">
-<div class="modal-content">
-<div class="modal-header">
-<h5 class="modal-title">Create Payment</h5>
-<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-</div>
-<div class="modal-body">
-<div class="row">
-<div class="col-lg-6 col-sm-12 col-12">
-<div class="form-group">
-<label>Customer</label>
-<div class="input-groupicon">
-<input type="text" value="2022-03-07" class="datetimepicker">
-<div class="addonset">
-<img src="assets/img/icons/calendars.svg" alt="img">
-</div>
-</div>
-</div>
-</div>
-<div class="col-lg-6 col-sm-12 col-12">
-<div class="form-group">
-<label>Reference</label>
-<input type="text" value="INV/SL0101">
-</div>
-</div>
-<div class="col-lg-6 col-sm-12 col-12">
-<div class="form-group">
-<label>Received Amount</label>
-<input type="text" value="0.00">
-</div>
-</div>
-<div class="col-lg-6 col-sm-12 col-12">
-<div class="form-group">
-<label>Paying Amount</label>
-<input type="text" value="0.00">
-</div>
-</div>
-<div class="col-lg-6 col-sm-12 col-12">
-<div class="form-group">
-<label>Payment type</label>
-<select class="select">
-<option>Cash</option>
-<option>Online</option>
-<option>Inprogress</option>
-</select>
-</div>
-</div>
-<div class="col-lg-12">
-<div class="form-group mb-0">
-<label>Note</label>
-<textarea class="form-control"></textarea>
-</div>
-</div>
-</div>
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-submit">Submit</button>
-<button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
-</div>
-</div>
-</div>
-</div>
-
-
-<div class="modal fade" id="editpayment" tabindex="-1" aria-labelledby="editpayment" aria-hidden="true">
-<div class="modal-dialog modal-lg modal-dialog-centered">
-<div class="modal-content">
-<div class="modal-header">
-<h5 class="modal-title">Edit Payment</h5>
-<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-</div>
-<div class="modal-body">
-<div class="row">
-<div class="col-lg-6 col-sm-12 col-12">
-<div class="form-group">
-<label>Customer</label>
-<div class="input-groupicon">
-<input type="text" value="2022-03-07" class="datetimepicker">
-<div class="addonset">
-<img src="assets/img/icons/datepicker.svg" alt="img">
-</div>
-</div>
-</div>
-</div>
-<div class="col-lg-6 col-sm-12 col-12">
-<div class="form-group">
-<label>Reference</label>
-<input type="text" value="INV/SL0101">
-</div>
-</div>
-<div class="col-lg-6 col-sm-12 col-12">
-<div class="form-group">
-<label>Received Amount</label>
-<input type="text" value="0.00">
-</div>
-</div>
-<div class="col-lg-6 col-sm-12 col-12">
-<div class="form-group">
-<label>Paying Amount</label>
-<input type="text" value="0.00">
-</div>
-</div>
-<div class="col-lg-6 col-sm-12 col-12">
-<div class="form-group">
-<label>Payment type</label>
-<select class="select">
-<option>Cash</option>
-<option>Online</option>
-<option>Inprogress</option>
-</select>
-</div>
-</div>
-<div class="col-lg-12">
-<div class="form-group mb-0">
-<label>Note</label>
-<textarea class="form-control"></textarea>
-</div>
-</div>
-</div>
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-submit">Submit</button>
-<button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
-</div>
-</div>
-</div>
-</div>
-
-
-<script src="assets/js/jquery-3.6.0.min.js"></script>
-
-<script src="assets/js/feather.min.js"></script>
-
-<script src="assets/js/jquery.slimscroll.min.js"></script>
-
-<script src="assets/js/jquery.dataTables.min.js"></script>
-<script src="assets/js/dataTables.bootstrap4.min.js"></script>
-
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-
-<script src="assets/plugins/select2/js/select2.min.js"></script>
-
-<script src="assets/js/moment.min.js"></script>
-<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
-
-<script src="assets/plugins/sweetalert/sweetalert2.all.min.js"></script>
-<script src="assets/plugins/sweetalert/sweetalerts.min.js"></script>
-
-<script src="assets/js/script.js"></script>
-<script type="module">
-import { auth, db } from "./assets/js/firebase.js";
+    <script src="assets/js/script.js"></script>
+    <script type="module">
+      import { auth, db } from "./assets/js/firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 import {
-  onAuthStateChanged,
-  signOut,
-} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-import {
-  doc,
-  getDoc,
   collection,
   getDocs,
+  doc,
   deleteDoc,
-  query,
-  where
+  getDoc,
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
 let dataTable;
 
 // Check if user is logged in
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     try {
-      // Get user data from Firestore
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-      
-      let userName = "User";
-      let userRole = "User";
-
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        userName = userData.displayName || user.email;
-        userRole = userData.role || "User";
-
-        // Update all instances of user name in the header dropdown
-        const userNameElements = document.querySelectorAll(".profilesets h6");
-        userNameElements.forEach((element) => {
-          element.textContent = userName;
-        });
-
-        // Update user role if needed
-        const userRoleElements = document.querySelectorAll(".profilesets h5");
-        userRoleElements.forEach((element) => {
-          element.textContent = userRole;
-        });
-      } else {
-        console.warn("No user document found for this user!");
+      // Initialize DataTable
+      if ($.fn.DataTable.isDataTable(".datanew")) {
+        $(".datanew").DataTable().destroy();
       }
 
-      // Handle admin actions visibility based on role
-      const adminActions = document.querySelectorAll(".admin-action");
-      if (userRole === "Admin") {
-        adminActions.forEach((element) => {
-          element.style.display = "table-cell"; // For th elements
-        });
-      } else {
-        adminActions.forEach((element) => {
-          element.style.display = "none";
-        });
-      }
-
-      // Initialize DataTable first (empty)
-      if ($.fn.DataTable.isDataTable('.datanew')) {
-        $('.datanew').DataTable().destroy();
-      }
-      
-      dataTable = $('.datanew').DataTable({
+      dataTable = $(".datanew").DataTable({
         language: {
           search: '<img src="assets/img/icons/search.svg" alt="search">',
           searchPlaceholder: "Search...",
           paginate: {
             next: '<img src="assets/img/icons/pagination-next.svg" alt="next">',
-            previous: '<img src="assets/img/icons/pagination-previous.svg" alt="previous">'
-          }
+            previous:
+              '<img src="assets/img/icons/pagination-previous.svg" alt="previous">',
+          },
         },
-        "bFilter": true,
-        "sDom": 'fBtlpi', 
+        bFilter: true,
+        sDom: "fBtlpi",
         ordering: true,
-        "pagingType": "numbers",
-        "lengthChange": false,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "processing": true,
-        // Clear existing data to prevent "No data available" message
-        "destroy": true
+        pagingType: "numbers",
+        lengthChange: false,
+        searching: true,
+        info: true,
+        autoWidth: false,
+        processing: true,
+        destroy: true,
       });
-      
-      // Clear existing table data to start fresh
+
+      // Clear existing table data
       dataTable.clear().draw();
 
-      try {
-        // Fetch all events to use for reference
-        const eventsMap = new Map();
-        const eventsCollection = collection(db, "events");
-        const eventsSnapshot = await getDocs(eventsCollection);
-        
-        eventsSnapshot.forEach((eventDoc) => {
-          const eventData = eventDoc.data();
-          eventsMap.set(eventDoc.id, eventData);
-        });
-        
-        // Fetch all users to use for biller and customer lookup
-        const usersMap = new Map();
-        const usersCollection = collection(db, "users");
-        const usersSnapshot = await getDocs(usersCollection);
-        
-        usersSnapshot.forEach((userDoc) => {
-          const userData = userDoc.data();
-          usersMap.set(userDoc.id, userData);
-        });
-        
-        // Now fetch eventProducts collection
-        const eventProductsCollection = collection(db, "eventProducts");
-        const eventProductsSnapshot = await getDocs(eventProductsCollection);
-        
-        // Debug: Check if eventProducts exist and how many
-        console.log("Event Products found:", eventProductsSnapshot.size);
-        
-        // Populate table with eventProducts data using DataTables API
-        if (!eventProductsSnapshot.empty) {
-          let rowsAdded = 0;
-          
-          for (const eventProductDoc of eventProductsSnapshot.docs) {
-            const productData = eventProductDoc.data();
-            const productId = eventProductDoc.id;
-            
-            // Debug: Check individual eventProduct data
-            console.log("Event Product data:", productId, productData);
-            
-            // Get customer name
-            let customerName = "N/A";
-            if (productData.customerId && usersMap.has(productData.customerId)) {
-              customerName = usersMap.get(productData.customerId).displayName || usersMap.get(productData.customerId).email || "Unknown Customer";
-            }
-            
-            // Get biller name
-            let billerName = "Admin";
-            if (productData.billerId && usersMap.has(productData.billerId)) {
-              billerName = usersMap.get(productData.billerId).displayName || usersMap.get(productData.billerId).email || "Admin";
-            }
-            
-            // Format date
-            const date = productData.date ? new Date(productData.date.seconds * 1000).toLocaleDateString() : "N/A";
-            
-            // Calculate due amount
-            const total = productData.total || 0;
-            const paid = productData.paid || 0;
-            const due = total - paid;
-            
-            // Prepare the row data for DataTables
-            const rowData = [
-              // Checkbox column
-              `<label class="checkboxs">
-                <input type="checkbox" />
-                <span class="checkmarks"></span>
-              </label>`,
-              // Date column
-              date,
-              // Customer Name column
-              customerName,
-              // Reference column
-              productData.reference || "N/A",
-              // Status column
-              `<span class="badges ${getStatusBadgeClass(productData.status)}">${productData.status || "Pending"}</span>`,
-              // Payment column
-              `<span class="badges ${getPaymentBadgeClass(productData.paymentMethod)}">${productData.paymentMethod || "Unpaid"}</span>`,
-              // Total column
-              `$${total.toFixed(2)}`,
-              // Paid column
-              `$${paid.toFixed(2)}`,
-              // Due column
-              `$${due.toFixed(2)}`,
-              // Biller column
-              billerName,
-              // Actions column
-              userRole === "Admin" 
-                ? `<a class="me-3" href="editeventproduct.html?id=${productId}">
-                     <img src="assets/img/icons/edit.svg" alt="img" />
-                   </a>
-                   <a class="me-3 confirm-text" href="javascript:void(0);" data-id="${productId}" data-name="${productData.reference || 'this product'}">
-                     <img src="assets/img/icons/delete.svg" alt="img" />
-                   </a>`
-                : `<a class="me-3" href="eventproduct-details.html?id=${productId}">
-                     <img src="assets/img/icons/eye.svg" alt="View" />
-                   </a>`
-            ];
-            
-            // Add the row to DataTables
-            dataTable.row.add(rowData);
-            rowsAdded++;
-          }
-          
-          // Draw the table after adding all rows
-          dataTable.draw();
-          console.log(`Added ${rowsAdded} rows to the table`);
-        } else {
-          console.log("No event products found, adding example products");
-          
-          // Add example event products
-          const exampleEventProducts = [
-            { 
-              date: "2025-03-01", 
-              customer: "John Smith", 
-              reference: "EVT-001", 
-              status: "Completed", 
-              payment: "Credit Card", 
-              total: 249.99, 
-              paid: 249.99, 
-              due: 0.00, 
-              biller: "Admin"
-            },
-            { 
-              date: "2025-03-05", 
-              customer: "Jane Doe", 
-              reference: "EVT-002", 
-              status: "Pending", 
-              payment: "PayPal", 
-              total: 349.99, 
-              paid: 149.99, 
-              due: 200.00, 
-              biller: "Admin"
-            },
-            { 
-              date: "2025-03-08", 
-              customer: "Robert Johnson", 
-              reference: "EVT-003", 
-              status: "Cancelled", 
-              payment: "Unpaid", 
-              total: 199.99, 
-              paid: 0.00, 
-              due: 199.99, 
-              biller: "Admin"
-            }
-          ];
-          
-          exampleEventProducts.forEach((product, index) => {
-            const productRowData = [
-              `<label class="checkboxs">
-                <input type="checkbox" />
-                <span class="checkmarks"></span>
-              </label>`,
-              product.date,
-              product.customer,
-              product.reference,
-              `<span class="badges ${getStatusBadgeClass(product.status)}">${product.status}</span>`,
-              `<span class="badges ${getPaymentBadgeClass(product.payment)}">${product.payment}</span>`,
-              `$${product.total.toFixed(2)}`,
-              `$${product.paid.toFixed(2)}`,
-              `$${product.due.toFixed(2)}`,
-              product.biller,
-              userRole === "Admin" 
-                ? `<a class="me-3" href="editeventproduct.html?id=example-${index}">
-                     <img src="assets/img/icons/edit.svg" alt="img" />
-                   </a>
-                   <a class="me-3 confirm-text" href="javascript:void(0);" data-id="example-${index}" data-name="${product.reference}">
-                     <img src="assets/img/icons/delete.svg" alt="img" />
-                   </a>`
-                : `<a class="me-3" href="eventproduct-details.html?id=example-${index}">
-                     <img src="assets/img/icons/eye.svg" alt="View" />
-                   </a>`
-            ];
-            
-            dataTable.row.add(productRowData);
-          });
-          
-          dataTable.draw();
+      // Fetch events from Firestore
+      const eventsCollection = collection(db, "events");
+      const eventsSnapshot = await getDocs(eventsCollection);
+
+      // Fetch all event returns
+      const eventReturnsCollection = collection(db, "eventReturns");
+      const eventReturnsSnapshot = await getDocs(eventReturnsCollection);
+
+      // Create a map of event returns for quick lookup
+      const eventReturnsMap = new Map();
+      eventReturnsSnapshot.forEach((returnDoc) => {
+        const returnData = returnDoc.data();
+        if (returnData.eventId) {
+          eventReturnsMap.set(returnData.eventId, returnData);
+        } else if (returnData.event) {
+          eventReturnsMap.set(returnData.event, returnData);
         }
-        
-        // Set up event handlers after the table is populated
-        setupDeleteHandlers();
-        
-      } catch (error) {
-        console.error("Error fetching event products:", error);
-        
-        // Fallback: Add example event products on error
-        const exampleEventProducts = [
-          { 
-            date: "2025-03-01", 
-            customer: "John Smith", 
-            reference: "EVT-001", 
-            status: "Completed", 
-            payment: "Credit Card", 
-            total: 249.99, 
-            paid: 249.99, 
-            due: 0.00, 
-            biller: "Admin"
-          },
-          { 
-            date: "2025-03-05", 
-            customer: "Jane Doe", 
-            reference: "EVT-002", 
-            status: "Pending", 
-            payment: "PayPal", 
-            total: 349.99, 
-            paid: 149.99, 
-            due: 200.00, 
-            biller: "Admin"
-          },
-          { 
-            date: "2025-03-08", 
-            customer: "Robert Johnson", 
-            reference: "EVT-003", 
-            status: "Cancelled", 
-            payment: "Unpaid", 
-            total: 199.99, 
-            paid: 0.00, 
-            due: 199.99, 
-            biller: "Admin"
+      });
+
+      if (!eventsSnapshot.empty) {
+        console.log(`Found ${eventsSnapshot.size} events`);
+
+        // Process each event document
+        for (const eventDoc of eventsSnapshot.docs) {
+          const eventData = eventDoc.data();
+          const eventId = eventDoc.id;
+          console.log(`Processing Event ID: ${eventId}`, eventData);
+
+          // Format dates with better error handling
+          const formatDate = (dateField) => {
+            try {
+              if (dateField && dateField.seconds) {
+                return new Date(dateField.seconds * 1000).toLocaleDateString();
+              } else if (dateField instanceof Date) {
+                return dateField.toLocaleDateString();
+              } else if (typeof dateField === "string") {
+                return new Date(dateField).toLocaleDateString();
+              } else {
+                console.warn(
+                  `Invalid date format for event ${eventId}:`,
+                  dateField
+                );
+                return "Not set";
+              }
+            } catch (error) {
+              console.error(
+                `Error formatting date for event ${eventId}:`,
+                error
+              );
+              return "Not set";
+            }
+          };
+
+          // Get event start date
+          const startDate = eventData.date
+            ? formatDate(eventData.date)
+            : "Not set";
+
+          // Get event end date from eventReturns collection
+          let endDate = "Not set";
+          if (eventReturnsMap.has(eventId)) {
+            const returnData = eventReturnsMap.get(eventId);
+            if (returnData.eventEndDate) {
+              endDate = formatDate(returnData.eventEndDate);
+            }
           }
-        ];
-        
-        exampleEventProducts.forEach((product, index) => {
-          const productRowData = [
-            `<label class="checkboxs">
-              <input type="checkbox" />
-              <span class="checkmarks"></span>
-            </label>`,
-            product.date,
-            product.customer,
-            product.reference,
-            `<span class="badges ${getStatusBadgeClass(product.status)}">${product.status}</span>`,
-            `<span class="badges ${getPaymentBadgeClass(product.payment)}">${product.payment}</span>`,
-            `$${product.total.toFixed(2)}`,
-            `$${product.paid.toFixed(2)}`,
-            `$${product.due.toFixed(2)}`,
-            product.biller,
-            userRole === "Admin" 
-              ? `<a class="me-3" href="editeventproduct.html?id=example-${index}">
-                   <img src="assets/img/icons/edit.svg" alt="img" />
-                 </a>
-                 <a class="me-3 confirm-text" href="javascript:void(0);" data-id="example-${index}" data-name="${product.reference}">
-                   <img src="assets/img/icons/delete.svg" alt="img" />
-                 </a>`
-              : `<a class="me-3" href="eventproduct-details.html?id=example-${index}">
-                   <img src="assets/img/icons/eye.svg" alt="View" />
-                 </a>`
+
+          // Get user name
+          let userName = "Unknown User";
+          if (eventData.createdBy && eventData.createdBy.uid) {
+            const userDoc = await getDoc(
+              doc(db, "users", eventData.createdBy.uid)
+            );
+            if (userDoc.exists()) {
+              userName = userDoc.data().displayName || "Unknown User";
+            }
+          }
+
+          const eventName = eventData.name || "Untitled Event";
+
+          const rowData = [
+            eventName,
+            startDate,
+            endDate,
+            userName,
+            `<a class="me-3" href="editevent.html?id=${eventId}">
+              <img src="assets/img/icons/edit.svg" alt="Edit" />
+            </a>
+            <a class="me-3 confirm-text" href="javascript:void(0);" data-id="${eventId}" data-name="${eventName}">
+              <img src="assets/img/icons/delete.svg" alt="Delete" />
+            </a>`,
           ];
-          
-          dataTable.row.add(productRowData);
-        });
-        
+
+          // Add the row to DataTables
+          dataTable.row.add(rowData);
+        }
+
+        // Draw the table after adding all rows
         dataTable.draw();
-        
-        // Set up event handlers
+
+        // Set up delete handlers after drawing the table
         setupDeleteHandlers();
+      } else {
+        console.log("No events found in Firestore.");
+        // Add a message to the table when no events are found
+        const noDataRow = ["No events found", "", "", "", ""];
+        dataTable.row.add(noDataRow).draw();
       }
     } catch (error) {
-      console.error("Error getting user data:", error);
-      
-      // Initialize DataTable with default data on error
-      if ($.fn.DataTable.isDataTable('.datanew')) {
-        $('.datanew').DataTable().destroy();
-      }
-      
-      dataTable = $('.datanew').DataTable({
-        language: {
-          search: '<img src="assets/img/icons/search.svg" alt="search">',
-          searchPlaceholder: "Search...",
-          paginate: {
-            next: '<img src="assets/img/icons/pagination-next.svg" alt="next">',
-            previous: '<img src="assets/img/icons/pagination-previous.svg" alt="previous">'
-          }
-        },
-        "bFilter": true,
-        "sDom": 'fBtlpi', 
-        ordering: true,
-        "pagingType": "numbers",
-        "lengthChange": false,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "processing": true,
-        "destroy": true
-      });
-      
+      console.error("Error fetching events:", error);
+      // Display error message in the table
       dataTable.clear().draw();
-      
-      // Add fallback example event products
-      const exampleEventProducts = [
-        { 
-          date: "2025-03-01", 
-          customer: "John Smith", 
-          reference: "EVT-001", 
-          status: "Completed", 
-          payment: "Credit Card", 
-          total: 249.99, 
-          paid: 249.99, 
-          due: 0.00, 
-          biller: "Admin"
-        },
-        { 
-          date: "2025-03-05", 
-          customer: "Jane Doe", 
-          reference: "EVT-002", 
-          status: "Pending", 
-          payment: "PayPal", 
-          total: 349.99, 
-          paid: 149.99, 
-          due: 200.00, 
-          biller: "Admin"
-        },
-        { 
-          date: "2025-03-08", 
-          customer: "Robert Johnson", 
-          reference: "EVT-003", 
-          status: "Cancelled", 
-          payment: "Unpaid", 
-          total: 199.99, 
-          paid: 0.00, 
-          due: 199.99, 
-          biller: "Admin"
-        }
-      ];
-      
-      exampleEventProducts.forEach((product, index) => {
-        const productRowData = [
-          `<label class="checkboxs">
-            <input type="checkbox" />
-            <span class="checkmarks"></span>
-          </label>`,
-          product.date,
-          product.customer,
-          product.reference,
-          `<span class="badges ${getStatusBadgeClass(product.status)}">${product.status}</span>`,
-          `<span class="badges ${getPaymentBadgeClass(product.payment)}">${product.payment}</span>`,
-          `$${product.total.toFixed(2)}`,
-          `$${product.paid.toFixed(2)}`,
-          `$${product.due.toFixed(2)}`,
-          product.biller,
-          `<a class="me-3" href="editeventproduct.html?id=example-${index}">
-             <img src="assets/img/icons/edit.svg" alt="img" />
-           </a>
-           <a class="me-3 confirm-text" href="javascript:void(0);" data-id="example-${index}" data-name="${product.reference}">
-             <img src="assets/img/icons/delete.svg" alt="img" />
-           </a>`
-        ];
-        
-        dataTable.row.add(productRowData);
-      });
-      
-      dataTable.draw();
-      
-      // Set up delete handlers
-      setupDeleteHandlers();
+      const errorRow = ["Error loading data", "", "", "", ""];
+      dataTable.row.add(errorRow).draw();
     }
   } else {
     // User is not logged in, redirect to login page
@@ -1504,142 +955,47 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// Helper function to get status badge class
-function getStatusBadgeClass(status) {
-  if (!status) return "bg-lightred";
-  
-  switch(status.toLowerCase()) {
-    case "completed":
-      return "bg-lightgreen";
-    case "pending":
-      return "bg-lightyellow";
-    case "cancelled":
-      return "bg-lightred";
-    case "processing":
-      return "bg-lightblue";
-    default:
-      return "bg-lightgray";
-  }
-}
-
-// Helper function to get payment badge class
-function getPaymentBadgeClass(payment) {
-  if (!payment) return "bg-lightred";
-  
-  switch(payment.toLowerCase()) {
-    case "credit card":
-    case "debit card":
-      return "bg-lightgreen";
-    case "paypal":
-      return "bg-lightblue";
-    case "bank transfer":
-      return "bg-lightyellow";
-    case "unpaid":
-      return "bg-lightred";
-    default:
-      return "bg-lightgray";
-  }
-}
-
-// Function to set up delete handlers
+// Helper function to set up delete handlers
 function setupDeleteHandlers() {
-  // We need to use event delegation since the elements are created dynamically
-  $(document).off('click', '.confirm-text').on('click', '.confirm-text', function() {
-    const productId = $(this).data('id');
-    const productName = $(this).data('name');
-    
-    swal({
-      title: "Delete Event Record",
-      text: `Are you sure you want to delete ${productName}?`,
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!",
-      closeOnConfirm: false,
-      closeOnCancel: false
-    }, function(isConfirm) {
-      if (isConfirm) {
-        // Check if it's our example entry
-        if (productId.startsWith("example-")) {
-          swal("Deleted!", `${productName} has been deleted.`, "success");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-          return;
+  $(document)
+    .off("click", ".confirm-text")
+    .on("click", ".confirm-text", function () {
+      const eventId = $(this).data("id");
+      const eventName = $(this).data("name");
+
+      swal(
+        {
+          title: "Delete Event",
+          text: `Are you sure you want to delete ${eventName}?`,
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, cancel!",
+          closeOnConfirm: false,
+          closeOnCancel: false,
+        },
+        function (isConfirm) {
+          if (isConfirm) {
+            // Delete the event from Firestore
+            deleteDoc(doc(db, "events", eventId))
+              .then(() => {
+                swal("Deleted!", `${eventName} has been deleted.`, "success");
+                // Refresh the page after deletion
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1000);
+              })
+              .catch((error) => {
+                console.error("Error deleting document:", error);
+                swal("Error", "Failed to delete event: " + error.message, "error");
+              });
+          } else {
+            swal("Cancelled", "Your event is safe", "error");
+          }
         }
-        
-        // Delete the event product from Firestore
-        deleteDoc(doc(db, "eventProducts", productId))
-          .then(() => {
-            swal("Deleted!", `${productName} has been deleted.`, "success");
-            // Refresh the page after deletion
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
-          })
-          .catch((error) => {
-            swal("Error", "Failed to delete event record: " + error.message, "error");
-          });
-      } else {
-        swal("Cancelled", "Your event record is safe", "error");
-      }
+      );
     });
-  });
 }
-
-// Setup filter toggle functionality
-$(document).ready(function() {
-  // Toggle filter inputs
-  $("#filter_search").on("click", function() {
-    $("#filter_inputs").toggle();
-  });
-  
-  // Populate event dropdown from Firestore
-  loadEventDropdowns();
-  
-  // Select2 initialization if applicable
-  if($.fn.select2) {
-    $('.select').select2({
-      minimumResultsForSearch: -1,
-      width: '100%'
-    });
-  }
-});
-
-// Function to load events into dropdowns
-async function loadEventDropdowns() {
-  try {
-    const eventsCollection = collection(db, "events");
-    const eventsSnapshot = await getDocs(eventsCollection);
-    
-    // Get select element
-    const eventSelect = document.querySelector('select.select:first-of-type');
-    
-    // Clear existing options except the first one
-    while (eventSelect.options.length > 1) {
-      eventSelect.remove(1);
-    }
-    
-    // Add events to dropdown
-    eventsSnapshot.forEach((eventDoc) => {
-      const eventData = eventDoc.data();
-      const option = document.createElement('option');
-      option.value = eventDoc.id;
-      option.textContent = eventData.name || 'Unnamed Event';
-      eventSelect.appendChild(option);
-    });
-    
-    // If Select2 is initialized, refresh it
-    if($.fn.select2) {
-      $('.select').select2('destroy').select2({
-        minimumResultsForSearch: -1,
-        width: '100%'
-      });
-    }
-  } catch (error) {
-    console.error("Error loading event dropdowns:", error);
-  }
-}
-</script>
-</body>
+    </script>
+  </body>
 </html>

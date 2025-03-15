@@ -557,189 +557,212 @@
       } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
       // Firebase event form submission code
-      document.addEventListener("DOMContentLoaded", function () {
-        // Reference to the form
-        const submitBtn = document.querySelector(".btn-submit");
+      // Firebase event form submission code
+document.addEventListener("DOMContentLoaded", function () {
+  // Reference to the form
+  const submitBtn = document.querySelector(".btn-submit");
 
-        submitBtn.addEventListener("click", async function (e) {
-          e.preventDefault();
+  submitBtn.addEventListener("click", async function (e) {
+    e.preventDefault();
 
-          try {
-            // Get main event details
-            const eventName = document.querySelector(
-              'input[placeholder="Enter Event Name"]'
-            ).value;
-            const eventDate =
-              document.querySelector('input[type="date"]').value;
+    try {
+      // Get main event details
+      const eventName = document.querySelector(
+        'input[placeholder="Enter Event Name"]'
+      ).value;
+      const eventDate =
+        document.querySelector('input[type="date"]').value;
 
-            // Get the selected status option
-            const statusSelect = document.querySelector(
-              ".card-body > .row select.select"
-            );
-            const eventStatus =
-              statusSelect.options[statusSelect.selectedIndex].textContent;
+      // Get the selected status option
+      const statusSelect = document.querySelector(
+        ".card-body > .row select.select"
+      );
+      const eventStatus =
+        statusSelect.options[statusSelect.selectedIndex].textContent;
 
-            const description = document.querySelector(
-              'textarea[placeholder="Enter Event Description"]'
-            ).value;
+      const description = document.querySelector(
+        'textarea[placeholder="Enter Event Description"]'
+      ).value;
 
-            // Validate required fields
-            if (!eventName || !eventDate) {
-              showAlert("Please fill in all required fields", "error");
-              return;
-            }
+      // Validate required fields
+      if (!eventName || !eventDate) {
+        showAlert("Please fill in all required fields", "error");
+        return;
+      }
 
-            // Create event document in Firestore
-            const eventData = {
-              name: eventName,
-              date: eventDate,
-              status: eventStatus,
-              description: description,
-              createdAt: serverTimestamp(),
-            };
+      // Get current user information
+      const user = auth.currentUser;
+      if (!user) {
+        showAlert("You must be logged in to create an event", "error");
+        return;
+      }
 
-            // Add event to Firestore
-            const eventRef = await addDoc(collection(db, "events"), eventData);
-            const eventId = eventRef.id;
-            console.log("Event document created with ID: ", eventId);
-
-            // Process the main product section
-            const mainForm = document.querySelector(".card-body > .row");
-
-            // Get all select elements in the main form
-            const selects = mainForm.querySelectorAll("select.select");
-
-            // Find product, category, subcategory, and brand selects
-            let productSelect, categorySelect, subCategorySelect, brandSelect;
-
-            // Skip the first select (event status) and find the next ones
-            for (let i = 1; i < selects.length; i++) {
-              const label = selects[i]
-                .closest(".form-group")
-                .querySelector("label").textContent;
-              if (label === "Product") productSelect = selects[i];
-              else if (label === "Category") categorySelect = selects[i];
-              else if (label === "Sub Category") subCategorySelect = selects[i];
-              else if (label === "Brand") brandSelect = selects[i];
-            }
-
-            if (productSelect) {
-              const product =
-                productSelect.options[productSelect.selectedIndex].text;
-              const category = categorySelect
-                ? categorySelect.options[categorySelect.selectedIndex].text
-                : "";
-              const subCategory = subCategorySelect
-                ? subCategorySelect.options[subCategorySelect.selectedIndex]
-                    .text
-                : "";
-              const brand = brandSelect
-                ? brandSelect.options[brandSelect.selectedIndex].text
-                : "";
-
-              // Get quantity input
-              const quantityInput = mainForm.querySelector(
-                'input[type="number"]'
-              );
-              const quantity = quantityInput
-                ? parseInt(quantityInput.value, 10) || 0
-                : 0;
-
-              // Get the requirements note
-              const requirementsNote = mainForm.querySelector(
-                'textarea[placeholder="Special requirements for the products"]'
-              );
-              const note = requirementsNote ? requirementsNote.value : "";
-
-              // Skip if "Select Product" is chosen
-              if (product && product !== "Select Product") {
-                // Add product to eventProducts collection
-                await addDoc(collection(db, "eventProducts"), {
-                  eventId: eventId,
-                  product: product,
-                  category: category,
-                  subCategory: subCategory,
-                  brand: brand,
-                  quantity: quantity,
-                  note: note,
-                  createdAt: serverTimestamp(),
-                });
-
-                console.log("Main product added for event:", eventId);
-              }
-            }
-
-            // Process all additional product sections
-            const additionalSections =
-              document.querySelectorAll(".product-section");
-
-            for (const section of additionalSections) {
-              const sectionSelects = section.querySelectorAll("select.select");
-
-              if (sectionSelects.length >= 4) {
-                const productValue =
-                  sectionSelects[0].options[sectionSelects[0].selectedIndex]
-                    .text;
-                const categoryValue =
-                  sectionSelects[1].options[sectionSelects[1].selectedIndex]
-                    .text;
-                const subCategoryValue =
-                  sectionSelects[2].options[sectionSelects[2].selectedIndex]
-                    .text;
-                const brandValue =
-                  sectionSelects[3].options[sectionSelects[3].selectedIndex]
-                    .text;
-
-                // Get quantity for this section
-                const sectionQuantityInput = section.querySelector(
-                  'input[type="number"]'
-                );
-                const sectionQuantity = sectionQuantityInput
-                  ? parseInt(sectionQuantityInput.value, 10) || 0
-                  : 0;
-
-                // Skip if "Select Product" is chosen
-                if (productValue && productValue !== "Select Product") {
-                  // Add additional product to eventProducts collection
-                  await addDoc(collection(db, "eventProducts"), {
-                    eventId: eventId,
-                    product: productValue,
-                    category: categoryValue,
-                    subCategory: subCategoryValue,
-                    brand: brandValue,
-                    quantity: sectionQuantity,
-                    note: "", // Additional sections don't have separate notes
-                    createdAt: serverTimestamp(),
-                  });
-
-                  console.log("Additional product added for event:", eventId);
-                }
-              }
-            }
-
-            // Show success message
-            showAlert("Event created successfully!", "success");
-
-            // Redirect to events list page after short delay
-            setTimeout(() => {
-              window.location.href = "saleslist.html";
-            }, 2000);
-          } catch (error) {
-            console.error("Error adding event: ", error);
-            showAlert("Error creating event: " + error.message, "error");
-          }
-        });
-
-        // Helper function to show SweetAlert messages
-        function showAlert(message, type) {
-          Swal.fire({
-            title: type === "success" ? "Success!" : "Error!",
-            text: message,
-            icon: type,
-            confirmButtonText: "OK",
-          });
+      // Create event document in Firestore with creator information
+      const eventData = {
+        name: eventName,
+        date: eventDate,
+        status: eventStatus,
+        description: description,
+        createdAt: serverTimestamp(),
+        createdBy: {
+          uid: user.uid,
+          displayName: user.displayName || "Unknown User",
+          email: user.email
         }
-      });
+      };
+
+      // Add event to Firestore
+      const eventRef = await addDoc(collection(db, "events"), eventData);
+      const eventId = eventRef.id;
+      console.log("Event document created with ID: ", eventId);
+
+      // Process the main product section
+      const mainForm = document.querySelector(".card-body > .row");
+
+      // Get all select elements in the main form
+      const selects = mainForm.querySelectorAll("select.select");
+
+      // Find product, category, subcategory, and brand selects
+      let productSelect, categorySelect, subCategorySelect, brandSelect;
+
+      // Skip the first select (event status) and find the next ones
+      for (let i = 1; i < selects.length; i++) {
+        const label = selects[i]
+          .closest(".form-group")
+          .querySelector("label").textContent;
+        if (label === "Product") productSelect = selects[i];
+        else if (label === "Category") categorySelect = selects[i];
+        else if (label === "Sub Category") subCategorySelect = selects[i];
+        else if (label === "Brand") brandSelect = selects[i];
+      }
+
+      if (productSelect) {
+        const product =
+          productSelect.options[productSelect.selectedIndex].text;
+        const category = categorySelect
+          ? categorySelect.options[categorySelect.selectedIndex].text
+          : "";
+        const subCategory = subCategorySelect
+          ? subCategorySelect.options[subCategorySelect.selectedIndex]
+              .text
+          : "";
+        const brand = brandSelect
+          ? brandSelect.options[brandSelect.selectedIndex].text
+          : "";
+
+        // Get quantity input
+        const quantityInput = mainForm.querySelector(
+          'input[type="number"]'
+        );
+        const quantity = quantityInput
+          ? parseInt(quantityInput.value, 10) || 0
+          : 0;
+
+        // Get the requirements note
+        const requirementsNote = mainForm.querySelector(
+          'textarea[placeholder="Special requirements for the products"]'
+        );
+        const note = requirementsNote ? requirementsNote.value : "";
+
+        // Skip if "Select Product" is chosen
+        if (product && product !== "Select Product") {
+          // Add product to eventProducts collection
+          await addDoc(collection(db, "eventProducts"), {
+            eventId: eventId,
+            product: product,
+            category: category,
+            subCategory: subCategory,
+            brand: brand,
+            quantity: quantity,
+            note: note,
+            createdAt: serverTimestamp(),
+            createdBy: {
+              uid: user.uid,
+              displayName: user.displayName || "Unknown User",
+              email: user.email
+            }
+          });
+
+          console.log("Main product added for event:", eventId);
+        }
+      }
+
+      // Process all additional product sections
+      const additionalSections =
+        document.querySelectorAll(".product-section");
+
+      for (const section of additionalSections) {
+        const sectionSelects = section.querySelectorAll("select.select");
+
+        if (sectionSelects.length >= 4) {
+          const productValue =
+            sectionSelects[0].options[sectionSelects[0].selectedIndex]
+              .text;
+          const categoryValue =
+            sectionSelects[1].options[sectionSelects[1].selectedIndex]
+              .text;
+          const subCategoryValue =
+            sectionSelects[2].options[sectionSelects[2].selectedIndex]
+              .text;
+          const brandValue =
+            sectionSelects[3].options[sectionSelects[3].selectedIndex]
+              .text;
+
+          // Get quantity for this section
+          const sectionQuantityInput = section.querySelector(
+            'input[type="number"]'
+          );
+          const sectionQuantity = sectionQuantityInput
+            ? parseInt(sectionQuantityInput.value, 10) || 0
+            : 0;
+
+          // Skip if "Select Product" is chosen
+          if (productValue && productValue !== "Select Product") {
+            // Add additional product to eventProducts collection
+            await addDoc(collection(db, "eventProducts"), {
+              eventId: eventId,
+              product: productValue,
+              category: categoryValue,
+              subCategory: subCategoryValue,
+              brand: brandValue,
+              quantity: sectionQuantity,
+              note: "", // Additional sections don't have separate notes
+              createdAt: serverTimestamp(),
+              createdBy: {
+                uid: user.uid,
+                displayName: user.displayName || "Unknown User",
+                email: user.email
+              }
+            });
+
+            console.log("Additional product added for event:", eventId);
+          }
+        }
+      }
+
+      // Show success message
+      showAlert("Event created successfully!", "success");
+
+      // Redirect to events list page after short delay
+      setTimeout(() => {
+        window.location.href = "saleslist.html";
+      }, 2000);
+    } catch (error) {
+      console.error("Error adding event: ", error);
+      showAlert("Error creating event: " + error.message, "error");
+    }
+  });
+
+  // Helper function to show SweetAlert messages
+  function showAlert(message, type) {
+    Swal.fire({
+      title: type === "success" ? "Success!" : "Error!",
+      text: message,
+      icon: type,
+      confirmButtonText: "OK",
+    });
+  }
+});
     </script>
 
     <script>
