@@ -897,7 +897,7 @@ onAuthStateChanged(auth, async (user) => {
           if (eventReturnsMap.has(eventId)) {
             const returnData = eventReturnsMap.get(eventId);
             if (returnData.eventEndDate) {
-              endDate = formatDate(returnData.eventEndDate);
+              endDate = returnData.eventEndDate;
             }
           }
 
