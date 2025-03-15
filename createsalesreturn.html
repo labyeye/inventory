@@ -591,7 +591,7 @@
             const eventData = doc.data();
             const option = document.createElement("option");
             option.value = eventData.eventName || doc.id;
-            option.text = eventData.eventName || "Event " + doc.id;
+            option.text = eventData.eventName || doc.name;
             option.dataset.eventId = doc.id;
             option.dataset.eventEndDate = eventData.endDate || "";
             eventSelect.appendChild(option);
