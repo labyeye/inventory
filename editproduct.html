@@ -117,7 +117,7 @@
     <script src="assets/plugins/sweetalert/sweetalerts.min.js"></script>
     <script src="assets/js/script.js"></script>
     <script type="module">
-      import { db, storage } from "./assets/js/firebase.js";
+      import { db } from "./assets/js/firebase.js";
       import {
         doc,
         getDoc,
@@ -125,11 +125,6 @@
         collection,
         getDocs,
       } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-      import {
-        ref,
-        uploadBytesResumable,
-        getDownloadURL,
-      } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
     
       // Get product ID from URL
       const urlParams = new URLSearchParams(window.location.search);
@@ -167,10 +162,10 @@
             },
           });
     
-          // First fetch all categories and subcategories
+          // Fetch all categories and subcategories
           await fetchCategoriesAndSubcategories();
     
-          // Then load and display product data
+          // Load and display product data
           await loadProductData();
     
           // Set up event listeners
@@ -274,7 +269,8 @@
     
           // Set category if present
           if (productData.categoryId) {
-            document.getElementById("categorySelect").value = productData.categoryId;
+            const categorySelect = document.getElementById("categorySelect");
+            categorySelect.value = productData.categoryId;
     
             // Update subcategories dropdown
             updateSubcategoriesDropdown(productData.categoryId);
