@@ -448,7 +448,7 @@ $(document).ready(function () {
     '<div class="col-xl-6 col-sm-6 col-12">' +
     '<div class="sidebar-logo">' +
     '<a href="index.html" class="logo">' +
-    '<img src="assets/img/logo.png" alt="Logo" class="img-flex">' +
+    '<img src="#" alt="Logo" class="img-flex">' +
     "</a>" +
     "</div>" +
     "</div>" +
