@@ -463,5 +463,537 @@
 <script src="assets/plugins/sweetalert/sweetalerts.min.js"></script>
 
 <script src="assets/js/script.js"></script>
+<script type="module" >// Module script for editproduct.html
+    import { db, storage } from "./assets/js/firebase.js";
+    import { 
+      doc, 
+      getDoc, 
+      updateDoc, 
+      collection, 
+      getDocs 
+    } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+    import {
+      ref,
+      uploadBytesResumable,
+      getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
+    
+    // Get product ID from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+    
+    if (!productId) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No product ID specified!'
+      }).then(() => {
+        window.location.href = 'productlist.html';
+      });
+    }
+    
+    // Initialize UI elements
+    let productNameInput, categorySelect, subcategorySelect, brandSelect, unitSelect,
+        minQtyInput, quantityInput, priceInput, taxSelect, discountSelect, statusSelect,
+        skuInput, descriptionInput, imageUploadInput, productImage;
+    
+    // DOM elements will be initialized when document is ready
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Initialize form elements - Using proper selectors with fallbacks
+      productNameInput = document.querySelector('input[type="text"][value="Macbook pro"]');
+      categorySelect = document.querySelectorAll('.form-group select')[0];
+      subcategorySelect = document.querySelectorAll('.form-group select')[1];
+      brandSelect = document.querySelectorAll('.form-group select')[2];
+      unitSelect = document.querySelectorAll('.form-group select')[3];
+      skuInput = document.querySelector('input[type="text"][value="PT0002"]');
+      minQtyInput = document.querySelector('input[type="text"][value="5"]');
+      quantityInput = document.querySelector('input[type="text"][value="50"]');
+      descriptionInput = document.querySelector('textarea');
+      taxSelect = document.querySelectorAll('.form-group select')[4];
+      discountSelect = document.querySelectorAll('.form-group select')[5];
+      priceInput = document.querySelector('input[type="text"][value="1500.00"]');
+      statusSelect = document.querySelectorAll('.form-group select')[6];
+      imageUploadInput = document.querySelector('.image-upload input[type="file"]');
+      productImage = document.querySelector('.productviewsimg img');
+      
+      // Add ARIA labels for better accessibility and element selection
+      productNameInput.setAttribute('aria-label', 'Product Name');
+      categorySelect.setAttribute('aria-label', 'Category');
+      subcategorySelect.setAttribute('aria-label', 'Sub Category');
+      brandSelect.setAttribute('aria-label', 'Brand');
+      unitSelect.setAttribute('aria-label', 'Unit');
+      skuInput.setAttribute('aria-label', 'SKU');
+      minQtyInput.setAttribute('aria-label', 'Minimum Qty');
+      quantityInput.setAttribute('aria-label', 'Quantity');
+      taxSelect.setAttribute('aria-label', 'Tax');
+      discountSelect.setAttribute('aria-label', 'Discount Type');
+      priceInput.setAttribute('aria-label', 'Price');
+      statusSelect.setAttribute('aria-label', 'Status');
+      
+      // Initialize select2 for dropdowns if available
+      try {
+        $('.select').select2({
+          width: '100%'
+        });
+      } catch (error) {
+        console.warn('Select2 initialization error:', error);
+      }
+    
+      // Fetch categories and subcategories for dropdown
+      await populateCategories();
+      
+      // Load product data
+      await loadProductData();
+    
+      // Set up event listeners
+      setupEventListeners();
+    });
+    
+    // Populate categories, subcategories, and brands dropdowns
+    async function populateCategories() {
+      try {
+        // Fetch categories
+        const categoriesSnapshot = await getDocs(collection(db, "categories"));
+        
+        // Clear and repopulate category dropdown
+        categorySelect.innerHTML = '<option value="">Select Category</option>';
+        
+        categoriesSnapshot.forEach(doc => {
+          const category = doc.data();
+          const option = document.createElement('option');
+          option.value = doc.id;
+          option.textContent = category.name;
+          categorySelect.appendChild(option);
+        });
+    
+        // Fetch subcategories
+        const subcategoriesSnapshot = await getDocs(collection(db, "subcategories"));
+        
+        // Store subcategories data for later use when category is selected
+        window.subcategoriesData = [];
+        subcategoriesSnapshot.forEach(doc => {
+          const subcategory = doc.data();
+          window.subcategoriesData.push({
+            id: doc.id,
+            name: subcategory.name,
+            categoryId: subcategory.categoryId
+          });
+        });
+    
+        // Fetch brands
+        const brandsSnapshot = await getDocs(collection(db, "brands"));
+        
+        // Clear and repopulate brand dropdown
+        brandSelect.innerHTML = '<option value="">Select Brand</option>';
+        
+        brandsSnapshot.forEach(doc => {
+          const brand = doc.data();
+          const option = document.createElement('option');
+          option.value = doc.id;
+          option.textContent = brand.name;
+          brandSelect.appendChild(option);
+        });
+      } catch (error) {
+        console.error("Error loading categories and subcategories:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to load categories and subcategories!'
+        });
+      }
+    }
+    
+    // Update subcategories dropdown when category changes
+    function updateSubcategories(categoryId) {
+      subcategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
+      
+      if (!window.subcategoriesData || !categoryId) return;
+      
+      const filteredSubcategories = window.subcategoriesData.filter(
+        subcat => subcat.categoryId === categoryId
+      );
+      
+      filteredSubcategories.forEach(subcat => {
+        const option = document.createElement('option');
+        option.value = subcat.id;
+        option.textContent = subcat.name;
+        subcategorySelect.appendChild(option);
+      });
+    }
+    
+    // Load product data from Firebase
+    async function loadProductData() {
+      try {
+        console.log("Loading product data for ID:", productId);
+        const productRef = doc(db, "products", productId);
+        const productSnap = await getDoc(productRef);
+        
+        if (!productSnap.exists()) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Product not found!'
+          }).then(() => {
+            window.location.href = 'productlist.html';
+          });
+          return;
+        }
+        
+        const productData = productSnap.data();
+        console.log("Product data loaded:", productData);
+        
+        // Populate form fields with product data
+        productNameInput.value = productData.name || '';
+        
+        // Set category and trigger change to load subcategories
+        if (productData.categoryId) {
+          categorySelect.value = productData.categoryId;
+          updateSubcategories(productData.categoryId);
+          
+          // Trigger select2 change if available
+          try {
+            $(categorySelect).trigger('change');
+          } catch (e) {
+            console.warn('Select2 trigger change failed:', e);
+          }
+        }
+        
+        // Set subcategory after a small delay to ensure dropdown is populated
+        setTimeout(() => {
+          if (productData.subCategoryId) {
+            subcategorySelect.value = productData.subCategoryId;
+            try {
+              $(subcategorySelect).trigger('change');
+            } catch (e) {
+              console.warn('Select2 trigger change failed:', e);
+            }
+          }
+        }, 300);
+        
+        // Set brand
+        if (productData.brandId) {
+          brandSelect.value = productData.brandId;
+          try {
+            $(brandSelect).trigger('change');
+          } catch (e) {
+            console.warn('Select2 trigger change failed:', e);
+          }
+        }
+        
+        // Set unit if available
+        if (productData.unit) {
+          const unitOptions = Array.from(unitSelect.options);
+          const unitOption = unitOptions.find(option => 
+            option.textContent.toLowerCase() === productData.unit.toLowerCase());
+          
+          if (unitOption) {
+            unitSelect.value = unitOption.value;
+            try {
+              $(unitSelect).trigger('change');
+            } catch (e) {
+              console.warn('Select2 trigger change failed:', e);
+            }
+          }
+        }
+        
+        // Set other fields
+        skuInput.value = productData.sku || '';
+        minQtyInput.value = productData.minimumQty || productData.minQty || '1';
+        quantityInput.value = productData.quantity || '0';
+        descriptionInput.value = productData.description || '';
+        priceInput.value = productData.price ? productData.price.toFixed(2) : '0.00';
+        
+        // Set tax, discount and status if available
+        if (productData.tax) {
+          const taxOptions = Array.from(taxSelect.options);
+          const taxOption = taxOptions.find(option => 
+            option.textContent.includes(productData.tax.toString()));
+          
+          if (taxOption) {
+            taxSelect.value = taxOption.value;
+            try {
+              $(taxSelect).trigger('change');
+            } catch (e) {
+              console.warn('Select2 trigger change failed:', e);
+            }
+          }
+        }
+        
+        if (productData.discountType) {
+          const discountOptions = Array.from(discountSelect.options);
+          const discountOption = discountOptions.find(option => 
+            option.textContent.toLowerCase().includes(productData.discountType.toLowerCase()));
+          
+          if (discountOption) {
+            discountSelect.value = discountOption.value;
+            try {
+              $(discountSelect).trigger('change');
+            } catch (e) {
+              console.warn('Select2 trigger change failed:', e);
+            }
+          }
+        }
+        
+        if (productData.status) {
+          const statusOptions = Array.from(statusSelect.options);
+          const statusOption = statusOptions.find(option => 
+            option.textContent.toLowerCase() === productData.status.toLowerCase());
+          
+          if (statusOption) {
+            statusSelect.value = statusOption.value;
+            try {
+              $(statusSelect).trigger('change');
+            } catch (e) {
+              console.warn('Select2 trigger change failed:', e);
+            }
+          }
+        }
+        
+        // Display product image if exists
+        if (productData.imageUrl) {
+          productImage.src = productData.imageUrl;
+          productImage.alt = productData.name;
+          document.querySelector('.productviews').style.display = 'flex';
+          
+          // Update image info
+          const imageNameEl = document.querySelector('.productviewsname h2');
+          if (imageNameEl) {
+            const imageName = productData.imageUrl.split('/').pop();
+            imageNameEl.textContent = imageName.length > 20 ? 
+              imageName.substring(0, 17) + '...' : imageName;
+          }
+        } else {
+          document.querySelector('.productviews').style.display = 'none';
+        }
+        
+      } catch (error) {
+        console.error("Error loading product data:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to load product data: ' + error.message
+        });
+      }
+    }
+    
+    // Set up event listeners
+    function setupEventListeners() {
+      // Category change event
+      categorySelect.addEventListener('change', function() {
+        updateSubcategories(this.value);
+      });
+      
+      // Image upload preview
+      imageUploadInput.addEventListener('change', function(e) {
+        if (e.target.files[0]) {
+          const reader = new FileReader();
+          
+          reader.onload = function(e) {
+            productImage.src = e.target.result;
+            document.querySelector('.productviews').style.display = 'flex';
+            
+            // Update image info
+            const imageNameEl = document.querySelector('.productviewsname h2');
+            if (imageNameEl) {
+              const fileName = imageUploadInput.files[0].name;
+              imageNameEl.textContent = fileName.length > 20 ? 
+                fileName.substring(0, 17) + '...' : fileName;
+            }
+            
+            const fileSizeEl = document.querySelector('.productviewsname h3');
+            if (fileSizeEl) {
+              const fileSize = Math.floor(imageUploadInput.files[0].size / 1024);
+              fileSizeEl.textContent = fileSize + 'kb';
+            }
+          }
+          
+          reader.readAsDataURL(e.target.files[0]);
+        }
+      });
+      
+      // Remove image button
+      const hideSetBtn = document.querySelector('.hideset');
+      if (hideSetBtn) {
+        hideSetBtn.addEventListener('click', function() {
+          document.querySelector('.productviews').style.display = 'none';
+          imageUploadInput.value = '';
+        });
+      }
+      
+      // Update button click
+      const updateBtn = document.querySelector('.btn-submit');
+      if (updateBtn) {
+        updateBtn.addEventListener('click', updateProduct);
+      }
+    }
+    
+    // Upload image to Firebase storage
+    async function uploadImage(file) {
+      return new Promise((resolve, reject) => {
+        if (!file) {
+          resolve(null);
+          return;
+        }
+        
+        const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        
+        uploadTask.on('state_changed',
+          (snapshot) => {
+            // Progress monitoring
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            
+            // Update UI with progress if needed
+            Swal.update({
+              title: 'Uploading Image',
+              text: `Progress: ${Math.round(progress)}%`
+            });
+          },
+          (error) => {
+            // Error handling
+            console.error("Upload failed:", error);
+            reject(error);
+          },
+          () => {
+            // Upload complete
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              resolve(downloadURL);
+            });
+          }
+        );
+      });
+    }
+    
+    // Update product data in Firebase
+    async function updateProduct() {
+      // Form validation
+      if (!productNameInput.value.trim()) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Validation Error',
+          text: 'Product name cannot be empty!'
+        });
+        return;
+      }
+      
+      try {
+        // Show loading
+        Swal.fire({
+          title: 'Updating Product',
+          text: 'Please wait...',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        
+        // Get selected values and text for dropdowns
+        const categoryText = categorySelect.options[categorySelect.selectedIndex]?.text || '';
+        const subcategoryText = subcategorySelect.options[subcategorySelect.selectedIndex]?.text || '';
+        const brandText = brandSelect.options[brandSelect.selectedIndex]?.text || '';
+        const unitText = unitSelect.options[unitSelect.selectedIndex]?.text || '';
+    const taxText = taxSelect.options[taxSelect.selectedIndex]?.text || '';
+    const discountText = discountSelect.options[discountSelect.selectedIndex]?.text || '';
+    const statusText = statusSelect.options[statusSelect.selectedIndex]?.text || '';
+    
+    // Upload image if selected
+    let imageUrl = null;
+    
+    if (imageUploadInput.files[0]) {
+      Swal.update({
+        title: 'Uploading Image',
+        text: 'Please wait...'
+      });
+      
+      imageUrl = await uploadImage(imageUploadInput.files[0]);
+    }
+    
+    // Parse numeric values
+    const quantity = parseInt(quantityInput.value) || 0;
+    const minQty = parseInt(minQtyInput.value) || 0;
+    const price = parseFloat(priceInput.value) || 0;
+    
+    // Extract tax percentage from text if available
+    let taxPercentage = null;
+    if (taxText && taxText !== 'Choose Tax') {
+      const taxMatch = taxText.match(/(\d+)%/);
+      if (taxMatch && taxMatch[1]) {
+        taxPercentage = parseInt(taxMatch[1]);
+      }
+    }
+    
+    // Prepare product data
+    const productData = {
+      name: productNameInput.value.trim(),
+      categoryId: categorySelect.value || null,
+      categoryName: categoryText !== 'Select Category' ? categoryText : null,
+      subCategoryId: subcategorySelect.value || null,
+      subCategoryName: subcategoryText !== 'Select Sub Category' ? subcategoryText : null,
+      brandId: brandSelect.value || null,
+      brand: brandText !== 'Select Brand' ? brandText : null,
+      unit: unitText !== 'Piece' && unitText !== 'Kg' ? null : unitText,
+      sku: skuInput.value || '',
+      minimumQty: minQty,
+      quantity: quantity,
+      description: descriptionInput.value || '',
+      price: price,
+      tax: taxPercentage,
+      discountType: discountText !== 'Percentage' ? null : 'percentage',
+      status: statusText !== 'Active' && statusText !== 'Open' ? 'Inactive' : statusText,
+      updatedAt: new Date()
+    };
+    
+    // Only update image if a new one was uploaded
+    if (imageUrl) {
+      productData.imageUrl = imageUrl;
+    }
+    
+    // Update product in Firebase
+    await updateDoc(doc(db, "products", productId), productData);
+    
+    // Show success message
+    Swal.fire({
+      icon: 'success',
+      title: 'Success',
+      text: 'Product updated successfully!'
+    }).then(() => {
+      window.location.href = 'productlist.html';
+    });
+    
+  } catch (error) {
+    console.error("Error updating product:", error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Failed to update product: ' + error.message
+    });
+  }
+}
+// Add this to your productlist.html page inside a script tag
+document.addEventListener('DOMContentLoaded', function() {
+  // Find all edit buttons with class 'me-3' (assuming these are your edit buttons)
+  const editButtons = document.querySelectorAll('a.me-3[href="javascript:void(0);"]');
+  
+  editButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Get the product ID from the closest data attribute or row
+      const productRow = this.closest('tr');
+      const productId = productRow.getAttribute('data-id');
+      
+      if (productId) {
+        // Navigate to edit product page with the product ID
+        window.location.href = `editproduct.html?id=${productId}`;
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Could not find product ID!'
+        });
+      }
+    });
+  });
+});
+        </script>
 </body>
 </html>
