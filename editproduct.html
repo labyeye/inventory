@@ -118,226 +118,237 @@
     <script src="assets/js/script.js"></script>
     <script type="module">
       import { db, storage } from "./assets/js/firebase.js";
-      import {
-        doc,
-        getDoc,
-        updateDoc,
-        collection,
-        getDocs,
-      } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-      import {
-        ref,
-        uploadBytesResumable,
-        getDownloadURL,
-      } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  collection,
+  getDocs,
+} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const productId = urlParams.get("id");
+const urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get("id");
 
-      if (!productId) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "No product ID specified!",
-        }).then(() => {
-          window.location.href = "productlist.html";
-        });
-      }
+if (!productId) {
+  Swal.fire({
+    icon: "error",
+    title: "Error",
+    text: "No product ID specified!",
+  }).then(() => {
+    window.location.href = "productlist.html";
+  });
+}
 
-      document.addEventListener("DOMContentLoaded", async function () {
-        await populateCategories();
-        await loadProductData();
-        setupEventListeners();
-      });
+// Global variable to store subcategories data
+let subcategoriesData = [];
 
-      async function populateCategories() {
-        try {
-          // Fetch categories
-          const categoriesSnapshot = await getDocs(
-            collection(db, "categories")
-          );
-          const categorySelect = document.getElementById("categorySelect");
-          categorySelect.innerHTML =
-            '<option value="">Select Category</option>';
-
-          categoriesSnapshot.forEach((doc) => {
-            const category = doc.data();
-            const option = document.createElement("option");
-            option.value = doc.id;
-            option.textContent = category.name;
-            categorySelect.appendChild(option);
-          });
-
-          // Fetch subcategories
-          const subcategoriesSnapshot = await getDocs(
-            collection(db, "subcategories")
-          );
-          window.subcategoriesData = [];
-          subcategoriesSnapshot.forEach((doc) => {
-            const subcategory = doc.data();
-            window.subcategoriesData.push({
-              id: doc.id,
-              name: subcategory.name,
-              categoryId: subcategory.categoryId, // Ensure this matches your Firestore structure
-            });
-          });
-
-          // Update subcategories when category changes
-          categorySelect.addEventListener("change", function () {
-            updateSubcategories(this.value);
-          });
-        } catch (error) {
-          console.error("Error loading categories and subcategories:", error);
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Failed to load categories and subcategories!",
-          });
-        }
-      }
-
-      // Function to update subcategories dropdown
-      function updateSubcategories(categoryId) {
-    const subcategorySelect = document.getElementById("subcategorySelect");
-    subcategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
-
-    if (!window.subcategoriesData || !categoryId) return;
-
-    // Filter subcategories based on the selected category
-    const filteredSubcategories = window.subcategoriesData.filter(
-        (subcat) => subcat.categoryId === categoryId
-    );
-
-    // Populate subcategories dropdown
-    filteredSubcategories.forEach((subcat) => {
-        const option = document.createElement("option");
-        option.value = subcat.id;
-        option.textContent = subcat.name;
-        subcategorySelect.appendChild(option);
+document.addEventListener("DOMContentLoaded", async function () {
+  try {
+    await populateCategories();
+    await loadProductData();
+    setupEventListeners();
+  } catch (error) {
+    console.error("Error during initialization:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Failed to initialize: " + error.message,
     });
+  }
+});
+
+async function populateCategories() {
+  try {
+    // Fetch categories
+    const categoriesSnapshot = await getDocs(collection(db, "categories"));
+    const categorySelect = document.getElementById("categorySelect");
+    categorySelect.innerHTML = '<option value="">Select Category</option>';
+
+    categoriesSnapshot.forEach((doc) => {
+      const category = doc.data();
+      const option = document.createElement("option");
+      option.value = doc.id;
+      option.textContent = category.name;
+      categorySelect.appendChild(option);
+    });
+
+    // Fetch subcategories
+    const subcategoriesSnapshot = await getDocs(collection(db, "subcategories"));
+    subcategoriesData = []; // Use the global variable
+    subcategoriesSnapshot.forEach((doc) => {
+      const subcategory = doc.data();
+      subcategoriesData.push({
+        id: doc.id,
+        name: subcategory.name,
+        categoryId: subcategory.categoryId,
+      });
+    });
+    
+    console.log("Loaded subcategories:", subcategoriesData);
+  } catch (error) {
+    console.error("Error loading categories and subcategories:", error);
+    throw error;
+  }
 }
 
-      async function loadProductData() {
-    try {
-        const productRef = doc(db, "products", productId);
-        const productSnap = await getDoc(productRef);
+function updateSubcategories(categoryId) {
+  const subcategorySelect = document.getElementById("subcategorySelect");
+  subcategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
 
-        if (!productSnap.exists()) {
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Product not found!",
-            }).then(() => {
-                window.location.href = "productlist.html";
-            });
-            return;
-        }
+  // If no category is selected, just clear the subcategories and return
+  if (!categoryId) {
+    return;
+  }
 
-        const productData = productSnap.data();
-        console.log("Product Data:", productData);
+  console.log("Updating subcategories for category:", categoryId);
+  
+  // Filter subcategories based on the selected category
+  const filteredSubcategories = subcategoriesData.filter(
+    (subcat) => subcat.categoryId === categoryId
+  );
 
-        // Populate form fields
-        document.getElementById("productName").value = productData.name || "";
-        document.getElementById("brand").value = productData.brand || "";
-        document.getElementById("quantity").value = productData.quantity || "0";
-        document.getElementById("location").value = productData.location || "";
+  console.log("Filtered subcategories:", filteredSubcategories);
 
-        // Set category and subcategory
-        if (productData.categoryId) {
-            document.getElementById("categorySelect").value = productData.categoryId;
-            // Wait for subcategories to load, then set the subcategory
-            await updateSubcategories(productData.categoryId);
-            if (productData.subCategoryId) {
-                document.getElementById("subcategorySelect").value = productData.subCategoryId;
-            }
-        }
-    } catch (error) {
-        console.error("Error loading product data:", error);
-        Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Failed to load product data: " + error.message,
-        });
+  // Populate subcategories dropdown
+  filteredSubcategories.forEach((subcat) => {
+    const option = document.createElement("option");
+    option.value = subcat.id;
+    option.textContent = subcat.name;
+    subcategorySelect.appendChild(option);
+  });
+}
+
+async function loadProductData() {
+  try {
+    const productRef = doc(db, "products", productId);
+    const productSnap = await getDoc(productRef);
+
+    if (!productSnap.exists()) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Product not found!",
+      }).then(() => {
+        window.location.href = "productlist.html";
+      });
+      return;
     }
+
+    const productData = productSnap.data();
+    console.log("Product Data:", productData);
+
+    // Populate form fields
+    document.getElementById("productName").value = productData.name || "";
+    document.getElementById("brand").value = productData.brand || "";
+    document.getElementById("quantity").value = productData.quantity || "0";
+    document.getElementById("location").value = productData.location || "";
+
+    // Set category if it exists
+    if (productData.categoryId) {
+      document.getElementById("categorySelect").value = productData.categoryId;
+      
+      // Update subcategories based on the selected category
+      updateSubcategories(productData.categoryId);
+      
+      // Set subcategory if it exists (with a small delay to ensure options are populated)
+      if (productData.subCategoryId) {
+        setTimeout(() => {
+          const subcategorySelect = document.getElementById("subcategorySelect");
+          subcategorySelect.value = productData.subCategoryId;
+        }, 200);
+      }
+    }
+  } catch (error) {
+    console.error("Error loading product data:", error);
+    throw error;
+  }
 }
 
-      function setupEventListeners() {
-        document
-          .getElementById("categorySelect")
-          .addEventListener("change", function () {
-            updateSubcategories(this.value);
-          });
+function setupEventListeners() {
+  // Set up category change event
+  document.getElementById("categorySelect").addEventListener("change", function () {
+    updateSubcategories(this.value);
+  });
 
-        document
-          .getElementById("updateProduct")
-          .addEventListener("click", updateProduct);
-      }
+  // Set up update button click event
+  document.getElementById("updateProduct").addEventListener("click", updateProduct);
+}
 
-      async function updateProduct() {
-        const productName = document.getElementById("productName").value.trim();
-        if (!productName) {
-          Swal.fire({
-            icon: "error",
-            title: "Validation Error",
-            text: "Product name cannot be empty!",
-          });
-          return;
-        }
+async function updateProduct() {
+  const productName = document.getElementById("productName").value.trim();
+  if (!productName) {
+    Swal.fire({
+      icon: "error",
+      title: "Validation Error",
+      text: "Product name cannot be empty!",
+    });
+    return;
+  }
 
-        try {
-          Swal.fire({
-            title: "Updating Product",
-            text: "Please wait...",
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading();
-            },
-          });
+  try {
+    Swal.fire({
+      title: "Updating Product",
+      text: "Please wait...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
-          const categoryText =
-            document.getElementById("categorySelect").options[
-              document.getElementById("categorySelect").selectedIndex
-            ]?.text || "";
-          const subcategoryText =
-            document.getElementById("subcategorySelect").options[
-              document.getElementById("subcategorySelect").selectedIndex
-            ]?.text || "";
+    // Get category and subcategory info
+    const categorySelect = document.getElementById("categorySelect");
+    const subcategorySelect = document.getElementById("subcategorySelect");
 
-          const productData = {
-            name: productName,
-            categoryId: document.getElementById("categorySelect").value || null,
-            categoryName:
-              categoryText !== "Select Category" ? categoryText : null,
-            subCategoryId:
-              document.getElementById("subcategorySelect").value || null,
-            subCategoryName:
-              subcategoryText !== "Select Sub Category"
-                ? subcategoryText
-                : null,
-            brand: document.getElementById("brand").value || "",
-            quantity: parseInt(document.getElementById("quantity").value) || 0,
-            location: document.getElementById("location").value || "",
-            updatedAt: new Date(),
-          };
+    const categoryId = categorySelect.value || null;
+    let categoryName = null;
+    if (categoryId && categorySelect.selectedIndex > 0) {
+      categoryName = categorySelect.options[categorySelect.selectedIndex].text;
+    }
 
-          await updateDoc(doc(db, "products", productId), productData);
+    const subcategoryId = subcategorySelect.value || null;
+    let subcategoryName = null;
+    if (subcategoryId && subcategorySelect.selectedIndex > 0) {
+      subcategoryName = subcategorySelect.options[subcategorySelect.selectedIndex].text;
+    }
 
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Product updated successfully!",
-          }).then(() => {
-            window.location.href = "productlist.html";
-          });
-        } catch (error) {
-          console.error("Error updating product:", error);
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Failed to update product: " + error.message,
-          });
-        }
-      }
+    console.log("Update with category:", categoryId, categoryName);
+    console.log("Update with subcategory:", subcategoryId, subcategoryName);
+
+    const productData = {
+      name: productName,
+      categoryId: categoryId,
+      categoryName: categoryName,
+      subCategoryId: subcategoryId,
+      subCategoryName: subcategoryName,
+      brand: document.getElementById("brand").value || "",
+      quantity: parseInt(document.getElementById("quantity").value) || 0,
+      location: document.getElementById("location").value || "",
+      updatedAt: new Date(),
+    };
+
+    await updateDoc(doc(db, "products", productId), productData);
+
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: "Product updated successfully!",
+    }).then(() => {
+      window.location.href = "productlist.html";
+    });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Failed to update product: " + error.message,
+    });
+  }
+}
     </script>
   </body>
 </html>
