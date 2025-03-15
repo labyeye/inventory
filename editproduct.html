@@ -492,43 +492,39 @@
       });
     }
     
-    // Initialize UI elements
-    let productNameInput, categorySelect, subcategorySelect, brandSelect, unitSelect,
-        minQtyInput, quantityInput, priceInput, taxSelect, discountSelect, statusSelect,
-        skuInput, descriptionInput, imageUploadInput, productImage;
+    // Initialize UI elements for the fields we care about
+    let productNameInput, categorySelect, subcategorySelect, quantityInput, 
+        locationInput, imageUploadInput, productImage;
     
     // DOM elements will be initialized when document is ready
     document.addEventListener('DOMContentLoaded', async function() {
-      // Initialize form elements - Using proper selectors with fallbacks
+      // Initialize form elements - Using proper selectors
       productNameInput = document.querySelector('input[type="text"][value="Macbook pro"]');
       categorySelect = document.querySelectorAll('.form-group select')[0];
       subcategorySelect = document.querySelectorAll('.form-group select')[1];
-      brandSelect = document.querySelectorAll('.form-group select')[2];
-      unitSelect = document.querySelectorAll('.form-group select')[3];
-      skuInput = document.querySelector('input[type="text"][value="PT0002"]');
-      minQtyInput = document.querySelector('input[type="text"][value="5"]');
       quantityInput = document.querySelector('input[type="text"][value="50"]');
-      descriptionInput = document.querySelector('textarea');
-      taxSelect = document.querySelectorAll('.form-group select')[4];
-      discountSelect = document.querySelectorAll('.form-group select')[5];
-      priceInput = document.querySelector('input[type="text"][value="1500.00"]');
-      statusSelect = document.querySelectorAll('.form-group select')[6];
       imageUploadInput = document.querySelector('.image-upload input[type="file"]');
       productImage = document.querySelector('.productviewsimg img');
       
-      // Add ARIA labels for better accessibility and element selection
-      productNameInput.setAttribute('aria-label', 'Product Name');
-      categorySelect.setAttribute('aria-label', 'Category');
-      subcategorySelect.setAttribute('aria-label', 'Sub Category');
-      brandSelect.setAttribute('aria-label', 'Brand');
-      unitSelect.setAttribute('aria-label', 'Unit');
-      skuInput.setAttribute('aria-label', 'SKU');
-      minQtyInput.setAttribute('aria-label', 'Minimum Qty');
-      quantityInput.setAttribute('aria-label', 'Quantity');
-      taxSelect.setAttribute('aria-label', 'Tax');
-      discountSelect.setAttribute('aria-label', 'Discount Type');
-      priceInput.setAttribute('aria-label', 'Price');
-      statusSelect.setAttribute('aria-label', 'Status');
+      // Add location field if not exists
+      const locationLabelExists = Array.from(document.querySelectorAll('.form-group label'))
+        .some(label => label.textContent === 'Location');
+      
+      if (!locationLabelExists) {
+        const quantityFormGroup = quantityInput.closest('.col-lg-3');
+        const locationGroup = document.createElement('div');
+        locationGroup.className = 'col-lg-3 col-sm-6 col-12';
+        locationGroup.innerHTML = `
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" class="form-control">
+          </div>
+        `;
+        quantityFormGroup.parentNode.insertBefore(locationGroup, quantityFormGroup.nextSibling);
+      }
+      
+      locationInput = document.querySelector('.form-group label:contains("Location")').nextElementSibling || 
+                    document.querySelector('.form-group input[type="text"].form-control');
       
       // Initialize select2 for dropdowns if available
       try {
@@ -549,7 +545,7 @@
       setupEventListeners();
     });
     
-    // Populate categories, subcategories, and brands dropdowns
+    // Populate categories and subcategories dropdowns
     async function populateCategories() {
       try {
         // Fetch categories
@@ -578,20 +574,6 @@
             name: subcategory.name,
             categoryId: subcategory.categoryId
           });
-        });
-    
-        // Fetch brands
-        const brandsSnapshot = await getDocs(collection(db, "brands"));
-        
-        // Clear and repopulate brand dropdown
-        brandSelect.innerHTML = '<option value="">Select Brand</option>';
-        
-        brandsSnapshot.forEach(doc => {
-          const brand = doc.data();
-          const option = document.createElement('option');
-          option.value = doc.id;
-          option.textContent = brand.name;
-          brandSelect.appendChild(option);
         });
       } catch (error) {
         console.error("Error loading categories and subcategories:", error);
@@ -670,84 +652,9 @@
           }
         }, 300);
         
-        // Set brand
-        if (productData.brandId) {
-          brandSelect.value = productData.brandId;
-          try {
-            $(brandSelect).trigger('change');
-          } catch (e) {
-            console.warn('Select2 trigger change failed:', e);
-          }
-        }
-        
-        // Set unit if available
-        if (productData.unit) {
-          const unitOptions = Array.from(unitSelect.options);
-          const unitOption = unitOptions.find(option => 
-            option.textContent.toLowerCase() === productData.unit.toLowerCase());
-          
-          if (unitOption) {
-            unitSelect.value = unitOption.value;
-            try {
-              $(unitSelect).trigger('change');
-            } catch (e) {
-              console.warn('Select2 trigger change failed:', e);
-            }
-          }
-        }
-        
-        // Set other fields
-        skuInput.value = productData.sku || '';
-        minQtyInput.value = productData.minimumQty || productData.minQty || '1';
+        // Set quantity and location
         quantityInput.value = productData.quantity || '0';
-        descriptionInput.value = productData.description || '';
-        priceInput.value = productData.price ? productData.price.toFixed(2) : '0.00';
-        
-        // Set tax, discount and status if available
-        if (productData.tax) {
-          const taxOptions = Array.from(taxSelect.options);
-          const taxOption = taxOptions.find(option => 
-            option.textContent.includes(productData.tax.toString()));
-          
-          if (taxOption) {
-            taxSelect.value = taxOption.value;
-            try {
-              $(taxSelect).trigger('change');
-            } catch (e) {
-              console.warn('Select2 trigger change failed:', e);
-            }
-          }
-        }
-        
-        if (productData.discountType) {
-          const discountOptions = Array.from(discountSelect.options);
-          const discountOption = discountOptions.find(option => 
-            option.textContent.toLowerCase().includes(productData.discountType.toLowerCase()));
-          
-          if (discountOption) {
-            discountSelect.value = discountOption.value;
-            try {
-              $(discountSelect).trigger('change');
-            } catch (e) {
-              console.warn('Select2 trigger change failed:', e);
-            }
-          }
-        }
-        
-        if (productData.status) {
-          const statusOptions = Array.from(statusSelect.options);
-          const statusOption = statusOptions.find(option => 
-            option.textContent.toLowerCase() === productData.status.toLowerCase());
-          
-          if (statusOption) {
-            statusSelect.value = statusOption.value;
-            try {
-              $(statusSelect).trigger('change');
-            } catch (e) {
-              console.warn('Select2 trigger change failed:', e);
-            }
-          }
-        }
+        locationInput.value = productData.location || '';
         
         // Display product image if exists
         if (productData.imageUrl) {
@@ -843,12 +750,6 @@
             // Progress monitoring
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log('Upload is ' + progress + '% done');
-            
-            // Update UI with progress if needed
-            Swal.update({
-              title: 'Uploading Image',
-              text: `Progress: ${Math.round(progress)}%`
-            });
           },
           (error) => {
             // Error handling
@@ -888,112 +789,57 @@
           }
         });
         
-        // Get selected values and text for dropdowns
+        // Get selected category and subcategory text
         const categoryText = categorySelect.options[categorySelect.selectedIndex]?.text || '';
         const subcategoryText = subcategorySelect.options[subcategorySelect.selectedIndex]?.text || '';
-        const brandText = brandSelect.options[brandSelect.selectedIndex]?.text || '';
-        const unitText = unitSelect.options[unitSelect.selectedIndex]?.text || '';
-    const taxText = taxSelect.options[taxSelect.selectedIndex]?.text || '';
-    const discountText = discountSelect.options[discountSelect.selectedIndex]?.text || '';
-    const statusText = statusSelect.options[statusSelect.selectedIndex]?.text || '';
-    
-    // Upload image if selected
-    let imageUrl = null;
-    
-    if (imageUploadInput.files[0]) {
-      Swal.update({
-        title: 'Uploading Image',
-        text: 'Please wait...'
-      });
-      
-      imageUrl = await uploadImage(imageUploadInput.files[0]);
-    }
-    
-    // Parse numeric values
-    const quantity = parseInt(quantityInput.value) || 0;
-    const minQty = parseInt(minQtyInput.value) || 0;
-    const price = parseFloat(priceInput.value) || 0;
-    
-    // Extract tax percentage from text if available
-    let taxPercentage = null;
-    if (taxText && taxText !== 'Choose Tax') {
-      const taxMatch = taxText.match(/(\d+)%/);
-      if (taxMatch && taxMatch[1]) {
-        taxPercentage = parseInt(taxMatch[1]);
-      }
-    }
-    
-    // Prepare product data
-    const productData = {
-      name: productNameInput.value.trim(),
-      categoryId: categorySelect.value || null,
-      categoryName: categoryText !== 'Select Category' ? categoryText : null,
-      subCategoryId: subcategorySelect.value || null,
-      subCategoryName: subcategoryText !== 'Select Sub Category' ? subcategoryText : null,
-      brandId: brandSelect.value || null,
-      brand: brandText !== 'Select Brand' ? brandText : null,
-      unit: unitText !== 'Piece' && unitText !== 'Kg' ? null : unitText,
-      sku: skuInput.value || '',
-      minimumQty: minQty,
-      quantity: quantity,
-      description: descriptionInput.value || '',
-      price: price,
-      tax: taxPercentage,
-      discountType: discountText !== 'Percentage' ? null : 'percentage',
-      status: statusText !== 'Active' && statusText !== 'Open' ? 'Inactive' : statusText,
-      updatedAt: new Date()
-    };
-    
-    // Only update image if a new one was uploaded
-    if (imageUrl) {
-      productData.imageUrl = imageUrl;
-    }
-    
-    // Update product in Firebase
-    await updateDoc(doc(db, "products", productId), productData);
-    
-    // Show success message
-    Swal.fire({
-      icon: 'success',
-      title: 'Success',
-      text: 'Product updated successfully!'
-    }).then(() => {
-      window.location.href = 'productlist.html';
-    });
-    
-  } catch (error) {
-    console.error("Error updating product:", error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'Failed to update product: ' + error.message
-    });
-  }
-}
-// Add this to your productlist.html page inside a script tag
-document.addEventListener('DOMContentLoaded', function() {
-  // Find all edit buttons with class 'me-3' (assuming these are your edit buttons)
-  const editButtons = document.querySelectorAll('a.me-3[href="javascript:void(0);"]');
-  
-  editButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      // Get the product ID from the closest data attribute or row
-      const productRow = this.closest('tr');
-      const productId = productRow.getAttribute('data-id');
-      
-      if (productId) {
-        // Navigate to edit product page with the product ID
-        window.location.href = `editproduct.html?id=${productId}`;
-      } else {
+        
+        // Upload image if selected
+        let imageUrl = null;
+        
+        if (imageUploadInput.files[0]) {
+          imageUrl = await uploadImage(imageUploadInput.files[0]);
+        }
+        
+        // Parse numeric values
+        const quantity = parseInt(quantityInput.value) || 0;
+        
+        // Prepare product data (only the fields we want to update)
+        const productData = {
+          name: productNameInput.value.trim(),
+          categoryId: categorySelect.value || null,
+          categoryName: categoryText !== 'Select Category' ? categoryText : null,
+          subCategoryId: subcategorySelect.value || null,
+          subCategoryName: subcategoryText !== 'Select Sub Category' ? subcategoryText : null,
+          quantity: quantity,
+          location: locationInput.value || '',
+          updatedAt: new Date()
+        };
+        
+        // Only update image if a new one was uploaded
+        if (imageUrl) {
+          productData.imageUrl = imageUrl;
+        }
+        
+        // Update product in Firebase
+        await updateDoc(doc(db, "products", productId), productData);
+        
+        // Show success message
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Product updated successfully!'
+        }).then(() => {
+          window.location.href = 'productlist.html';
+        });
+        
+      } catch (error) {
+        console.error("Error updating product:", error);
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Could not find product ID!'
+          text: 'Failed to update product: ' + error.message
         });
       }
-    });
-  });
-});
-        </script>
+    }</script>
 </body>
 </html>

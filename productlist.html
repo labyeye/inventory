@@ -886,46 +886,58 @@
           }
         });
 
-      // Initial loading of products when the page loads
-      document.addEventListener("DOMContentLoaded", function () {
-        loadProducts();
-
-        // Toggle filter visibility
-        document
-          .getElementById("filter_search")
-          .addEventListener("click", function () {
-            $("#filter_inputs").slideToggle("slow");
-          });
-
-        // Select2 initialization for dropdowns
-        $(".select").select2({
-          minimumResultsForSearch: -1,
-          width: "100%",
-        });
-
-        // Select all checkbox functionality
-        document
-          .getElementById("select-all")
-          .addEventListener("change", function () {
-            const isChecked = this.checked;
-            document
-              .querySelectorAll('#product-list input[type="checkbox"]')
-              .forEach((checkbox) => {
-                checkbox.checked = isChecked;
-              });
-          });
-
-        // Note: You need to import onAuthStateChanged and auth if you're using this
-        // Commented out as it wasn't imported in the original code
-        /*
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      // Redirect to login if not authenticated
-      window.location.href = "login.html";
-    }
+      // Add this to your productlist.html page
+document.addEventListener('DOMContentLoaded', function() {
+  // Find all edit buttons
+  const editButtons = document.querySelectorAll('a.me-3');
+  
+  editButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Get the product ID from data attribute or row ID
+      const productRow = this.closest('tr');
+      const productId = productRow.getAttribute('data-id') || productRow.id;
+      
+      if (productId) {
+        // Navigate to edit product page with the product ID
+        window.location.href = `editproduct.html?id=${productId}`;
+      } else {
+        console.error("Could not find product ID");
+        // Try to get product name as fallback
+        const productName = productRow.querySelector('.productimgname a:last-child').textContent;
+        
+        // Query Firestore for product with this name
+        findProductByName(productName);
+      }
+    });
   });
-  */
+  
+  // Function to find product by name if ID is not available
+  async function findProductByName(productName) {
+    try {
+      const productsRef = collection(db, "products");
+      const q = query(productsRef, where("name", "==", productName));
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
+        const productId = querySnapshot.docs[0].id;
+        window.location.href = `editproduct.html?id=${productId}`;
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Could not find product!'
+        });
+      }
+    } catch (error) {
+      console.error("Error finding product:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to find product!'
       });
+    }
+  }
+});
 
       // Function to format Firestore timestamp to readable date string
       function formatTimestamp(timestamp) {
